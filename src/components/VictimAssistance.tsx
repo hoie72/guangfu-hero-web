@@ -104,7 +104,7 @@ export default function VictimAssistance() {
                 setSelectedServiceFormat("全部");
               }
             }}
-            className={`px-6 py-2 rounded-full font-medium transition-colors ${
+            className={`px-6 py-2 rounded-lg font-medium transition-colors ${
               selectedCategory === category
                 ? "bg-orange-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
@@ -116,15 +116,15 @@ export default function VictimAssistance() {
       </div>
 
       {selectedCategory === "心理援助" && (
-        <div className="flex gap-3 mb-6">
+        <div className="flex gap-2 mb-6">
           {serviceFormats.map((format) => (
             <button
               key={format}
               onClick={() => setSelectedServiceFormat(format)}
-              className={`px-6 py-2 rounded-full font-medium transition-colors ${
+              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 selectedServiceFormat === format
                   ? "bg-blue-500 text-white"
-                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
               {format}
@@ -215,7 +215,7 @@ export default function VictimAssistance() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap"
+                    className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
                   >
                     前往 →
                   </a>
@@ -326,7 +326,7 @@ export default function VictimAssistance() {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap"
+                      className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
                     >
                       前往 →
                     </a>
@@ -495,7 +495,7 @@ export default function VictimAssistance() {
                           )}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap"
+                          className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
                         >
                           前往 →
                         </a>

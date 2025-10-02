@@ -45,21 +45,17 @@ const mockLocations: Location[] = [
 ];
 
 export default function VictimAssistance() {
-  const [selectedCategory, setSelectedCategory] = useState<Category | "全部">(
-    "全部"
+  const [selectedCategory, setSelectedCategory] = useState<Category>(
+    "庇護所"
   );
 
-  const categories: (Category | "全部")[] = [
-    "全部",
+  const categories: Category[] = [
     "庇護所",
     "醫療站",
     "心理援助",
   ];
 
-  const filteredLocations =
-    selectedCategory === "全部"
-      ? mockLocations
-      : mockLocations.filter((loc) => loc.category === selectedCategory);
+  const filteredLocations = mockLocations.filter((loc) => loc.category === selectedCategory);
 
   return (
     <div>

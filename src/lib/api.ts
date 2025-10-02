@@ -57,3 +57,49 @@ export async function getShelters(
 ): Promise<ShelterResponse> {
   return fetchAPI<ShelterResponse>("/shelters", { limit, offset });
 }
+
+export interface MedicalStation {
+  id: string;
+  station_type: string;
+  name: string;
+  location: string;
+  detailed_address: string;
+  phone: string;
+  contact_person: string;
+  status: string;
+  services: string[];
+  operating_hours: string;
+  equipment: string[];
+  medical_staff: number;
+  daily_capacity: number;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  affiliated_organization: string;
+  notes: string;
+  link: string;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface MedicalStationResponse {
+  "@context": string;
+  "@type": string;
+  limit: number;
+  member: MedicalStation[];
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  totalItems: number;
+}
+
+export async function getMedicalStations(
+  limit: number = 50,
+  offset: number = 0
+): Promise<MedicalStationResponse> {
+  return fetchAPI<MedicalStationResponse>("/medical_stations", {
+    limit,
+    offset,
+  });
+}

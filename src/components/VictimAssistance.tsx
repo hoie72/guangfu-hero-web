@@ -1,13 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getShelters, type Shelter } from "@/lib/api";
+import {
+  getShelters,
+  getMedicalStations,
+  type Shelter,
+  type MedicalStation,
+} from "@/lib/api";
 
 type Category = "庇護所" | "醫療站" | "心理援助";
 
 export default function VictimAssistance() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("庇護所");
   const [shelters, setShelters] = useState<Shelter[]>([]);
+  const [medicalStations, setMedicalStations] = useState<MedicalStation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,6 +22,10 @@ export default function VictimAssistance() {
   useEffect(() => {
     if (selectedCategory === "庇護所") {
       fetchShelters();
+    } else if (selectedCategory === "醫療站") {
+      fetchMedicalStations();
+    } else {
+      setLoading(false);
     }
   }, [selectedCategory]);
 
@@ -25,6 +35,19 @@ export default function VictimAssistance() {
       setError(null);
       const response = await getShelters(50, 0);
       setShelters(response.member);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "載入失敗");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchMedicalStations() {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getMedicalStations(50, 0);
+      setMedicalStations(response.member);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -142,12 +165,121 @@ export default function VictimAssistance() {
           </>
         )}
 
-        {!loading &&
-          !error &&
-          selectedCategory !== "庇護所" &&
-          shelters.length === 0 && (
-            <div className="text-center py-8 text-gray-500">此分類暫無資料</div>
-          )}
+        {!loading && !error && selectedCategory === "醫療站" && (
+          <>
+            {medicalStations.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                此分類暫無資料
+              </div>
+            ) : (
+              medicalStations.map((station) => (
+                <div
+                  key={station.id}
+                  className="bg-white rounded-lg p-6 shadow-sm border border-gray-200"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-3">{station.name}</h3>
+                      <div className="space-y-2 text-gray-700">
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">🏥</span>
+                          <span className="font-medium">
+                            {station.station_type || "未提供"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">📍</span>
+                          <span>
+                            {station.detailed_address ||
+                              station.location ||
+                              "未提供"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">📞</span>
+                          <span>{station.phone || "未提供"}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">👤</span>
+                          <span>{station.contact_person || "未提供"}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">🕐</span>
+                          <span>{station.operating_hours || "未提供"}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">💊</span>
+                          <span>
+                            {station.services && station.services.length > 0
+                              ? station.services.join("、")
+                              : "未提供"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">🏢</span>
+                          <span>
+                            {station.affiliated_organization || "未提供"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">👨‍⚕️</span>
+                          <span>
+                            醫護人員：
+                            {station.medical_staff > 0
+                              ? `${station.medical_staff} 人`
+                              : "未提供"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">📊</span>
+                          <span>
+                            每日容量：
+                            {station.daily_capacity > 0
+                              ? `${station.daily_capacity} 人`
+                              : "未提供"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-500">📝</span>
+                          <span className="text-sm text-gray-600">
+                            {station.notes || "未提供"}
+                          </span>
+                        </div>
+                        {station.link && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-gray-500">🔗</span>
+                            <a
+                              href={station.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 underline text-sm break-all"
+                            >
+                              資料來源
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        station.detailed_address || station.location
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap"
+                    >
+                      前往 →
+                    </a>
+                  </div>
+                </div>
+              ))
+            )}
+          </>
+        )}
+
+        {!loading && !error && selectedCategory === "心理援助" && (
+          <div className="text-center py-8 text-gray-500">此分類暫無資料</div>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,88 @@
+"use client";
+
+import { useSearchParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import VictimAssistance from "./VictimAssistance";
+
+type Tab = "現場地圖" | "志工資訊" | "災民協助";
+type TabKey = "map" | "volunteer" | "victim";
+
+const tabMapping: Record<TabKey, Tab> = {
+  map: "現場地圖",
+  volunteer: "志工資訊",
+  victim: "災民協助",
+};
+
+const reverseTabMapping: Record<Tab, TabKey> = {
+  現場地圖: "map",
+  志工資訊: "volunteer",
+  災民協助: "victim",
+};
+
+export default function Tabs() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab") as TabKey | null;
+
+  const [activeTab, setActiveTab] = useState<Tab>(
+    tabParam && tabMapping[tabParam] ? tabMapping[tabParam] : "現場地圖"
+  );
+
+  const tabs: Tab[] = ["現場地圖", "志工資訊", "災民協助"];
+
+  useEffect(() => {
+    if (tabParam && tabMapping[tabParam]) {
+      setActiveTab(tabMapping[tabParam]);
+    }
+  }, [tabParam]);
+
+  const handleTabClick = (tab: Tab) => {
+    setActiveTab(tab);
+    const tabKey = reverseTabMapping[tab];
+    router.push(`/?tab=${tabKey}`, { scroll: false });
+  };
+
+  return (
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Tab buttons */}
+      <div className="flex space-x-1 border-b border-gray-200">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => handleTabClick(tab)}
+            className={`px-6 py-3 font-medium transition-colors ${
+              activeTab === tab
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab content */}
+      <div className="mt-6">
+        {activeTab === "現場地圖" && (
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">現場地圖</h2>
+            <p className="text-gray-600">地圖內容將顯示在這裡</p>
+          </div>
+        )}
+
+        {activeTab === "志工資訊" && (
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">志工資訊</h2>
+            <p className="text-gray-600">志工資訊將顯示在這裡</p>
+          </div>
+        )}
+
+        {activeTab === "災民協助" && (
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <VictimAssistance />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

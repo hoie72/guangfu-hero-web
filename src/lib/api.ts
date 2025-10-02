@@ -103,3 +103,50 @@ export async function getMedicalStations(
     offset,
   });
 }
+
+export interface MentalHealthResource {
+  id: string;
+  duration_type: string;
+  name: string;
+  service_format: string;
+  service_hours: string;
+  contact_info: string;
+  website_url: string;
+  target_audience: string[];
+  specialties: string[];
+  languages: string[];
+  is_free: boolean;
+  location: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  status: string;
+  capacity: number;
+  waiting_time: string;
+  notes: string;
+  emergency_support: boolean;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface MentalHealthResourceResponse {
+  "@context": string;
+  "@type": string;
+  limit: number;
+  member: MentalHealthResource[];
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  totalItems: number;
+}
+
+export async function getMentalHealthResources(
+  limit: number = 50,
+  offset: number = 0
+): Promise<MentalHealthResourceResponse> {
+  return fetchAPI<MentalHealthResourceResponse>("/mental_health_resources", {
+    limit,
+    offset,
+  });
+}

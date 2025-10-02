@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import VictimAssistance from "./VictimAssistance";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
@@ -19,7 +19,7 @@ const reverseTabMapping: Record<Tab, TabKey> = {
   災民協助: "victim",
 };
 
-export default function Tabs() {
+function TabsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab") as TabKey | null;
@@ -84,5 +84,13 @@ export default function Tabs() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Tabs() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">載入中...</div>}>
+      <TabsContent />
+    </Suspense>
   );
 }

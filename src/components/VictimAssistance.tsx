@@ -149,15 +149,6 @@ export default function VictimAssistance() {
             <div className="text-center py-8 text-gray-500">此分類暫無資料</div>
           )}
       </div>
-
-      <div className="flex gap-4 mt-8">
-        <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors">
-          找 / 送物資
-        </button>
-        <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors">
-          當 / 找志工
-        </button>
-      </div>
     </div>
   );
 }

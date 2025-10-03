@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import VictimAssistance from "./VictimAssistance";
+import VolunteerInfo from "./VolunteerInfo";
 import TabButton from "@/components/Tab";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
@@ -65,12 +66,7 @@ function TabsContent() {
           </div>
         )}
 
-        {activeTab === "志工資訊" && (
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">志工資訊</h2>
-            <p className="text-gray-600">志工資訊將顯示在這裡</p>
-          </div>
-        )}
+        {activeTab === "志工資訊" && <VolunteerInfo />}
 
         {activeTab === "災民協助" && <VictimAssistance />}
       </div>

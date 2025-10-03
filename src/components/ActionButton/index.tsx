@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
 
 interface ActionButtonProps {
   children: React.ReactNode;
@@ -26,7 +27,13 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   `;
 
   const icon = (
-    <Image src="/nav.svg" alt="" width={20} height={20} className="invert" />
+    <Image
+      src={getAssetPath("/nav.svg")}
+      alt=""
+      width={20}
+      height={20}
+      className="invert"
+    />
   );
 
   if (href) {

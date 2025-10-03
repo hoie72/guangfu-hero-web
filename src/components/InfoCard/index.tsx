@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import ActionButton from "@/components/ActionButton";
+import { getAssetPath } from "@/lib/utils";
 
 interface InfoCardProps {
   name: string;
@@ -34,7 +35,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
         {address && (
           <div className="flex items-start gap-1 text-sm text-[#1E1E1E] mb-1">
             <Image
-              src="/location.svg"
+              src={getAssetPath("/location.svg")}
               alt=""
               width={17}
               height={17}
@@ -47,7 +48,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
         {contact && (
           <div className="flex items-start gap-1 text-sm text-[#1E1E1E]">
             <Image
-              src="/call.svg"
+              src={getAssetPath("/call.svg")}
               alt=""
               width={17}
               height={17}

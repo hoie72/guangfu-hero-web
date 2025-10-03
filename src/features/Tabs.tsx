@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import VictimAssistance from "./VictimAssistance";
-import Button from "./Button";
+import TabButton from "@/components/Tab";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
 type TabKey = "map" | "volunteer" | "victim";
@@ -44,20 +44,20 @@ function TabsContent() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex gap-3">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex border-b-2 border-gray-200">
         {tabs.map((tab) => (
-          <Button
+          <TabButton
             key={tab}
             onClick={() => handleTabClick(tab)}
             active={activeTab === tab}
           >
             {tab}
-          </Button>
+          </TabButton>
         ))}
       </div>
 
-      <div className="mt-6">
+      <div className="mt-3">
         {activeTab === "現場地圖" && (
           <div className="p-6 bg-gray-50 rounded-lg">
             <h2 className="text-2xl font-bold mb-4">現場地圖</h2>
@@ -72,11 +72,7 @@ function TabsContent() {
           </div>
         )}
 
-        {activeTab === "災民協助" && (
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <VictimAssistance />
-          </div>
-        )}
+        {activeTab === "災民協助" && <VictimAssistance />}
       </div>
     </div>
   );

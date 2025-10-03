@@ -16,10 +16,11 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 }) => {
   const buttonClasses = `
     h-[36px] py-2 px-3
+    min-w-[80px]
     bg-[#009688] text-white
     rounded-lg
     cursor-pointer
-    flex items-center gap-1
+    flex items-center justify-center gap-1
     whitespace-nowrap
     ${className}
   `;

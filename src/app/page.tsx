@@ -1,4 +1,4 @@
-import Tabs from "@/components/Tabs";
+import Tabs from "@/features/Tabs";
 
 export default function Home() {
   return (

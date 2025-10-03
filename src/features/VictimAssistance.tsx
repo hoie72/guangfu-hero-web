@@ -9,8 +9,9 @@ import {
   type MedicalStation,
   type MentalHealthResource,
 } from "@/lib/api";
-import Button from "./Button";
-import ActionButton from "./ActionButton";
+import Button from "@/components/Button";
+import InfoCard from "@/components/InfoCard";
+import ActionButton from "@/components/ActionButton";
 
 type Category = "庇護所" | "醫療站" | "心理援助";
 type ServiceFormat = "全部" | "實體" | "線上" | "電話" | "多種";
@@ -96,7 +97,7 @@ export default function VictimAssistance() {
 
   return (
     <div>
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-2 mb-3">
         {categories.map((category) => (
           <Button
             key={category}
@@ -114,7 +115,7 @@ export default function VictimAssistance() {
       </div>
 
       {selectedCategory === "心理援助" && (
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-3">
           {serviceFormats.map((format) => (
             <Button
               key={format}
@@ -138,84 +139,19 @@ export default function VictimAssistance() {
         )}
 
         {!loading && !error && selectedCategory === "庇護所" && (
-          <>
+          <div>
             {shelters.map((shelter) => (
-              <div
+              <InfoCard
                 key={shelter.id}
-                className="bg-white rounded-lg p-6 shadow-sm border border-gray-200"
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-3">{shelter.name}</h3>
-                    <div className="space-y-2 text-gray-700">
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-500">📍</span>
-                        <span>{shelter.location}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-500">📞</span>
-                        <span>{shelter.phone}</span>
-                      </div>
-                      {shelter.contact_person &&
-                        shelter.contact_person !== shelter.phone && (
-                          <div className="flex items-start gap-2">
-                            <span className="text-gray-500">👤</span>
-                            <span>{shelter.contact_person}</span>
-                          </div>
-                        )}
-                      {shelter.coordinates && (
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-500">🗺️</span>
-                          <span className="text-sm">{shelter.coordinates}</span>
-                        </div>
-                      )}
-                      {shelter.opening_hours && (
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-500">🕐</span>
-                          <span>{shelter.opening_hours}</span>
-                        </div>
-                      )}
-                      {shelter.facilities && (
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-500">🏢</span>
-                          <span>{shelter.facilities}</span>
-                        </div>
-                      )}
-                      {shelter.notes && (
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-500">📝</span>
-                          <span className="text-sm text-gray-600">
-                            {shelter.notes}
-                          </span>
-                        </div>
-                      )}
-                      {shelter.link && (
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-500">🔗</span>
-                          <a
-                            href={shelter.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 underline text-sm break-all"
-                          >
-                            資料來源
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <ActionButton
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      shelter.location
-                    )}`}
-                    className="ml-4"
-                  >
-                    前往
-                  </ActionButton>
-                </div>
-              </div>
+                name={shelter.name}
+                address={shelter.location}
+                contact={shelter.phone}
+                mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  shelter.location
+                )}`}
+              />
             ))}
-          </>
+          </div>
         )}
 
         {!loading && !error && selectedCategory === "醫療站" && (

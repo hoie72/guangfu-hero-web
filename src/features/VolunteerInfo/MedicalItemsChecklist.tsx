@@ -1,6 +1,6 @@
 import React from "react";
 import ChecklistItem from "@/components/ChecklistItem";
-import { ChecklistItemData } from "./data/checklistData";
+import { ChecklistItemData } from ".";
 
 interface MedicalItemsChecklistProps {
   checkedItems: Record<string, boolean>;

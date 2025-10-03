@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import VictimAssistance from "./VictimAssistance";
+import TabButton from "@/components/Tab";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
 type TabKey = "map" | "volunteer" | "victim";
@@ -43,26 +44,20 @@ function TabsContent() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Tab buttons */}
-      <div className="flex space-x-1 border-b border-gray-200">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex border-b-2 border-gray-200">
         {tabs.map((tab) => (
-          <button
+          <TabButton
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === tab
-                ? "text-blue-600 border-b-2 border-blue-600"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+            active={activeTab === tab}
           >
             {tab}
-          </button>
+          </TabButton>
         ))}
       </div>
 
-      {/* Tab content */}
-      <div className="mt-6">
+      <div className="mt-3">
         {activeTab === "現場地圖" && (
           <div className="p-6 bg-gray-50 rounded-lg">
             <h2 className="text-2xl font-bold mb-4">現場地圖</h2>
@@ -77,11 +72,7 @@ function TabsContent() {
           </div>
         )}
 
-        {activeTab === "災民協助" && (
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <VictimAssistance />
-          </div>
-        )}
+        {activeTab === "災民協助" && <VictimAssistance />}
       </div>
     </div>
   );
@@ -89,7 +80,13 @@ function TabsContent() {
 
 export default function Tabs() {
   return (
-    <Suspense fallback={<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">載入中...</div>}>
+    <Suspense
+      fallback={
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          載入中...
+        </div>
+      }
+    >
       <TabsContent />
     </Suspense>
   );

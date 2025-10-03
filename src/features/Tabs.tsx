@@ -2,9 +2,9 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import VictimAssistance from "./VictimAssistance";
-import VolunteerInfo from "./VolunteerInfo";
 import TabButton from "@/components/Tab";
+import VictimAssistance from "@/features/VictimAssistance";
+import VolunteerInfo from "@/features/VolunteerInfo";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
 type TabKey = "map" | "volunteer" | "victim";

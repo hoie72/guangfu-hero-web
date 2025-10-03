@@ -9,6 +9,8 @@ import {
   type MedicalStation,
   type MentalHealthResource,
 } from "@/lib/api";
+import Button from "./Button";
+import ActionButton from "./ActionButton";
 
 type Category = "庇護所" | "醫療站" | "心理援助";
 type ServiceFormat = "全部" | "實體" | "線上" | "電話" | "多種";
@@ -96,7 +98,7 @@ export default function VictimAssistance() {
     <div>
       <div className="flex gap-3 mb-6">
         {categories.map((category) => (
-          <button
+          <Button
             key={category}
             onClick={() => {
               setSelectedCategory(category);
@@ -104,31 +106,24 @@ export default function VictimAssistance() {
                 setSelectedServiceFormat("全部");
               }
             }}
-            className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-              selectedCategory === category
-                ? "bg-orange-500 text-white"
-                : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-            }`}
+            active={selectedCategory === category}
           >
             {category}
-          </button>
+          </Button>
         ))}
       </div>
 
       {selectedCategory === "心理援助" && (
         <div className="flex gap-2 mb-6">
           {serviceFormats.map((format) => (
-            <button
+            <Button
               key={format}
               onClick={() => setSelectedServiceFormat(format)}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                selectedServiceFormat === format
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
+              active={selectedServiceFormat === format}
+              variant="sub"
             >
               {format}
-            </button>
+            </Button>
           ))}
         </div>
       )}
@@ -209,16 +204,14 @@ export default function VictimAssistance() {
                       )}
                     </div>
                   </div>
-                  <a
+                  <ActionButton
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                       shelter.location
                     )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+                    className="ml-4"
                   >
-                    前往 →
-                  </a>
+                    前往
+                  </ActionButton>
                 </div>
               </div>
             ))}
@@ -320,16 +313,14 @@ export default function VictimAssistance() {
                         )}
                       </div>
                     </div>
-                    <a
+                    <ActionButton
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.detailed_address || station.location
                       )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+                      className="ml-4"
                     >
-                      前往 →
-                    </a>
+                      前往
+                    </ActionButton>
                   </div>
                 </div>
               ))
@@ -489,16 +480,14 @@ export default function VictimAssistance() {
                         </div>
                       </div>
                       {mapLocation && (
-                        <a
+                        <ActionButton
                           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                             mapLocation
                           )}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-4 bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+                          className="ml-4"
                         >
-                          前往 →
-                        </a>
+                          前往
+                        </ActionButton>
                       )}
                     </div>
                   </div>

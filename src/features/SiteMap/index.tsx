@@ -1,11 +1,7 @@
 "use client";
 
-<<<<<<< Updated upstream
 import { useState } from "react";
 import MapInfo from "@/features/MapInfo";
-=======
-import MapShow from "@/features/SiteMap/MapShow";
->>>>>>> Stashed changes
 
 export default function SiteMap() {
   const [showWarningModal, setShowWarningModal] = useState(false);
@@ -42,7 +38,6 @@ export default function SiteMap() {
           </div>
         </div>
       </div>
-<<<<<<< Updated upstream
 
       {/* 警告視窗 */}
       {showWarningModal && (
@@ -119,9 +114,6 @@ export default function SiteMap() {
       )}
 
       <MapInfo />
-=======
-      <MapShow />
->>>>>>> Stashed changes
     </div>
   );
 }

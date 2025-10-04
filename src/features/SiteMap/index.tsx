@@ -6,11 +6,11 @@ export default function SiteMap() {
   return (
     <div>
       {/* 跑馬燈 */}
-      <div className="bg-[#FFF4E6] border-l-4 border-[#C96319] p-4  overflow-hidden">
+      <div className="bg-[#FFF4E6] dark:bg-orange-900/30 border-l-4 border-[#C96319] dark:border-orange-500 p-4 overflow-hidden">
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0 mt-0.5">
             <svg
-              className="w-5 h-5 text-[#C96319]"
+              className="w-5 h-5 text-[#C96319] dark:text-orange-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -23,7 +23,7 @@ export default function SiteMap() {
           </div>
           <div className="flex-1 overflow-hidden">
             <div className="whitespace-nowrap">
-              <span className="inline-block animate-marquee text-[#C96319] font-medium">
+              <span className="inline-block animate-marquee text-[#C96319] dark:text-orange-300 font-medium">
                 現場隨時有溢流風險，點此詳讀避難守則，警報響起請往高處避難
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 現場隨時有溢流風險，點此詳讀避難守則，警報響起請往高處避難

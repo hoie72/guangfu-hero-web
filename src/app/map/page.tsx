@@ -1,10 +1,13 @@
+import { Suspense } from "react";
 import PageLayout from "@/components/PageLayout";
 import SiteMap from "@/features/SiteMap";
 
 export default function MapPage() {
   return (
     <PageLayout>
-      <SiteMap />
+      <Suspense fallback={<div className="text-center py-8">載入中...</div>}>
+        <SiteMap />
+      </Suspense>
     </PageLayout>
   );
 }

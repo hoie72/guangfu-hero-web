@@ -28,7 +28,6 @@ const InfoCard: React.FC<InfoCardProps> = ({
   type,
   hours,
   contact,
-  infoUrl,
   mapUrl,
   className = "",
   fullData,

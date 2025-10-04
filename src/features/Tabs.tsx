@@ -5,6 +5,7 @@ import { useEffect, useState, Suspense } from "react";
 import TabButton from "@/components/Tab";
 import VictimAssistance from "@/features/VictimAssistance";
 import VolunteerInfo from "@/features/VolunteerInfo";
+import SiteMap from "@/features/SiteMap";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
 type TabKey = "map" | "volunteer" | "victim";
@@ -59,12 +60,7 @@ function TabsContent() {
       </div>
 
       <div className="mt-3">
-        {activeTab === "現場地圖" && (
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">現場地圖</h2>
-            <p className="text-gray-600">地圖內容將顯示在這裡</p>
-          </div>
-        )}
+        {activeTab === "現場地圖" && <SiteMap />}
 
         {activeTab === "志工資訊" && <VolunteerInfo />}
 

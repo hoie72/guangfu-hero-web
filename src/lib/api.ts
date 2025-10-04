@@ -21,6 +21,85 @@ export async function fetchAPI<T>(
   return response.json();
 }
 
+export interface ShowerStations {
+  id: string;
+  name: string;
+  location: string;
+  phone: string;
+  status: string;
+  facilities: string | null;
+  notes: string | null;
+  opening_hours: string | null;
+  is_free: boolean;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface ShowerStationsResponse {
+  "@context": string;
+  "@type": string;
+  limit: number;
+  member: ShowerStations[];
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  totalItems: number;
+}
+
+export async function getShowerStations(
+  limit: number = 50,
+  offset: number = 0
+): Promise<ShowerStationsResponse> {
+  return fetchAPI<ShowerStationsResponse>("/shower_stations", {
+    limit,
+    offset,
+  });
+}
+
+export interface WaterRefillStations {
+  id: string;
+  name: string;
+  location: string;
+  water_type: string;
+  phone: string;
+  status: string;
+  facilities: string | null;
+  notes: string | null;
+  opening_hours: string | null;
+  is_free: boolean;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface WaterRefillStationsResponse {
+  "@context": string;
+  "@type": string;
+  limit: number;
+  member: WaterRefillStations[];
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  totalItems: number;
+}
+
+export async function getWaterRefillStations(
+  limit: number = 50,
+  offset: number = 0
+): Promise<WaterRefillStationsResponse> {
+  return fetchAPI<WaterRefillStationsResponse>("/water_refill_stations", {
+    limit,
+    offset,
+  });
+}
+
 export interface Shelter {
   id: string;
   name: string;
@@ -31,10 +110,13 @@ export interface Shelter {
   capacity: number | null;
   current_occupancy: number | null;
   available_spaces: number | null;
-  facilities: string | null;
+  facilities: string[] | null;
   contact_person: string;
-  notes: string | null;
-  coordinates: string | null;
+  notes: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
   opening_hours: string | null;
   created_at: number;
   updated_at: number;
@@ -77,10 +159,19 @@ export interface MedicalStation {
     lng: number;
   } | null;
   affiliated_organization: string;
-  notes: string;
-  link: string;
+  notes: string | null;
+  info_source: string | null;
   created_at: number;
   updated_at: number;
+  address: string;
+  water_type: string;
+  opening_hours: string;
+  is_free: true;
+  container_required: null;
+  water_quality: null;
+  facilities: null;
+  accessibility: true;
+  distance_to_disaster_area: null;
 }
 
 export interface MedicalStationResponse {

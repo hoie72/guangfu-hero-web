@@ -9,13 +9,13 @@ export default function Footer() {
             href="/resources"
             className="flex-1 max-w-[160px] bg-[#C96319] py-3 px-6 rounded-lg text-center font-bold transition-colors"
           >
-            找/送物資
+            找 / 送物資
           </Link>
           <Link
             href="/volunteer-register"
             className="flex-1 max-w-[160px] bg-[#C96319] py-3 px-6 rounded-lg text-center font-bold transition-colors"
           >
-            當/找志工
+            當 / 找志工
           </Link>
         </div>
       </div>

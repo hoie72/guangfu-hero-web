@@ -165,7 +165,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
             onClick={onClose}
           >
-            捐 / 送物資
+            找 / 送物資
           </Link>
 
           <Link

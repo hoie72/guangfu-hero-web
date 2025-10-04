@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import TabButton from "@/components/Tab";
+import MapInfo from "@/features/MapInfo";
 import VictimAssistance from "@/features/VictimAssistance";
 import VolunteerInfo from "@/features/VolunteerInfo";
 import SiteMap from "@/features/SiteMap";

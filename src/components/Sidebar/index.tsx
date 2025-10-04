@@ -183,19 +183,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             關於我們
           </a>
 
-          <a
-            href="#privacy"
+          <Link
+            href="/privacy"
             className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            onClick={onClose}
           >
             隱私權政策
-          </a>
+          </Link>
 
-          <a
-            href="#terms"
+          <Link
+            href="/terms"
             className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            onClick={onClose}
           >
             服務條款
-          </a>
+          </Link>
         </nav>
       </div>
     </>

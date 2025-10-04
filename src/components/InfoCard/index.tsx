@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import {
   type Shelter,
@@ -76,6 +76,19 @@ const InfoCard: React.FC<InfoCardProps> = ({
   fullData,
 }) => {
   const [showModal, setShowModal] = useState(false);
+
+  // 處理 modal 打開時鎖定滾動
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showModal]);
 
   // 格式化顯示資料
   const getFormattedData = useCallback(() => {

@@ -6,6 +6,7 @@ import TabButton from "@/components/Tab";
 import MapInfo from "@/features/MapInfo";
 import VictimAssistance from "@/features/VictimAssistance";
 import VolunteerInfo from "@/features/VolunteerInfo";
+import SiteMap from "@/features/SiteMap";
 
 type Tab = "現場地圖" | "志工資訊" | "災民協助";
 type TabKey = "map" | "volunteer" | "victim";
@@ -60,7 +61,7 @@ function TabsContent() {
       </div>
 
       <div className="mt-3">
-        {activeTab === "現場地圖" && <MapInfo />}
+        {activeTab === "現場地圖" && <SiteMap />}
 
         {activeTab === "志工資訊" && <VolunteerInfo />}
 

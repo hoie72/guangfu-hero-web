@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   getShelters,
   getMedicalStations,
@@ -15,8 +16,13 @@ import InfoCard from "@/components/InfoCard";
 type Category = "庇護所" | "醫療站" | "心理援助";
 type ServiceFormat = "全部" | "實體" | "線上" | "電話" | "多種";
 
-export default function VictimAssistance() {
-  const [selectedCategory, setSelectedCategory] = useState<Category>("庇護所");
+interface VictimAssistanceProps {
+  initialCategory?: Category;
+}
+
+export default function VictimAssistance({ initialCategory = "庇護所" }: VictimAssistanceProps) {
+  const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState<Category>(initialCategory);
   const [selectedServiceFormat, setSelectedServiceFormat] =
     useState<ServiceFormat>("全部");
   const [shelters, setShelters] = useState<Shelter[]>([]);
@@ -35,6 +41,18 @@ export default function VictimAssistance() {
     "電話",
     "多種",
   ];
+
+  const handleCategoryClick = (category: Category) => {
+    if (category === "庇護所") {
+      router.push("/victim/shelter");
+    } else if (category === "醫療站") {
+      router.push("/victim/medical");
+    } else if (category === "心理援助") {
+      router.push("/victim/mental-health");
+    } else {
+      setSelectedCategory(category);
+    }
+  };
 
   useEffect(() => {
     if (selectedCategory === "庇護所") {
@@ -100,12 +118,7 @@ export default function VictimAssistance() {
         {categories.map((category) => (
           <Button
             key={category}
-            onClick={() => {
-              setSelectedCategory(category);
-              if (category === "心理援助") {
-                setSelectedServiceFormat("全部");
-              }
-            }}
+            onClick={() => handleCategoryClick(category)}
             active={selectedCategory === category}
           >
             {category}

@@ -28,7 +28,6 @@ const InfoCard: React.FC<InfoCardProps> = ({
   type,
   hours,
   contact,
-  infoUrl,
   mapUrl,
   className = "",
   fullData,
@@ -188,26 +187,28 @@ const InfoCard: React.FC<InfoCardProps> = ({
                         {label}
                       </div>
                       <div className="text-[#1E1E1E] flex-1 break-words overflow-wrap-anywhere">
-                        {Array.isArray(value)
-                          ? value.join("、")
-                          : typeof value === "boolean"
-                          ? value
-                            ? "是"
-                            : "否"
-                          : typeof value === "object" && value !== null
-                          ? JSON.stringify(value, null, 2)
-                          : label === "連結" || label === "網站"
-                          ? (
-                              <a
-                                href={String(value)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[#009688] underline break-all"
-                              >
-                                {String(value)}
-                              </a>
-                            )
-                          : String(value) || "未提供"}
+                        {Array.isArray(value) ? (
+                          value.join("、")
+                        ) : typeof value === "boolean" ? (
+                          value ? (
+                            "是"
+                          ) : (
+                            "否"
+                          )
+                        ) : typeof value === "object" && value !== null ? (
+                          JSON.stringify(value, null, 2)
+                        ) : label === "連結" || label === "網站" ? (
+                          <a
+                            href={String(value)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#009688] underline break-all"
+                          >
+                            {String(value)}
+                          </a>
+                        ) : (
+                          String(value) || "未提供"
+                        )}
                       </div>
                     </div>
                   ))

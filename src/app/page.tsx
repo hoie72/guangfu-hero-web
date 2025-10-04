@@ -1,11 +1,5 @@
-import Tabs from "@/features/Tabs";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen">
-      <main>
-        <Tabs />
-      </main>
-    </div>
-  );
+  redirect("/map");
 }

@@ -11,7 +11,7 @@ export default function ResourcesPage() {
         <iframe
           src="https://pinkowo.github.io/hualien-bees/"
           className="w-full border-0"
-          title="找/送物資"
+          title="找 / 送物資"
           allow="geolocation"
           style={{ height: "calc(100vh - 160px)" }}
         />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
+import Link from "next/link";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -61,13 +62,15 @@ export default function Header() {
 
             {/* Center: Logo */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
-              <Image
-                src={getAssetPath("/logo.png")}
-                alt="Logo"
-                width={120}
-                height={40}
-                className="h-10 w-auto"
-              />
+              <Link href="/?tab=map">
+                <Image
+                  src={getAssetPath("/logo.png")}
+                  alt="Logo"
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto cursor-pointer"
+                />
+              </Link>
             </div>
 
             {/* Right: Share icon */}

@@ -160,19 +160,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             )}
           </div>
 
-          <a
-            href="#donate"
+          <Link
+            href="/resources"
             className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            onClick={onClose}
           >
             捐 / 送物資
-          </a>
+          </Link>
 
-          <a
-            href="#recruit"
+          <Link
+            href="/volunteer-register"
             className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            onClick={onClose}
           >
             當 / 找志工
-          </a>
+          </Link>
 
           <a
             href="#team"

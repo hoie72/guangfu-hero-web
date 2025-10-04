@@ -38,12 +38,12 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full bg-[#C96319] shadow-sm">
+      <header className="w-full bg-[#C96319] dark:bg-orange-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 relative">
             {/* Left: Hamburger menu */}
             <button
-              className="p-2 rounded-md text-white hover:bg-[#B55815]"
+              className="p-2 rounded-md text-white hover:bg-[#B55815] dark:hover:bg-orange-700"
               aria-label="開啟選單"
               onClick={() => setIsSidebarOpen(true)}
             >
@@ -80,6 +80,7 @@ export default function Header() {
                 alt="分享"
                 width={24}
                 height={24}
+                className="dark:invert"
               />
             </button>
           </div>

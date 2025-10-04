@@ -20,20 +20,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-gray bg-opacity-30 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-40"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-[#1E1E1E] text-white z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-64 bg-[#1E1E1E] dark:bg-gray-900 text-white z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Close button */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-700">
-          <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded">
+        <div className="flex justify-between items-center p-4 border-b border-gray-700 dark:border-gray-800">
+          <button onClick={onClose} className="p-2 hover:bg-gray-700 dark:hover:bg-gray-800 rounded">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -54,7 +54,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <nav className="flex flex-col">
           <Link
             href="/map"
-            className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
             地圖列表
@@ -64,7 +64,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <div className="border-b border-gray-800">
             <button
               onClick={() => toggleSection("volunteer")}
-              className="w-full px-6 py-4 hover:bg-gray-700 flex justify-between items-center"
+              className="w-full px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 flex justify-between items-center"
             >
               <span>志工資訊</span>
               <svg
@@ -84,24 +84,24 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </svg>
             </button>
             {expandedSection === "volunteer" && (
-              <div className="bg-[#2A2A2A]">
+              <div className="bg-[#2A2A2A] dark:bg-gray-800">
                 <Link
                   href="/volunteer/preparation"
-                  className="block px-8 py-3 hover:bg-gray-700"
+                  className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700"
                   onClick={onClose}
                 >
                   行前必讀
                 </Link>
                 <Link
                   href="/volunteer/transportation"
-                  className="block px-8 py-3 hover:bg-gray-700"
+                  className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700"
                   onClick={onClose}
                 >
                   交通資訊
                 </Link>
                 <Link
                   href="/map?view=list"
-                  className="block px-8 py-3 hover:bg-gray-700"
+                  className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700"
                   onClick={onClose}
                 >
                   住宿資訊
@@ -114,7 +114,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <div className="border-b border-gray-800">
             <button
               onClick={() => toggleSection("victim")}
-              className="w-full px-6 py-4 hover:bg-gray-700 flex justify-between items-center"
+              className="w-full px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 flex justify-between items-center"
             >
               <span>災民協助</span>
               <svg
@@ -134,24 +134,24 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </svg>
             </button>
             {expandedSection === "victim" && (
-              <div className="bg-[#2A2A2A]">
+              <div className="bg-[#2A2A2A] dark:bg-gray-800">
                 <Link
                   href="/victim/shelter"
-                  className="block px-8 py-3 hover:bg-gray-700"
+                  className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700"
                   onClick={onClose}
                 >
                   庇護所
                 </Link>
                 <Link
                   href="/victim/medical"
-                  className="block px-8 py-3 hover:bg-gray-700"
+                  className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700"
                   onClick={onClose}
                 >
                   醫療站
                 </Link>
                 <Link
                   href="/victim/mental-health"
-                  className="block px-8 py-3 hover:bg-gray-700"
+                  className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700"
                   onClick={onClose}
                 >
                   心理援助
@@ -162,7 +162,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           <Link
             href="/resources"
-            className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
             找 / 送物資
@@ -170,7 +170,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           <Link
             href="/volunteer-register"
-            className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
             當 / 找志工
@@ -178,14 +178,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           <a
             href="#team"
-            className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
           >
             關於我們
           </a>
 
           <Link
             href="/privacy"
-            className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
             隱私權政策
@@ -193,7 +193,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           <Link
             href="/terms"
-            className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
+            className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
             服務條款

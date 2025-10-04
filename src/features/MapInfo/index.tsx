@@ -28,7 +28,7 @@ export default function MapInfo() {
     <div>
       <div className="flex my-3">
         <select
-          className="bg-gray-100 p-3"
+          className="bg-gray-100 dark:bg-gray-700 dark:text-white p-3 rounded"
           value={showMode}
           onChange={handleModeChange}
         >
@@ -39,7 +39,7 @@ export default function MapInfo() {
           <div className="ml-4 flex overflow-y-scroll [scrollbar-width:none]">
             {CATEGORIES.map((category) => (
               <Button
-                className="ml-2 border-gray-100"
+                className="ml-2 border-gray-100 dark:border-gray-600"
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 active={selectedCategory === category}
@@ -59,7 +59,7 @@ export default function MapInfo() {
             height={MAP_HEIGHT}
           />
         )}
-        {showMode === "listShow" && <div>列表todo</div>}
+        {showMode === "listShow" && <div className="text-gray-600 dark:text-gray-400">列表todo</div>}
       </div>
     </div>
   );

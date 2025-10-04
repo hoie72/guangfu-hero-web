@@ -54,13 +54,17 @@ export async function getShowerStations(
   limit: number = 50,
   offset: number = 0
 ): Promise<ShowerStationsResponse> {
-  return fetchAPI<ShowerStationsResponse>("/shower_stations", { limit, offset });
+  return fetchAPI<ShowerStationsResponse>("/shower_stations", {
+    limit,
+    offset,
+  });
 }
 
 export interface WaterRefillStations {
   id: string;
   name: string;
   location: string;
+  water_type: string;
   phone: string;
   status: string;
   facilities: string | null;
@@ -89,8 +93,11 @@ export interface WaterRefillStationsResponse {
 export async function getWaterRefillStations(
   limit: number = 50,
   offset: number = 0
-): Promise<ShelterResponse> {
-  return fetchAPI<ShelterResponse>("/water_refill_stations", { limit, offset });
+): Promise<WaterRefillStationsResponse> {
+  return fetchAPI<WaterRefillStationsResponse>("/water_refill_stations", {
+    limit,
+    offset,
+  });
 }
 
 export interface Shelter {
@@ -152,10 +159,19 @@ export interface MedicalStation {
     lng: number;
   } | null;
   affiliated_organization: string;
-  notes: string;
-  link: string;
+  notes: string | null;
+  info_source: string | null;
   created_at: number;
   updated_at: number;
+  address: string;
+  water_type: string;
+  opening_hours: string;
+  is_free: true;
+  container_required: null;
+  water_quality: null;
+  facilities: null;
+  accessibility: true;
+  distance_to_disaster_area: null;
 }
 
 export interface MedicalStationResponse {

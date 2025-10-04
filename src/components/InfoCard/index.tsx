@@ -6,10 +6,17 @@ import {
   type Shelter,
   type MedicalStation,
   type MentalHealthResource,
+  type WaterRefillStations,
+  type ShowerStations,
 } from "@/lib/api";
 import DetailModal from "./DetailModal";
 
-export type DataType = Shelter | MedicalStation | MentalHealthResource;
+export type DataType =
+  | Shelter
+  | MedicalStation
+  | MentalHealthResource
+  | WaterRefillStations
+  | ShowerStations;
 
 interface InfoCardProps {
   name: string;

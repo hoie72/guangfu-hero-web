@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import {
   type Shelter,
@@ -22,6 +22,45 @@ interface InfoCardProps {
   fullData?: DataType;
 }
 
+// 欄位名稱對應表
+const fieldLabels: Record<string, string> = {
+  address: "地址",
+  affiliated_organization: "所屬單位",
+  capacity: "容量",
+  contact_info: "聯絡資訊",
+  contact_person: "聯絡人",
+  created_at: "建立時間",
+  daily_capacity: "每日可收納",
+  detailed_address: "地址",
+  emergency_support: "緊急支援",
+  equipment: "設備",
+  facilities: "設施",
+  is_free: "是否免費",
+  languages: "語言",
+  link: "連結",
+  location: "地點",
+  medical_staff: "醫療人員",
+  name: "名稱",
+  note: "備註",
+  notes: "備註",
+  opening_hours: "開放時間",
+  operating_hours: "營運時間",
+  phone: "電話",
+  service_format: "服務形式",
+  service_hours: "服務時間",
+  services: "提供服務",
+  specialties: "專長",
+  station_type: "類型",
+  status: "狀態",
+  target_audience: "服務對象",
+  updated_at: "更新時間",
+  waiting_time: "等候時間",
+  website_url: "網站",
+};
+
+// 不顯示的欄位
+const excludeFields = ["id", "coordinates"];
+
 const InfoCard: React.FC<InfoCardProps> = ({
   name,
   address,
@@ -34,47 +73,8 @@ const InfoCard: React.FC<InfoCardProps> = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
 
-  // 欄位名稱對應表
-  const fieldLabels: Record<string, string> = {
-    station_type: "類型",
-    name: "名稱",
-    location: "地點",
-    detailed_address: "地址",
-    address: "地址",
-    phone: "電話",
-    contact_person: "聯絡人",
-    status: "狀態",
-    services: "提供服務",
-    equipment: "設備",
-    medical_staff: "醫療人員",
-    daily_capacity: "每日可收納",
-    notes: "備註",
-    note: "備註",
-    created_at: "建立時間",
-    updated_at: "更新時間",
-    link: "連結",
-    opening_hours: "開放時間",
-    operating_hours: "營運時間",
-    facilities: "設施",
-    affiliated_organization: "所屬單位",
-    service_format: "服務形式",
-    service_hours: "服務時間",
-    contact_info: "聯絡資訊",
-    specialties: "專長",
-    target_audience: "服務對象",
-    languages: "語言",
-    is_free: "是否免費",
-    emergency_support: "緊急支援",
-    capacity: "容量",
-    waiting_time: "等候時間",
-    website_url: "網站",
-  };
-
-  // 不顯示的欄位
-  const excludeFields = ["id", "coordinates"];
-
   // 格式化顯示資料
-  const getFormattedData = () => {
+  const getFormattedData = useCallback(() => {
     if (!fullData) return [];
 
     return Object.entries(fullData)
@@ -93,7 +93,10 @@ const InfoCard: React.FC<InfoCardProps> = ({
         label: fieldLabels[key],
         value: value,
       }));
-  };
+  }, [fullData]);
+
+  const formattedData = useMemo(() => getFormattedData(), [getFormattedData]);
+
   return (
     <div
       className={`
@@ -105,7 +108,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
     `}
     >
       <div className="flex flex-col pr-1">
-        <h3 className="text-xl font-bold text-[#1E1E1E] dark:text-white mb-1">{name}</h3>
+        <h3 className="text-xl font-bold text-[#1E1E1E] dark:text-white mb-1">
+          {name}
+        </h3>
         <div className="flex items-start gap-1 text-[#1E1E1E] dark:text-gray-200 mb-2">
           <span>{address || "未提供"}</span>
         </div>
@@ -119,32 +124,24 @@ const InfoCard: React.FC<InfoCardProps> = ({
         </div>
       </div>
       <div className="flex gap-2">
-        {mapUrl && (
-          <div>
-            <ActionButton href={mapUrl}>導航</ActionButton>
-          </div>
-        )}
+        {mapUrl && <ActionButton href={mapUrl}>導航</ActionButton>}
         {fullData && (
-          <div>
-            <ActionButton
-              variant="secondary"
-              icon="/info.svg"
-              onClick={() => setShowModal(true)}
-            >
-              查看資訊
-            </ActionButton>
-          </div>
+          <ActionButton
+            variant="secondary"
+            icon="/info.svg"
+            onClick={() => setShowModal(true)}
+          >
+            查看資訊
+          </ActionButton>
         )}
         {contact && (
-          <div>
-            <ActionButton
-              variant="secondary"
-              icon="/call.svg"
-              href={`tel:${contact}`}
-            >
-              立即聯絡
-            </ActionButton>
-          </div>
+          <ActionButton
+            variant="secondary"
+            icon="/call.svg"
+            href={`tel:${contact}`}
+          >
+            立即聯絡
+          </ActionButton>
         )}
       </div>
 
@@ -175,13 +172,15 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
               {/* Title */}
               <div className="px-6 pb-4">
-                <h2 className="text-xl font-bold text-[#1E1E1E] dark:text-white">{name}</h2>
+                <h2 className="text-xl font-bold text-[#1E1E1E] dark:text-white">
+                  {name}
+                </h2>
               </div>
 
               {/* Content */}
               <div className="px-6 pb-6 space-y-4">
-                {getFormattedData().length > 0 ? (
-                  getFormattedData().map(({ label, value }, index) => (
+                {formattedData.length > 0 ? (
+                  formattedData.map(({ label, value }, index) => (
                     <div key={index} className="flex gap-3">
                       <div className="text-[#838383] dark:text-gray-400 min-w-[80px] shrink-0 whitespace-nowrap">
                         {label}
@@ -213,7 +212,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-600 dark:text-gray-400">無詳細資料</div>
+                  <div className="text-gray-600 dark:text-gray-400">
+                    無詳細資料
+                  </div>
                 )}
               </div>
 

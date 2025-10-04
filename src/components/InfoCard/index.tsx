@@ -7,6 +7,7 @@ import {
   type MedicalStation,
   type MentalHealthResource,
 } from "@/lib/api";
+import dayjs from "dayjs";
 
 type DataType = Shelter | MedicalStation | MentalHealthResource;
 
@@ -61,6 +62,9 @@ const fieldLabels: Record<string, string> = {
 // 不顯示的欄位
 const excludeFields = ["id", "coordinates"];
 
+// 需轉換時間欄位
+const timeFields = ["created_at", "updated_at"];
+
 const InfoCard: React.FC<InfoCardProps> = ({
   name,
   address,
@@ -91,7 +95,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
       })
       .map(([key, value]) => ({
         label: fieldLabels[key],
-        value: value,
+        value: timeFields.includes(key)
+          ? dayjs.unix(Number(value)).format("YYYY-MM-DD HH:mm")
+          : value,
       }));
   }, [fullData]);
 

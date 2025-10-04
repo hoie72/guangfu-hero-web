@@ -7,6 +7,9 @@ interface ActionButtonProps {
   onClick?: () => void;
   href?: string;
   className?: string;
+  icon?: string;
+  iconPosition?: "left" | "right";
+  variant?: "primary" | "secondary";
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({
@@ -14,11 +17,19 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
   href,
   className = "",
+  icon = "/nav.svg",
+  iconPosition = "right",
+  variant = "primary",
 }) => {
   const buttonClasses = `
     h-[36px] py-2 px-3
     min-w-[80px]
-    bg-[#009688] text-white
+    text-sm
+    ${
+      variant === "primary"
+        ? "bg-[#009688] text-white"
+        : "bg-[#E9FFFD] text-[#009688]"
+    }
     rounded-lg
     cursor-pointer
     flex items-center justify-center gap-1
@@ -26,14 +37,30 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     ${className}
   `;
 
-  const icon = (
+  const iconElement = (
     <Image
-      src={getAssetPath("/nav.svg")}
+      src={getAssetPath(icon)}
       alt=""
       width={20}
       height={20}
-      className="invert"
+      className={variant === "primary" ? "invert" : ""}
+      style={
+        variant === "secondary"
+          ? {
+              filter:
+                "invert(37%) sepia(76%) saturate(1200%) hue-rotate(140deg)",
+            }
+          : undefined
+      }
     />
+  );
+
+  const content = (
+    <>
+      {iconPosition === "left" && iconElement}
+      {children}
+      {iconPosition === "right" && iconElement}
+    </>
   );
 
   if (href) {
@@ -44,16 +71,14 @@ const ActionButton: React.FC<ActionButtonProps> = ({
         rel="noopener noreferrer"
         className={buttonClasses}
       >
-        {children}
-        {icon}
+        {content}
       </a>
     );
   }
 
   return (
     <button onClick={onClick} className={buttonClasses}>
-      {children}
-      {icon}
+      {content}
     </button>
   );
 };

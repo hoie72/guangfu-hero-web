@@ -97,23 +97,23 @@ const InfoCard: React.FC<InfoCardProps> = ({
   return (
     <div
       className={`
-      bg-white
-      border-b border-gray-200
+      bg-white dark:bg-gray-800
+      border-b border-gray-200 dark:border-gray-700
       px-1
       py-3
       ${className}
     `}
     >
       <div className="flex flex-col pr-1">
-        <h3 className="text-xl font-bold text-[#1E1E1E] mb-1">{name}</h3>
-        <div className="flex items-start gap-1 text-[#1E1E1E] mb-2">
+        <h3 className="text-xl font-bold text-[#1E1E1E] dark:text-white mb-1">{name}</h3>
+        <div className="flex items-start gap-1 text-[#1E1E1E] dark:text-gray-200 mb-2">
           <span>{address || "未提供"}</span>
         </div>
-        <div className="flex items-start gap-2  text-[#838383]">
+        <div className="flex items-start gap-2 text-[#838383] dark:text-gray-400">
           <div className="font-medium w-10">類型</div>
           <div className="w-[290px]">{type || "未提供"}</div>
         </div>
-        <div className="flex items-start gap-2 text-[#838383] mb-2">
+        <div className="flex items-start gap-2 text-[#838383] dark:text-gray-400 mb-2">
           <div className="font-medium w-10">{hours ? "時段" : "資訊"}</div>
           <div className="w-[290px]">{hours ? hours : contact || "未提供"}</div>
         </div>
@@ -157,17 +157,17 @@ const InfoCard: React.FC<InfoCardProps> = ({
           ></div>
           <div className="fixed inset-0 z-50 flex items-end pointer-events-none">
             <div
-              className="bg-white rounded-t-2xl w-full max-h-[85vh] overflow-y-auto animate-slide-up shadow-lg pointer-events-auto"
+              className="bg-white dark:bg-gray-800 rounded-t-2xl w-full max-h-[85vh] overflow-y-auto animate-slide-up shadow-lg pointer-events-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div className="flex justify-between items-start p-6 pb-4">
-                <div className="px-3 py-1 bg-[#009688] text-white text-sm rounded">
+                <div className="px-3 py-1 bg-[#009688] dark:bg-teal-700 text-white text-sm rounded">
                   {type || "定點"}
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-xl"
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xl"
                 >
                   ✕
                 </button>
@@ -175,7 +175,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
               {/* Title */}
               <div className="px-6 pb-4">
-                <h2 className="text-xl font-bold text-[#1E1E1E]">{name}</h2>
+                <h2 className="text-xl font-bold text-[#1E1E1E] dark:text-white">{name}</h2>
               </div>
 
               {/* Content */}
@@ -183,10 +183,10 @@ const InfoCard: React.FC<InfoCardProps> = ({
                 {getFormattedData().length > 0 ? (
                   getFormattedData().map(({ label, value }, index) => (
                     <div key={index} className="flex gap-3">
-                      <div className="text-[#838383] min-w-[80px] shrink-0 whitespace-nowrap">
+                      <div className="text-[#838383] dark:text-gray-400 min-w-[80px] shrink-0 whitespace-nowrap">
                         {label}
                       </div>
-                      <div className="text-[#1E1E1E] flex-1 break-words overflow-wrap-anywhere">
+                      <div className="text-[#1E1E1E] dark:text-gray-200 flex-1 break-words overflow-wrap-anywhere">
                         {Array.isArray(value) ? (
                           value.join("、")
                         ) : typeof value === "boolean" ? (
@@ -202,7 +202,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                             href={String(value)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#009688] underline break-all"
+                            className="text-[#009688] dark:text-teal-400 underline break-all"
                           >
                             {String(value)}
                           </a>
@@ -213,7 +213,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-600">無詳細資料</div>
+                  <div className="text-gray-600 dark:text-gray-400">無詳細資料</div>
                 )}
               </div>
 
@@ -221,7 +221,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
               <div className="px-6 pb-6">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="w-full bg-[#C96319] text-white py-3 rounded-lg font-medium hover:bg-[#B55815] transition-colors"
+                  className="w-full bg-[#C96319] dark:bg-orange-700 text-white py-3 rounded-lg font-medium hover:bg-[#B55815] dark:hover:bg-orange-600 transition-colors"
                 >
                   回報問題
                 </button>

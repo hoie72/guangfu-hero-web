@@ -24,8 +24,8 @@ const Tab: React.FC<TabProps> = ({
         border-b-4
         ${
           active
-            ? "border-[#C96319] text-[#C96319]"
-            : "border-transparent text-[#1E1E1E]"
+            ? "border-[#C96319] dark:border-orange-500 text-[#C96319] dark:text-orange-400"
+            : "border-transparent text-[#1E1E1E] dark:text-gray-200"
         }
         ${className}
       `}

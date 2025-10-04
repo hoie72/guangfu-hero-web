@@ -33,20 +33,20 @@ export default function PageLayout({ children }: PageLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <Header />
       <main className="flex-1 pb-24">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Tab Navigation */}
-          <div className="flex border-b-2 border-gray-200">
+          <div className="flex border-b-2 border-gray-200 dark:border-gray-700">
             {tabs.map((tab) => (
               <Link
                 key={tab.path}
                 href={tab.path}
                 className={`px-6 py-3 text-base font-medium border-b-4 transition-colors ${
                   isActiveTab(tab.path)
-                    ? "border-[#C96319] text-[#C96319]"
-                    : "border-transparent text-[#1E1E1E] hover:text-[#C96319]"
+                    ? "border-[#C96319] dark:border-orange-500 text-[#C96319] dark:text-orange-400"
+                    : "border-transparent text-[#1E1E1E] dark:text-gray-200 hover:text-[#C96319] dark:hover:text-orange-400"
                 }`}
               >
                 {tab.name}

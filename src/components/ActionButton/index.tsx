@@ -27,13 +27,14 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     text-sm
     ${
       variant === "primary"
-        ? "bg-[#009688] text-white"
-        : "bg-[#E9FFFD] text-[#009688]"
+        ? "bg-[#009688] dark:bg-teal-700 text-white hover:bg-teal-700 dark:hover:bg-teal-600"
+        : "bg-[#E9FFFD] dark:bg-teal-900/30 text-[#009688] dark:text-teal-400"
     }
     rounded-lg
     cursor-pointer
     flex items-center justify-center gap-1
     whitespace-nowrap
+    transition-colors
     ${className}
   `;
 

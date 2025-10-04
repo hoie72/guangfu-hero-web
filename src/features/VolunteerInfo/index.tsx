@@ -23,10 +23,14 @@ export interface ChecklistItemData {
   highlight?: boolean;
 }
 
-export default function VolunteerInfo() {
+interface VolunteerInfoProps {
+  initialCategory?: InfoCategory;
+}
+
+export default function VolunteerInfo({ initialCategory = "行前必讀" }: VolunteerInfoProps) {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] =
-    useState<InfoCategory>("行前必讀");
+    useState<InfoCategory>(initialCategory);
   const [selectedTransportMode, setSelectedTransportMode] =
     useState<TransportMode>("大眾運輸");
 
@@ -43,7 +47,11 @@ export default function VolunteerInfo() {
 
   const handleCategoryClick = (category: InfoCategory) => {
     if (category === "住宿資訊") {
-      router.push("/?tab=map&view=list");
+      router.push("/map?view=list");
+    } else if (category === "行前必讀") {
+      router.push("/volunteer/preparation");
+    } else if (category === "交通資訊") {
+      router.push("/volunteer/transportation");
     } else {
       setSelectedCategory(category);
     }

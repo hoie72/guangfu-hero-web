@@ -62,7 +62,7 @@ export default function Header() {
 
             {/* Center: Logo */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
-              <Link href="/?tab=map">
+              <Link href="/map">
                 <Image
                   src={getAssetPath("/logo.png")}
                   alt="Logo"

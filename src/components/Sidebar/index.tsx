@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Menu items */}
         <nav className="flex flex-col">
           <Link
-            href="/?tab=map"
+            href="/map"
             className="px-6 py-4 hover:bg-gray-700 border-b border-gray-800"
             onClick={onClose}
           >
@@ -86,21 +86,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             {expandedSection === "volunteer" && (
               <div className="bg-[#2A2A2A]">
                 <Link
-                  href="/?tab=volunteer"
+                  href="/volunteer/preparation"
                   className="block px-8 py-3 hover:bg-gray-700"
                   onClick={onClose}
                 >
                   行前必讀
                 </Link>
                 <Link
-                  href="/?tab=volunteer"
+                  href="/volunteer/transportation"
                   className="block px-8 py-3 hover:bg-gray-700"
                   onClick={onClose}
                 >
                   交通資訊
                 </Link>
                 <Link
-                  href="/?tab=map&view=list"
+                  href="/map?view=list"
                   className="block px-8 py-3 hover:bg-gray-700"
                   onClick={onClose}
                 >
@@ -136,21 +136,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             {expandedSection === "victim" && (
               <div className="bg-[#2A2A2A]">
                 <Link
-                  href="/?tab=victim"
+                  href="/victim/shelter"
                   className="block px-8 py-3 hover:bg-gray-700"
                   onClick={onClose}
                 >
                   庇護所
                 </Link>
                 <Link
-                  href="/?tab=victim"
+                  href="/victim/medical"
                   className="block px-8 py-3 hover:bg-gray-700"
                   onClick={onClose}
                 >
                   醫療站
                 </Link>
                 <Link
-                  href="/?tab=victim"
+                  href="/victim/mental-health"
                   className="block px-8 py-3 hover:bg-gray-700"
                   onClick={onClose}
                 >

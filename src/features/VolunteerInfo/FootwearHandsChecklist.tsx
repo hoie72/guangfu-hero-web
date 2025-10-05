@@ -18,7 +18,6 @@ const footwearHandsItems: ChecklistItemData[] = [
     id: "work_shoes",
     label: "鐵鞋墊",
     description: "防刺傷！可至五金行採購",
-    highlight: true,
   },
   {
     id: "shoe_insoles",

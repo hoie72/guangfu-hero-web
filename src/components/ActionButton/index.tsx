@@ -27,8 +27,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     text-sm
     ${
       variant === "primary"
-        ? "bg-[var(--secondary)] dark:bg-teal-700 text-white hover:bg-[var(--secondary-hover)] dark:hover:bg-teal-600"
-        : "bg-[var(--secondary-light)] dark:bg-teal-900/30 text-[var(--secondary)] dark:text-teal-400"
+        ? "bg-[var(--secondary)] text-white hover:bg-[var(--secondary-hover)]"
+        : "bg-[var(--secondary-light)] text-[var(--secondary)]"
     }
     rounded-lg
     cursor-pointer

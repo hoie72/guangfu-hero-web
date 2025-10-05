@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Button from "@/components/Button";
 import {
   getWaterRefillStations,
@@ -15,6 +16,8 @@ import {
   type Accommodations,
 } from "@/lib/api";
 import InfoCard from "@/components/InfoCard";
+import DropdownSelect from "@/components/DropdownSelect";
+import CategoryButton from "./CategoryButton";
 
 type LocationCategory =
   | "all"
@@ -56,6 +59,7 @@ const MAP_URL = "https://guangfu250923-map.pttapp.cc/map.html";
 const MAP_HEIGHT = 422;
 
 export default function SiteMap() {
+  const searchParams = useSearchParams();
   const [showMode, setShowMode] = useState<ShowMode>("mapShow");
   const [selectedCategory, setSelectedCategory] =
     useState<LocationCategory>("all");
@@ -77,6 +81,20 @@ export default function SiteMap() {
   >([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // 處理 URL 參數
+  useEffect(() => {
+    const view = searchParams.get("view");
+    const category = searchParams.get("category");
+
+    if (view === "list") {
+      setShowMode("listShow");
+      if (category === "accommodations") {
+        setSelectedCategory("accommodations");
+        fetchAccommodations();
+      }
+    }
+  }, [searchParams]);
 
   async function fetchWaterRefillStations() {
     try {
@@ -199,35 +217,34 @@ export default function SiteMap() {
     }
   };
 
-  const handleModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setShowMode(event.target.value as ShowMode);
+  const handleModeChange = (value: ShowMode) => {
+    setShowMode(value);
     fetchAll();
   };
+
+  const options = [
+    { label: "地圖顯示", value: "mapShow" },
+    { label: "列表顯示", value: "listShow" },
+  ];
 
   return (
     <div>
       <div className="flex my-3">
-        <select
-          className="bg-gray-100 p-3"
+        <DropdownSelect
           value={showMode}
-          onChange={handleModeChange}
-        >
-          <option value="mapShow">地圖顯示</option>
-          <option value="listShow">列表顯示</option>
-        </select>
+          onChange={handleModeChange as (value: string) => void}
+          options={options}
+        />
         {showMode === "listShow" && (
-          <div className="ml-4 flex overflow-y-scroll [scrollbar-width:none]">
-            {CATEGORIES.map((category) => (
-              <Button
-                className="ml-2 border-gray-100"
-                key={category.key}
-                onClick={() =>
-                  handleCategoryClick(category.key as LocationCategory)
-                }
-                active={selectedCategory === category.key}
+          <div className="ml-4 flex gap-2 overflow-y-scroll [scrollbar-width:none]">
+            {CATEGORIES.map(({ key, name }) => (
+              <CategoryButton
+                key={key}
+                onClick={() => handleCategoryClick(key as LocationCategory)}
+                active={selectedCategory === key}
               >
-                {category.name}
-              </Button>
+                {name}
+              </CategoryButton>
             ))}
           </div>
         )}
@@ -244,21 +261,17 @@ export default function SiteMap() {
         {showMode === "listShow" && (
           <div className="space-y-4">
             {loading && (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                載入中...
-              </div>
+              <div className="text-center py-8 text-gray-500">載入中...</div>
             )}
 
             {error && (
-              <div className="text-center py-8 text-red-500 dark:text-red-400">
-                錯誤: {error}
-              </div>
+              <div className="text-center py-8 text-red-500">錯誤: {error}</div>
             )}
 
             {!loading && !error && selectedCategory === "all" && (
               <>
                 {allData.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -284,7 +297,7 @@ export default function SiteMap() {
               selectedCategory === "water_refill_stations" && (
                 <>
                   {waterRefillStations.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-gray-500">
                       此分類暫無資料
                     </div>
                   ) : (
@@ -309,7 +322,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "shower_stations" && (
               <>
                 {showerStations.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -334,7 +347,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "restrooms" && (
               <>
                 {restRooms.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -359,7 +372,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "medical_stations" && (
               <>
                 {medicalStations.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -384,7 +397,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "accommodations" && (
               <>
                 {accommodations.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (

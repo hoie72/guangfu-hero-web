@@ -47,8 +47,8 @@ const otherEssentialItems: ChecklistItemData[] = [
   },
   {
     id: "id_card",
-    label:
-      "專才志工識別證（點此下載）快速辨識你的專業能力，立馬派進工作，成為災區即戰力",
+    label: "專才志工識別證（往下滑可下載）",
+    description: "快速辨識你的專業能力，立馬派遣工作，成為災區即戰力",
   },
 ];
 

@@ -28,8 +28,8 @@ const SIDEBAR_ITEM = [
       { name: "心理援助", href: "/victim/mental-health" },
     ],
   },
-  { name: "找 / 送物資", href: "/resources" },
-  { name: "當 / 找志工", href: "/volunteer-register" },
+  { name: "物資媒合", href: "/resources" },
+  { name: "志工媒合", href: "/volunteer-register" },
   { name: "關於我們", href: "/volunteer/about-us" },
   { name: "隱私權政策", href: "/privacy" },
   { name: "服務條款", href: "/terms" },
@@ -54,7 +54,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-[#3A3937] dark:bg-gray-900 text-white z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-64 bg-[#3A3937] text-white z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

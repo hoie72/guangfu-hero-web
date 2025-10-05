@@ -19,7 +19,6 @@ export default function Header() {
   const handleShare = async () => {
     if (typeof window === "undefined") return;
 
-    // URL
     const baseUrl = window.location.origin;
     const shareUrl = `${baseUrl}${pathname}`;
 
@@ -42,8 +41,10 @@ export default function Header() {
           text: text,
           url: shareUrl,
         });
+        // 分享成功，不顯示任何提示
       } catch (error) {
-        // if不支援分享功能 轉為複製功能
+        // 使用者取消分享或分享失敗，靜默處理
+        // 如果是因為不支援而失敗，則回退到複製功能
         if (
           error instanceof Error &&
           error.name !== "AbortError" &&
@@ -54,11 +55,12 @@ export default function Header() {
         }
       }
     } else {
-      // if 不支援 Web Share API 使用複製功能
+      // 不支援 Web Share API，使用複製功能
       await fallbackToCopy(shareUrl);
     }
   };
 
+  // 回退方案：複製到剪貼簿
   const fallbackToCopy = async (url: string) => {
     try {
       await navigator.clipboard.writeText(url);

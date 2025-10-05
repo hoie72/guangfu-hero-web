@@ -13,20 +13,19 @@ export default function WarningModal({ isOpen, onClose }: WarningModalProps) {
         onClick={onClose}
       />
       <div className="relative bg-[var(--text-black)] rounded-[20px] max-w-md w-full p-6 shadow-2xl flex flex-col gap-6">
-        <header className="h-[25px] flex items-center">
-          {/* 關閉按鈕 */}
+        <header className="relative h-[25px] flex items-center justify-center">
+          {/* 標題 */}
+          <h2 className="h-[25px] text-[20px] font-medium text-white text-center leading-[25px]">
+            避難守則
+          </h2>
+          {/* 關閉按鈕：移到右側，使用絕對定位保持標題置中 */}
           <button
             onClick={onClose}
-            className="text-white hover:text-gray-300 text-2xl w-6 h-6 flex items-center justify-center cursor-pointer"
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-2xl w-6 h-6 flex items-center justify-center cursor-pointer"
             aria-label="關閉視窗"
           >
             ✕
           </button>
-
-          {/* 標題 */}
-          <h2 className="flex-1 h-[25px] text-[20px] font-medium text-white text-center leading-[25px]">
-            避難守則
-          </h2>
         </header>
 
         {/* 內容 */}

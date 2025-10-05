@@ -224,6 +224,103 @@ export default function VolunteerInfo({
                 />
               </div>
             </div>
+
+            {/* 注意事項 */}
+            <div className="mt-8">
+              <h3 className="font-bold text-xl mb-4 dark:text-white">
+                五、注意事項
+              </h3>
+              <div className="bg-white dark:bg-gray-800 border-2 border-[var(--secondary)] rounded-lg p-6 space-y-6">
+                <p className="text-[var(--text-black)] dark:text-gray-200 leading-relaxed">
+                  最後，請記得救災是一場馬拉松。請詳讀以下事項，做好體力與心理準備——先照顧自己，才能真正幫助他人。
+                </p>
+
+                <div className="space-y-4">
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                      安全第一
+                    </h4>
+                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                      留意堰塞湖與潰堤風險，熟悉避難守則與撤離路線，遇到警報或洪水危險，務必立即撤離。
+                    </p>
+                  </div>
+
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                      結伴同行
+                    </h4>
+                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                      避免單獨行動，與夥伴結伴，彼此照應更安全。
+                    </p>
+                  </div>
+
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                      保持聯繫
+                    </h4>
+                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                      手機保持電量，攜帶行動電源，確保能通訊與定位。
+                    </p>
+                  </div>
+
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                      補給防護
+                    </h4>
+                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                      隨時補水，戴帽子穿排汗衣，適時休息避免中暑與脫水。交通不便、物資有限，請自備足夠飲水與糧食。
+                    </p>
+                  </div>
+
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                      身心調適
+                    </h4>
+                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                      身心調適：體力是最大資源，先顧好自己。若遇屍體或重災情要有心理準備，需要時務必求援。
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                      交通安排
+                    </h4>
+                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                      勿開車進入光復，將道路留給救援及大型機具。事先購買回程車票，避免返程無座。
+                      <br />
+                      <a
+                        href="https://sites.google.com/view/guangfu250923/%E6%88%91%E6%98%AF%E5%BF%97%E5%B7%A5/transport?authuser=0"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[var(--secondary)] underline ml-1"
+                      >
+                        點此查看交通資訊
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 線上志工 */}
+            <div className="mt-8">
+              <div className="rounded-lg p-8 text-center space-y-4">
+                <h3 className="font-bold text-xl text-[var(--text-black)] dark:text-white">
+                  如果你想盡一份心力但無法到場
+                </h3>
+                <p className="text-[var(--gray-2)] dark:text-gray-400">
+                  也可以加入線上志工，一起遠端貢獻心力
+                </p>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-[var(--primary)] hover:bg-[#e06d00] text-white font-bold py-3 px-8 rounded-lg transition-colors"
+                >
+                  加入線上志工
+                </a>
+              </div>
+            </div>
           </div>
         )}
         {selectedCategory === "交通資訊" && (

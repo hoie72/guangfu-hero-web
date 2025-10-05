@@ -5,7 +5,7 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <Header />
-      <main className="flex-1 pb-24">
+      <main className="flex-1 pb-[140px]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold mb-8 dark:text-white">隱私權政策</h1>
 

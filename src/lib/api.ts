@@ -31,6 +31,8 @@ export interface Accommodations {
   notes: string | null;
   opening_hours: string | null;
   is_free: boolean;
+  contact_info: string;
+  available_period: string;
   coordinates: {
     lat: number;
     lng: number;
@@ -109,6 +111,8 @@ export interface ShowerStations {
   notes: string | null;
   opening_hours: string | null;
   is_free: boolean;
+  facility_type: boolean;
+  time_slots: string;
   coordinates: {
     lat: number;
     lng: number;

@@ -434,7 +434,7 @@ export default function VolunteerInfo({
                     </div>
                     <div className="mb-4">
                       <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSdwVGwgGZ_Iba-fCJwk5A4rLLm8ENyz9M-STB-HNpFr5M3YiQ/viewform?fbclid=IwY2xjawNGzg9leHRuA2FlbQIxMABicmlkETFtUlBuYXVJS0lXemdDT1kzAR4UUp1JZ2neRSl1RUDteTEB07qBAiMvHs3ezjAPxpAB1gAMd0o_d-UtDiH2tw_aem_3r-MScFE-cteIhIaUR18_Q"
+                        href="https://www.facebook.com/timefortaiwan101/posts/1240379071467098?rdid=rHjplZG0zRYAL8Dw#"
                         className="underline text-sm text-[var(--secondary)]"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -539,7 +539,7 @@ export default function VolunteerInfo({
                           className="border-b text-[var(--secondary)]"
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="#"
+                          href="https://line.me/ti/g/kT5bXAtJ4U"
                         >
                           加入 Line@
                         </a>

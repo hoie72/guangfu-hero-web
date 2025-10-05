@@ -16,6 +16,8 @@ import {
   type Accommodations,
 } from "@/lib/api";
 import InfoCard from "@/components/InfoCard";
+import DropdownSelect from "@/components/DropdownSelect";
+import CategoryButton from "./CategoryButton";
 
 type LocationCategory =
   | "all"
@@ -215,35 +217,34 @@ export default function SiteMap() {
     }
   };
 
-  const handleModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setShowMode(event.target.value as ShowMode);
+  const handleModeChange = (value: ShowMode) => {
+    setShowMode(value);
     fetchAll();
   };
+
+  const options = [
+    { label: "地圖顯示", value: "mapShow" },
+    { label: "列表顯示", value: "listShow" },
+  ];
 
   return (
     <div>
       <div className="flex my-3">
-        <select
-          className="bg-gray-100 p-3"
+        <DropdownSelect
           value={showMode}
-          onChange={handleModeChange}
-        >
-          <option value="mapShow">地圖顯示</option>
-          <option value="listShow">列表顯示</option>
-        </select>
+          onChange={handleModeChange as (value: string) => void}
+          options={options}
+        />
         {showMode === "listShow" && (
-          <div className="ml-4 flex overflow-y-scroll [scrollbar-width:none]">
-            {CATEGORIES.map((category) => (
-              <Button
-                className="ml-2 border-gray-100"
-                key={category.key}
-                onClick={() =>
-                  handleCategoryClick(category.key as LocationCategory)
-                }
-                active={selectedCategory === category.key}
+          <div className="ml-4 flex gap-2 overflow-y-scroll [scrollbar-width:none]">
+            {CATEGORIES.map(({ key, name }) => (
+              <CategoryButton
+                key={key}
+                onClick={() => handleCategoryClick(key as LocationCategory)}
+                active={selectedCategory === key}
               >
-                {category.name}
-              </Button>
+                {name}
+              </CategoryButton>
             ))}
           </div>
         )}

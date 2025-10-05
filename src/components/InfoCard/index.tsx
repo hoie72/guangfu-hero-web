@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import {
+  type Accommodations,
+  type RestRooms,
   type Shelter,
   type MedicalStation,
   type MentalHealthResource,
@@ -16,7 +18,9 @@ export type DataType =
   | MedicalStation
   | MentalHealthResource
   | WaterRefillStations
-  | ShowerStations;
+  | ShowerStations
+  | RestRooms
+  | Accommodations;
 
 interface InfoCardProps {
   name: string;

@@ -217,26 +217,44 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
         )}
         {selectedCategory === "交通資訊" && (
           <div className="space-y-6 mb-5">
-            <div className="bg-[#C96319] dark:bg-orange-800 text-white p-6 rounded-lg">
-              <h2 className="text-2xl font-bold mb-4">把路留給救災的重機！</h2>
-              <p className="leading-relaxed">
-                花蓮光復鄉正全力進行災後重建，台鐵已加開班次，以確保充足運能。一起搭乘大眾運輸，以保存體力，把力量留到最關鍵的時刻！如真的需要自駕，請盡可能共乘，讓我們一起將道路讓給救災重機！
-              </p>
-            </div>
+            <h2 className="text-[var(--orange)] text-2xl text-center font-bold mb-4">把路留給救災的重機！</h2>
+            <p className="text-[var(--text-black)] leading-relaxed">
+              花蓮光復鄉正全力進行災後重建，台鐵已加開班次，以確保充足運能。一起搭乘大眾運輸，以保存體力，把力量留到最關鍵的時刻！如真的需要自駕，請盡可能共乘，讓我們一起將道路讓給救災重機！
+            </p>
 
-            <div className="flex gap-3">
-              <Button
-                active={selectedTransportMode === "大眾運輸"}
+            <div className="flex p-[4px] mx-auto my-8 size-fit gap-3 rounded-full border border-[var(--gray-3)]">
+              <button
                 onClick={() => setSelectedTransportMode("大眾運輸")}
+                className={`
+                  text-sm h-[36px] py-[8px] px-[25px]
+                  rounded-full border-0 cursor-pointer whitespace-nowrap
+                  ${
+                    selectedTransportMode === "大眾運輸" ? `
+                      bg-[var(--light-gray-background)] text-[var(--orange)]
+                    ` : `
+                      bg-[var(--background)] text-[var(--gray-2)]
+                    `
+                  }
+                `}
               >
                 大眾運輸
-              </Button>
-              <Button
-                active={selectedTransportMode === "共乘資訊"}
+              </button>
+              <button
                 onClick={() => setSelectedTransportMode("共乘資訊")}
+                className={`
+                  text-sm h-[36px] py-[8px] px-[25px]
+                  rounded-full border-0 cursor-pointer whitespace-nowrap
+                  ${
+                    selectedTransportMode === "共乘資訊" ? `
+                      bg-[var(--light-gray-background)] text-[var(--orange)]
+                    ` : `
+                      bg-[var(--background)] text-[var(--gray-2)]
+                    `
+                  }
+                `}
               >
                 共乘資訊
-              </Button>
+              </button>
             </div>
 
             {selectedTransportMode === "大眾運輸" && (
@@ -245,30 +263,30 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
                   <h3 className="text-xl font-bold mb-3 dark:text-white">
                     一、如何到花蓮：台鐵
                   </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">列車班次查詢看</p>
-                  <a href="#" className="text-[#009688] dark:text-teal-400 underline text-sm">
+                  <a href="#" className="flex text-[var(--gray)] underline text-sm mb-2">
+                    列車班次這裡看
+                  </a>
+                  <a href="#" className="flex text-[var(--gray)] underline text-sm">
                     訂票來這邊
                   </a>
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold mb-4 dark:text-white">
+                  <h3 className="text-xl font-bold mb-4 text-[var(--text-black)]">
                     二、如何從花蓮到災區
                   </h3>
 
                   <div>
-                    <div className="bg-[#FFF4E6] dark:bg-orange-900/30 p-4 rounded-lg mb-4">
-                      <p className="text-center font-bold text-lg mb-2 dark:text-orange-200">
+                      <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
                         交通部觀光署接駁車
                       </p>
-                      <p className="text-center text-sm dark:text-orange-100">
-                        公路局每日服務專車：
+                      <p className="text-center text-sm text-[var(--text-black)]  mb-2">
+                        公路局每日調度專車：
                         <br />
                         07:00-10:00、16:00-20:00
                         <br />
                         每小時一班
                       </p>
-                    </div>
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                         <Image
@@ -301,30 +319,26 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
                     <div className="mb-4">
                       <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSdwVGwgGZ_Iba-fCJwk5A4rLLm8ENyz9M-STB-HNpFr5M3YiQ/viewform?fbclid=IwY2xjawNGzg9leHRuA2FlbQIxMABicmlkETFtUlBuYXVJS0lXemdDT1kzAR4UUp1JZ2neRSl1RUDteTEB07qBAiMvHs3ezjAPxpAB1gAMd0o_d-UtDiH2tw_aem_3r-MScFE-cteIhIaUR18_Q"
-                        className="font-bold underline text-sm dark:text-blue-400"
+                        className="underline text-sm text-[var(--text-black)]"
                       >
                         點此看官方公告
                       </a>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-[var(--gray-2)] mt-2">
                         *交通部可能依現場狀況調整班次間距，請隨時留意官方公告。
                       </p>
                     </div>
                   </div>
 
-                  <div>
-                    <div className="bg-[#FFF4E6] dark:bg-orange-900/30 p-4 rounded-lg mb-4 gap-2">
-                      <div className="flex flex-col gap-1">
-                        <p className="text-center font-bold text-lg mb-2 dark:text-orange-200">
-                          尋找小蜜蜂接駁
-                        </p>
-                        <p className="dark:text-gray-200">
-                          車站周邊目前已由政府、軍方接手，以重機為主力投入救援。然而，偏遠的村落還需要鏟子超人們的支援！小蜜蜂超人已準備好，帶著鏟子超人們，一起前往需要幫助的地方！
-                        </p>
-                        <p className="text-[#C96319] dark:text-orange-400">
-                          注意：無論獨行或加入任何團體救災，請務必注意自身安全
-                        </p>
-                      </div>
-                    </div>
+                  <div className="text-[var(--text-black)]">
+                    <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
+                      尋找小蜜蜂接駁
+                    </p>
+                    <p>
+                      車站周邊目前已由政府、軍方接手，以重機為主力投入救援。然而，偏遠的村落還需要鏟子超人們的支援！小蜜蜂超人已準備好，帶著鏟子超人們，一起前往需要幫助的地方！
+                    </p>
+                    <p className="text-[var(--orange)] mt-4 mb-4">
+                      注意：無論獨行或加入任何團體救災，請務必注意自身安全
+                    </p>
                   </div>
 
                   <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
@@ -334,7 +348,7 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
                         <br />
                         （無固定位置）
                       </div>
-                      <p className="text-[#838383] dark:text-gray-400">
+                      <p className="text-[var(--gray-2)]">
                         出車站後，跟著現場的招牌指引就能找到！救災需求千變萬化，泊車點也跟著滾動調整，因此無確切地址。
                       </p>
                     </div>
@@ -436,13 +450,13 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
                   <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6">
                     <div className="flex gap-4">
                       <div className="flex flex-col w-1/2">
-                        <div className="bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
+                        <div className="text-center bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
                           南下路線
                         </div>
                         <div className="dark:text-gray-200">請停在花蓮火車站，改搭區間車往光復。</div>
                       </div>
                       <div className="flex flex-col w-1/2">
-                        <div className="bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
+                        <div className="text-center bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
                           北上路線
                         </div>
                         <div className="dark:text-gray-200">請停在鳳林火車站，改搭區間車往光復。</div>
@@ -452,28 +466,25 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
 
                   <div className="bg-white dark:bg-gray-800 overflow-hidden my-4">
                     <Image
-                      src={getAssetPath("alt_road.svg")}
+                      src={getAssetPath("/alt_road.svg")}
                       alt="alt-road"
                       width={200}
                       height={300}
                       className="w-full h-auto"
                     />
-                    <div className="text-xl text-[#434343] dark:text-gray-400 my-2 text-center">
+                    <div className="text-md text-[var(--gray)] my-2 text-center">
                       資料來源：2025/09/26 花蓮縣政府公告
                     </div>
                   </div>
-
-                  <div className="bg-[#FFF4E6] dark:bg-orange-900/30 m-2 rounded-lg mb-4 p-2">
-                    <p className="text-center font-bold text-lg mb-2 dark:text-orange-200">
-                      各區共乘資訊
-                    </p>
-                  </div>
-                  <p className="text-[#C96319] dark:text-orange-400">
+                  <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
+                    各區共乘資訊
+                  </p>
+                  <p className="text-[var(--orange)] mb-2">
                     注意：無論獨行或加入任何團體救災，請務必注意自身安全
                   </p>
-                  <p className="text-center dark:text-gray-200">光復救災 北區共乘</p>
-                  <p className="text-center dark:text-gray-200">光復救災 中區共乘</p>
-                  <p className="text-center dark:text-gray-200">光復救災 南區共乘</p>
+                  <p className="text-center text-[var(--gray)] underline">光復救災 北區共乘</p>
+                  <p className="text-center text-[var(--gray)] underline">光復救災 中區共乘</p>
+                  <p className="text-center text-[var(--gray)] underline">光復救災 南區共乘</p>
                 </div>
               </div>
             )}

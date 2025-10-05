@@ -319,3 +319,40 @@ export async function getMentalHealthResources(
     offset,
   });
 }
+
+export interface ReportRequest {
+  name: string;
+  location_type: string;
+  location_id: string;
+  reason: string;
+  notes?: string;
+  status: string;
+}
+
+export interface ReportResponse {
+  id: string;
+  name: string;
+  location_type: string;
+  location_id: string;
+  reason: string;
+  notes: string;
+  status: string;
+  created_at: number;
+  updated_at: number;
+}
+
+export async function submitReport(data: ReportRequest): Promise<ReportResponse> {
+  const response = await fetch(`${API_BASE_URL}/reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('提交失敗,請稍後再試');
+  }
+
+  return response.json();
+}

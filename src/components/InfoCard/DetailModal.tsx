@@ -63,12 +63,14 @@ const DetailModal = ({
 
     return Object.entries(fullData)
       .filter(([key, value]) => {
-        if (excludeFields.includes(key)) return false;
-        if (!fieldLabels[key]) return false;
-        if (value === null || value === undefined || value === "") return false;
-        if (Array.isArray(value) && value.length === 0) return false;
-        return true;
-      })
+  if (excludeFields.includes(key)) return false;
+  if (!fieldLabels[key]) return false;
+  if (value === null || value === undefined || value === "") return false;
+  if (Array.isArray(value) && value.length === 0) return false;
+  if (Array.isArray(value) && value.every(item => item === "string" || item === null)) return false;
+  if (value === "string") return false;
+  return true;
+})
       .map(([key, value]) => ({
         label: fieldLabels[key],
         value: timeFields.includes(key)

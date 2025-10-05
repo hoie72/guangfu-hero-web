@@ -30,7 +30,7 @@ const SIDEBAR_ITEM = [
   },
   { name: "找 / 送物資", href: "/resources" },
   { name: "當 / 找志工", href: "/volunteer-register" },
-  { name: "關於我們", href: "#team" },
+  { name: "關於我們", href: "/volunteer/about-us" },
   { name: "隱私權政策", href: "/privacy" },
   { name: "服務條款", href: "/terms" },
 ];

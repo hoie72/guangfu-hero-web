@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
@@ -9,33 +10,32 @@ import AlertBanner from "@/components/AlertBanner";
 import WarningModal from "@/components/WarningModal";
 
 export default function Header() {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
 
   const handleShare = async () => {
-    // 確保在瀏覽器環境中執行
     if (typeof window === "undefined") return;
 
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "花蓮援助平台",
-          text: "提供花蓮地區災害援助資訊、志工招募與災民協助服務",
-          url: window.location.href,
-        });
-      } catch (error) {
-        if ((error as Error).name !== "AbortError") {
-          console.error("分享失敗:", error);
-        }
-      }
-    } else {
-      // Fallback: 複製連結到剪貼簿
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("連結已複製到剪貼簿");
-      } catch (error) {
-        console.error("複製失敗:", error);
-      }
+    // 建構完整 URL
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}${pathname}`;
+
+    // 根據路徑決定標題
+    const getTitle = () => {
+      if (pathname.startsWith("/map")) return "花蓮援助平台 - 現場地圖";
+      if (pathname.startsWith("/volunteer")) return "花蓮援助平台 - 志工資訊";
+      if (pathname.startsWith("/victim")) return "花蓮援助平台 - 災民協助";
+      return "花蓮援助平台";
+    };
+
+    const title = getTitle();
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert(`${title}\n連結已複製到剪貼簿`);
+    } catch (error) {
+      console.error("複製失敗:", error);
     }
   };
 

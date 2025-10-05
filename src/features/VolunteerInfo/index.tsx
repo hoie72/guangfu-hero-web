@@ -57,7 +57,7 @@ export default function VolunteerInfo({
 
   const handleCategoryClick = (category: InfoCategory) => {
     if (category === "住宿資訊") {
-      router.push("/map?view=list");
+      router.push("/map?view=list&category=accommodations");
     } else if (category === "行前必讀") {
       router.push("/volunteer/preparation");
     } else if (category === "交通資訊") {
@@ -378,14 +378,18 @@ export default function VolunteerInfo({
                     一、如何到花蓮：台鐵
                   </h3>
                   <a
-                    href="#"
+                    href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip112/gobytime"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex text-[var(--gray)] underline text-sm mb-2"
                   >
                     列車班次這裡看
                   </a>
                   <a
-                    href="#"
+                    href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip121/query"
                     className="flex text-[var(--gray)] underline text-sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     訂票來這邊
                   </a>
@@ -440,6 +444,8 @@ export default function VolunteerInfo({
                       <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSdwVGwgGZ_Iba-fCJwk5A4rLLm8ENyz9M-STB-HNpFr5M3YiQ/viewform?fbclid=IwY2xjawNGzg9leHRuA2FlbQIxMABicmlkETFtUlBuYXVJS0lXemdDT1kzAR4UUp1JZ2neRSl1RUDteTEB07qBAiMvHs3ezjAPxpAB1gAMd0o_d-UtDiH2tw_aem_3r-MScFE-cteIhIaUR18_Q"
                         className="underline text-sm text-[var(--text-black)]"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         點此看官方公告
                       </a>
@@ -489,6 +495,8 @@ export default function VolunteerInfo({
                         <a
                           className="border-b dark:text-blue-400"
                           href="https://line.me/ti/g2/gNNwamqenP9lV5jJHFVvIC2SYJOWrPbwJNMLXA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           加入 Line@
                         </a>
@@ -504,21 +512,8 @@ export default function VolunteerInfo({
                         <a
                           className="border-b dark:text-blue-400"
                           href="https://line.me/ti/g2/RBQui9B01TU9u5fnru_3KCS9J4BuvZInmkO7DA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
-                        >
-                          加入 Line@
-                        </a>
-                      </div>
-                      <p className="text-[var(--gray-2)] dark:text-gray-400">
-                        由當地災民自行組織，可依指示至記事本了解群內運作模式。
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <div className="w-70 font-bold dark:text-white">
-                        動森島民
-                        <br />
-                        <a
-                          className="border-b dark:text-blue-400"
-                          href="https://line.me/ti/g2/RBQui9B01TU9u5fnru_3KCS9J4BuvZInmkO7DA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           加入 Line@
                         </a>
@@ -534,6 +529,8 @@ export default function VolunteerInfo({
                         <a
                           className="border-b dark:text-blue-400"
                           href="https://line.me/ti/g2/xFQQW0R_NpxuFQ2diepCNKrqzYne-lqMLolknQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           加入 Line@
                         </a>
@@ -546,7 +543,12 @@ export default function VolunteerInfo({
                       <div className="w-70 font-bold dark:text-white">
                         出發阿陶莫
                         <br />
-                        <a className="border-b dark:text-blue-400" href="#">
+                        <a
+                          className="border-b dark:text-blue-400"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="#"
+                        >
                           加入 Line@
                         </a>
                       </div>

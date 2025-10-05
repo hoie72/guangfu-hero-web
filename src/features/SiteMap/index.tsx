@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Button from "@/components/Button";
 import {
   getWaterRefillStations,
@@ -58,6 +59,7 @@ const MAP_URL = "https://guangfu250923-map.pttapp.cc/map.html";
 const MAP_HEIGHT = 422;
 
 export default function SiteMap() {
+  const searchParams = useSearchParams();
   const [showMode, setShowMode] = useState<ShowMode>("mapShow");
   const [selectedCategory, setSelectedCategory] =
     useState<LocationCategory>("all");
@@ -79,6 +81,20 @@ export default function SiteMap() {
   >([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // 處理 URL 參數
+  useEffect(() => {
+    const view = searchParams.get("view");
+    const category = searchParams.get("category");
+
+    if (view === "list") {
+      setShowMode("listShow");
+      if (category === "accommodations") {
+        setSelectedCategory("accommodations");
+        fetchAccommodations();
+      }
+    }
+  }, [searchParams]);
 
   async function fetchWaterRefillStations() {
     try {

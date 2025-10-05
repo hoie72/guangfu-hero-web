@@ -21,6 +21,84 @@ export async function fetchAPI<T>(
   return response.json();
 }
 
+export interface Accommodations {
+  id: string;
+  name: string;
+  location: string;
+  phone: string;
+  status: string;
+  facilities: string | null;
+  notes: string | null;
+  opening_hours: string | null;
+  is_free: boolean;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface AccommodationsResponse {
+  "@context": string;
+  "@type": string;
+  limit: number;
+  member: ShowerStations[];
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  totalItems: number;
+}
+
+export async function getAccommodations(
+  limit: number = 50,
+  offset: number = 0
+): Promise<ShowerStationsResponse> {
+  return fetchAPI<ShowerStationsResponse>("/accommodations", {
+    limit,
+    offset,
+  });
+}
+
+export interface RestRooms {
+  id: string;
+  name: string;
+  location: string;
+  phone: string;
+  status: string;
+  facilities: string | null;
+  notes: string | null;
+  opening_hours: string | null;
+  is_free: boolean;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface RestRoomsResponse {
+  "@context": string;
+  "@type": string;
+  limit: number;
+  member: ShowerStations[];
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  totalItems: number;
+}
+
+export async function getRestrooms(
+  limit: number = 50,
+  offset: number = 0
+): Promise<ShowerStationsResponse> {
+  return fetchAPI<ShowerStationsResponse>("/restrooms", {
+    limit,
+    offset,
+  });
+}
+
 export interface ShowerStations {
   id: string;
   name: string;

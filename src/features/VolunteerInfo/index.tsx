@@ -312,7 +312,7 @@ export default function VolunteerInfo({
                   也可以加入線上志工，一起遠端貢獻心力
                 </p>
                 <a
-                  href="#"
+                  href="https://sites.google.com/view/guangfu250923/%E6%88%91%E6%98%AF%E5%BF%97%E5%B7%A5/volunteers?authuser=0"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-[var(--primary)] hover:bg-[#e06d00] text-white font-bold py-3 px-8 rounded-lg transition-colors"

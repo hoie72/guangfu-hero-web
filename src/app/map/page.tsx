@@ -5,7 +5,13 @@ import SiteMap from "@/features/SiteMap";
 export default function MapPage() {
   return (
     <PageLayout>
-      <Suspense fallback={<div className="text-center py-8 text-gray-600 dark:text-gray-400">載入中...</div>}>
+      <Suspense
+        fallback={
+          <div className="text-center py-8 text-gray-600 dark:text-gray-400">
+            載入中...
+          </div>
+        }
+      >
         <SiteMap />
       </Suspense>
     </PageLayout>

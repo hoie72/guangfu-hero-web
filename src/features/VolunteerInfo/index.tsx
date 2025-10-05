@@ -443,7 +443,7 @@ export default function VolunteerInfo({
                     <div className="mb-4">
                       <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSdwVGwgGZ_Iba-fCJwk5A4rLLm8ENyz9M-STB-HNpFr5M3YiQ/viewform?fbclid=IwY2xjawNGzg9leHRuA2FlbQIxMABicmlkETFtUlBuYXVJS0lXemdDT1kzAR4UUp1JZ2neRSl1RUDteTEB07qBAiMvHs3ezjAPxpAB1gAMd0o_d-UtDiH2tw_aem_3r-MScFE-cteIhIaUR18_Q"
-                        className="underline text-sm text-[var(--text-black)]"
+                        className="underline text-sm text-[var(--secondary)]"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -462,8 +462,8 @@ export default function VolunteerInfo({
                     <p>
                       車站周邊目前已由政府、軍方接手，以重機為主力投入救援。然而，偏遠的村落還需要鏟子超人們的支援！小蜜蜂超人已準備好，帶著鏟子超人們，一起前往需要幫助的地方！
                     </p>
-                    <p className="text-[var(--orange)] mt-4 mb-4">
-                      注意：無論獨行或加入任何團體救災，請務必注意自身安全
+                    <p className="mt-4 mb-4">
+                      無論獨行或加入任何團體救災，請務必注意自身安全
                     </p>
                   </div>
 
@@ -563,13 +563,11 @@ export default function VolunteerInfo({
 
             {selectedTransportMode === "共乘資訊" && (
               <div className="space-y-4">
-                <div className="bg-[var(--primary)] dark:bg-orange-800 text-white p-6 rounded-lg">
-                  <h2 className="text-2xl font-bold text-center">
-                    ！請勿開車進入光復！
-                  </h2>
-                </div>
                 <div>
-                  <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-6">
+                  <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-5">
+                    <h2 className="text-xl font-bold text-center mb-3">
+                      請勿開車進入光復
+                    </h2>
                     <div className="flex gap-4">
                       <div className="flex flex-col w-1/2">
                         <div className="text-center bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
@@ -605,18 +603,35 @@ export default function VolunteerInfo({
                   <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
                     各區共乘資訊
                   </p>
-                  <p className="text-[var(--orange)] mb-2">
-                    注意：無論獨行或加入任何團體救災，請務必注意自身安全
+                  <p className="m-2">
+                    無論獨行或加入任何團體救災，請務必注意自身安全
                   </p>
-                  <p className="text-center text-[var(--gray)] underline">
-                    光復救災 北區共乘
-                  </p>
-                  <p className="text-center text-[var(--gray)] underline">
-                    光復救災 中區共乘
-                  </p>
-                  <p className="text-center text-[var(--gray)] underline">
-                    光復救災 南區共乘
-                  </p>
+                  <div className="flex flex-col m-2">
+                    <a
+                      href="https://line.me/ti/g2/gitK-a3bK9FWZPLET55pxfGo0CyDT1NenIt8mQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-[var(--secondary)] underline mb-1"
+                    >
+                      光復救災 北區共乘
+                    </a>
+                    <a
+                      href="https://line.me/ti/g2/t15dvRs84e71Bv3W4GNKPlFcqycQFxaAeP3pRg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-[var(--secondary)] underline mb-1"
+                    >
+                      光復救災 中區共乘
+                    </a>
+                    <a
+                      href="https://line.me/ti/g2/rSzI8t-udCwxDYITMl2WzdCyAnyjgATWkdg5Zw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-[var(--secondary)] underline mb-1"
+                    >
+                      光復救災 南區共乘
+                    </a>
+                  </div>
                 </div>
               </div>
             )}

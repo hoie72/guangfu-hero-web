@@ -26,26 +26,26 @@ export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
   return (
     <div>
       <div
-        className="bg-[#FFEEBA] dark:bg-yellow-900/50 h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60 transition-colors"
+        className="bg-[#FFEEBA] h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] transition-colors"
         onClick={onAlertClick}
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-[var(--text-black)] dark:text-yellow-100 font-medium">
+          <div className="text-center text-[var(--text-black)] font-medium">
             {alerts[currentSlide]}
           </div>
         </div>
       </div>
 
       {/* Carousel Indicators */}
-      <div className="flex justify-center gap-2 py-2 bg-white dark:bg-gray-900">
+      <div className="flex justify-center gap-2 py-2 bg-white">
         {alerts.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`w-[6px] h-[6px] rounded-full transition-colors ${
               index === currentSlide
-                ? "bg-[var(--gray-2)] dark:bg-gray-300"
-                : "bg-[var(--gray-3)] dark:bg-gray-600"
+                ? "bg-[var(--gray-2)]"
+                : "bg-[var(--gray-3)]"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

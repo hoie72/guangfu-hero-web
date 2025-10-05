@@ -23,7 +23,7 @@ const SubMenuItem = ({
     <div className="border-b border-[#434343]">
       <button
         onClick={() => toggleSection(item.name)}
-        className="w-full px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 flex justify-between items-center"
+        className="w-full px-6 py-4 hover:bg-gray-700 flex justify-between items-center"
       >
         <span>{item.name}</span>
         <svg
@@ -43,12 +43,12 @@ const SubMenuItem = ({
         </svg>
       </button>
       {expandedSection === item.name && (
-        <div className="bg-[#2A2A2A] dark:bg-gray-800">
+        <div className="bg-[#2A2A2A]">
           {item.subItems.map((subItem, subIndex) => (
             <Link
               key={subIndex}
               href={subItem.href}
-              className="block px-8 py-3 hover:bg-gray-700 dark:hover:bg-gray-700 border-b border-[#3A3937]"
+              className="block px-8 py-3 hover:bg-gray-700 border-b border-[#3A3937]"
               onClick={onClose}
             >
               {subItem.name}

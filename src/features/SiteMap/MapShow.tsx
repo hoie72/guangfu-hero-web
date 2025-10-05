@@ -20,6 +20,7 @@ type LocationCategory =
   | "all"
   | "water_refill_stations"
   | "shower_stations"
+  | "restrooms"
   | "medical_stations"
   | "accommodations";
 type ShowMode = "mapShow" | "listShow";
@@ -65,7 +66,15 @@ export default function MapShow() {
   const [restRooms, setRestRooms] = useState<RestRooms[]>([]);
   const [medicalStations, setMedicalStations] = useState<MedicalStation[]>([]);
   const [accommodations, setAccommodations] = useState<Accommodations[]>([]);
-  const [allData, setAllData] = useState([]);
+  const [allData, setAllData] = useState<
+    (
+      | WaterRefillStations
+      | ShowerStations
+      | RestRooms
+      | MedicalStation
+      | Accommodations
+    )[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -139,30 +148,39 @@ export default function MapShow() {
       setLoading(true);
       setError(null);
       const [
-          responseWaterRefillStations, responseShowerStations,
-          responseRestrooms, responseMedicalStations, responseAccommodations
-        ] = await Promise.all([
+        responseWaterRefillStations,
+        responseShowerStations,
+        responseRestrooms,
+        responseMedicalStations,
+        responseAccommodations,
+      ] = await Promise.all([
         getWaterRefillStations(50, 0),
         getShowerStations(50, 0),
         getRestrooms(50, 0),
         getMedicalStations(50, 0),
         getAccommodations(50, 0),
-      ])
+      ]);
       setWaterRefillStations(responseWaterRefillStations.member);
       setShowerStations(responseShowerStations.member);
       setRestRooms(responseRestrooms.member);
       setMedicalStations(responseMedicalStations.member);
       setAccommodations(responseAccommodations.member);
-      setAllData(waterRefillStations.concat(showerStations, restRooms, medicalStations, accommodations));
-      allData.sort((a, b) => a.created_at - b.created_at);
-      console.log(allData)
+
+      const combined = [
+        ...responseWaterRefillStations.member,
+        ...responseShowerStations.member,
+        ...responseRestrooms.member,
+        ...responseMedicalStations.member,
+        ...responseAccommodations.member,
+      ];
+      combined.sort((a, b) => a.created_at - b.created_at);
+      setAllData(combined);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
   }
-
 
   const handleCategoryClick = async (categoryKey: LocationCategory) => {
     setSelectedCategory(categoryKey);
@@ -183,7 +201,7 @@ export default function MapShow() {
 
   const handleModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setShowMode(event.target.value as ShowMode);
-    fetchAll()
+    fetchAll();
   };
 
   return (
@@ -298,10 +316,11 @@ export default function MapShow() {
                   showerStations.map((station) => (
                     <InfoCard
                       key={station.id}
+                      type={station.facility_type}
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.opening_hours || ""}
+                      hours={station.time_slots || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -322,6 +341,7 @@ export default function MapShow() {
                   restRooms.map((station) => (
                     <InfoCard
                       key={station.id}
+                      type={station.facility_type}
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
@@ -346,10 +366,11 @@ export default function MapShow() {
                   medicalStations.map((station) => (
                     <InfoCard
                       key={station.id}
+                      type={station.station_type}
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.opening_hours || ""}
+                      hours={station.operating_hours || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -372,8 +393,8 @@ export default function MapShow() {
                       key={station.id}
                       name={station.name}
                       address={station.location}
-                      contact={station.phone}
-                      hours={station.opening_hours || ""}
+                      contact={station.contact_info}
+                      hours={station.available_period || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}

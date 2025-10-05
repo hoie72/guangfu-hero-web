@@ -31,6 +31,8 @@ export interface Accommodations {
   notes: string | null;
   opening_hours: string | null;
   is_free: boolean;
+  contact_info: string;
+  available_period: string;
   coordinates: {
     lat: number;
     lng: number;
@@ -43,7 +45,7 @@ export interface AccommodationsResponse {
   "@context": string;
   "@type": string;
   limit: number;
-  member: ShowerStations[];
+  member: Accommodations[];
   next: string | null;
   offset: number;
   previous: string | null;
@@ -53,8 +55,8 @@ export interface AccommodationsResponse {
 export async function getAccommodations(
   limit: number = 50,
   offset: number = 0
-): Promise<ShowerStationsResponse> {
-  return fetchAPI<ShowerStationsResponse>("/accommodations", {
+): Promise<AccommodationsResponse> {
+  return fetchAPI<AccommodationsResponse>("/accommodations", {
     limit,
     offset,
   });
@@ -70,6 +72,7 @@ export interface RestRooms {
   notes: string | null;
   opening_hours: string | null;
   is_free: boolean;
+  facility_type: string;
   coordinates: {
     lat: number;
     lng: number;
@@ -82,7 +85,7 @@ export interface RestRoomsResponse {
   "@context": string;
   "@type": string;
   limit: number;
-  member: ShowerStations[];
+  member: RestRooms[];
   next: string | null;
   offset: number;
   previous: string | null;
@@ -92,8 +95,8 @@ export interface RestRoomsResponse {
 export async function getRestrooms(
   limit: number = 50,
   offset: number = 0
-): Promise<ShowerStationsResponse> {
-  return fetchAPI<ShowerStationsResponse>("/restrooms", {
+): Promise<RestRoomsResponse> {
+  return fetchAPI<RestRoomsResponse>("/restrooms", {
     limit,
     offset,
   });
@@ -109,6 +112,8 @@ export interface ShowerStations {
   notes: string | null;
   opening_hours: string | null;
   is_free: boolean;
+  facility_type: string;
+  time_slots: string;
   coordinates: {
     lat: number;
     lng: number;
@@ -318,4 +323,41 @@ export async function getMentalHealthResources(
     limit,
     offset,
   });
+}
+
+export interface ReportRequest {
+  name: string;
+  location_type: string;
+  location_id: string;
+  reason: string;
+  notes?: string;
+  status: string;
+}
+
+export interface ReportResponse {
+  id: string;
+  name: string;
+  location_type: string;
+  location_id: string;
+  reason: string;
+  notes: string;
+  status: string;
+  created_at: number;
+  updated_at: number;
+}
+
+export async function submitReport(data: ReportRequest): Promise<ReportResponse> {
+  const response = await fetch(`${API_BASE_URL}/reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('提交失敗,請稍後再試');
+  }
+
+  return response.json();
 }

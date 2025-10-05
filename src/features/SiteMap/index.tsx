@@ -261,21 +261,17 @@ export default function SiteMap() {
         {showMode === "listShow" && (
           <div className="space-y-4">
             {loading && (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                載入中...
-              </div>
+              <div className="text-center py-8 text-gray-500">載入中...</div>
             )}
 
             {error && (
-              <div className="text-center py-8 text-red-500 dark:text-red-400">
-                錯誤: {error}
-              </div>
+              <div className="text-center py-8 text-red-500">錯誤: {error}</div>
             )}
 
             {!loading && !error && selectedCategory === "all" && (
               <>
                 {allData.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -301,7 +297,7 @@ export default function SiteMap() {
               selectedCategory === "water_refill_stations" && (
                 <>
                   {waterRefillStations.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-gray-500">
                       此分類暫無資料
                     </div>
                   ) : (
@@ -326,7 +322,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "shower_stations" && (
               <>
                 {showerStations.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -351,7 +347,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "restrooms" && (
               <>
                 {restRooms.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -376,7 +372,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "medical_stations" && (
               <>
                 {medicalStations.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (
@@ -401,7 +397,7 @@ export default function SiteMap() {
             {!loading && !error && selectedCategory === "accommodations" && (
               <>
                 {accommodations.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500">
                     此分類暫無資料
                   </div>
                 ) : (

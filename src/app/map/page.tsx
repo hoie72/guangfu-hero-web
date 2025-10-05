@@ -7,9 +7,7 @@ export default function MapPage() {
     <PageLayout>
       <Suspense
         fallback={
-          <div className="text-center py-8 text-gray-600 dark:text-gray-400">
-            載入中...
-          </div>
+          <div className="text-center py-8 text-gray-600">載入中...</div>
         }
       >
         <SiteMap />

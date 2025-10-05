@@ -16,6 +16,7 @@ const medicalItems: ChecklistItemData[] = [
   {
     id: "alcohol",
     label: "酒精（消毒用）",
+    description: "防刺傷！可至五金行採購",
   },
   {
     id: "first_aid_kit",

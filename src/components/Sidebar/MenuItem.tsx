@@ -25,7 +25,7 @@ const MenuItem = ({ item, onClose }: MenuItemProps) => {
   ) : (
     <Link
       href={item.href}
-      className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-[#434343]"
+      className="px-6 py-4 hover:bg-gray-700 border-b border-[#434343]"
       onClick={onClose}
     >
       {item.name}

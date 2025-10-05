@@ -19,7 +19,7 @@ const disasterReliefToolsItems: ChecklistItemData[] = [
   },
   {
     id: "chisel",
-    label: "鑿子",
+    label: "耙子",
     description: "鬆土",
   },
   {
@@ -35,7 +35,7 @@ const disasterReliefToolsItems: ChecklistItemData[] = [
   {
     id: "wheel_vehicle",
     label: "獨立輪車",
-    description: "裝土（最方便）",
+    description: "回程替換用",
   },
   {
     id: "trash_bag",

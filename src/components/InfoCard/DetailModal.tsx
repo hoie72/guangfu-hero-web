@@ -98,7 +98,7 @@ const DetailModal = ({
         >
           {/* Header */}
           <div className="flex justify-between items-start p-6 pb-4">
-            <div className="px-3 py-1 bg-[#009688] dark:bg-teal-700 text-white text-sm rounded">
+            <div className="px-3 py-1 bg-[var(--gray-4)] dark:bg-teal-700 text-[var] text-sm rounded">
               {type || "定點"}
             </div>
             <button
@@ -111,7 +111,7 @@ const DetailModal = ({
 
           {/* Title */}
           <div className="px-6 pb-4">
-            <h2 className="text-xl font-bold text-[#1E1E1E] dark:text-white">
+            <h2 className="text-xl font-bold text-[var(--text-black)] dark:text-white">
               {name}
             </h2>
           </div>
@@ -121,10 +121,10 @@ const DetailModal = ({
             {formattedData.length > 0 ? (
               formattedData.map(({ label, value }, index) => (
                 <div key={index} className="flex gap-3">
-                  <div className="text-[#838383] dark:text-gray-400 min-w-[80px] shrink-0 whitespace-nowrap">
+                  <div className="text-[var(--gray-2)] dark:text-gray-400 min-w-[80px] shrink-0 whitespace-nowrap">
                     {label}
                   </div>
-                  <div className="text-[#1E1E1E] dark:text-gray-200 flex-1 break-words overflow-wrap-anywhere">
+                  <div className="text-[var(--text-black)] dark:text-gray-200 flex-1 break-words overflow-wrap-anywhere">
                     {Array.isArray(value) ? (
                       value.join("、")
                     ) : typeof value === "boolean" ? (
@@ -159,7 +159,7 @@ const DetailModal = ({
           <div className="px-6 pb-6">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="w-full bg-[#C96319] dark:bg-orange-700 text-white py-3 rounded-lg font-medium hover:bg-[#B55815] dark:hover:bg-orange-600 transition-colors"
+              className="w-full bg-[var(--primary)] dark:bg-orange-700 text-white py-3 rounded-lg font-medium hover:bg-[#B55815] dark:hover:bg-orange-600 transition-colors"
             >
               回報問題
             </button>

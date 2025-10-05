@@ -1,41 +1,70 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
 import AlertBanner from "@/components/AlertBanner";
 import WarningModal from "@/components/WarningModal";
+import Toast from "@/components/Toast";
 
 export default function Header() {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const handleShare = async () => {
-    // 確保在瀏覽器環境中執行
     if (typeof window === "undefined") return;
 
+    // URL
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}${pathname}`;
+
+    // 根據路徑決定標題
+    const getTitle = () => {
+      if (pathname.startsWith("/map")) return "光復超人 - 現場地圖";
+      if (pathname.startsWith("/volunteer")) return "光復超人 - 志工資訊";
+      if (pathname.startsWith("/victim")) return "光復超人 - 災民協助";
+      return "光復超人";
+    };
+
+    const title = getTitle();
+    const text = "花蓮光復鄉災害援助資訊平台";
+
+    // 優先使用 Web Share API
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "花蓮援助平台",
-          text: "提供花蓮地區災害援助資訊、志工招募與災民協助服務",
-          url: window.location.href,
+          title: title,
+          text: text,
+          url: shareUrl,
         });
       } catch (error) {
-        if ((error as Error).name !== "AbortError") {
-          console.error("分享失敗:", error);
+        // if不支援分享功能 轉為複製功能
+        if (
+          error instanceof Error &&
+          error.name !== "AbortError" &&
+          error.name !== "NotAllowedError"
+        ) {
+          // 回退到複製功能
+          await fallbackToCopy(shareUrl);
         }
       }
     } else {
-      // Fallback: 複製連結到剪貼簿
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("連結已複製到剪貼簿");
-      } catch (error) {
-        console.error("複製失敗:", error);
-      }
+      // if 不支援 Web Share API 使用複製功能
+      await fallbackToCopy(shareUrl);
+    }
+  };
+
+  const fallbackToCopy = async (url: string) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setShowToast(true);
+    } catch (error) {
+      console.error("複製失敗:", error);
     }
   };
 
@@ -51,7 +80,7 @@ export default function Header() {
               onClick={() => setIsSidebarOpen(true)}
             >
               <svg
-                className="h-6 w-6 stroke-gray-500 dark:stroke-gray-300 hover:stroke-gray-700 dark:hover:stroke-white"
+                className="h-6 w-6 stroke-gray-500 hover:stroke-gray-700"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -82,7 +111,6 @@ export default function Header() {
                 alt="分享"
                 width={24}
                 height={24}
-                className="dark:invert"
               />
             </button>
           </div>
@@ -95,6 +123,13 @@ export default function Header() {
         onClose={() => setShowWarningModal(false)}
       />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      {/* Toast */}
+      <Toast
+        message="複製成功"
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+      />
     </>
   );
 }

@@ -316,10 +316,11 @@ export default function MapShow() {
                   showerStations.map((station) => (
                     <InfoCard
                       key={station.id}
+                      type={station.facility_type}
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.opening_hours || ""}
+                      hours={station.time_slots || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -340,6 +341,7 @@ export default function MapShow() {
                   restRooms.map((station) => (
                     <InfoCard
                       key={station.id}
+                      type={station.facility_type}
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
@@ -364,10 +366,11 @@ export default function MapShow() {
                   medicalStations.map((station) => (
                     <InfoCard
                       key={station.id}
+                      type={station.station_type}
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.opening_hours || ""}
+                      hours={station.operating_hours || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -390,8 +393,8 @@ export default function MapShow() {
                       key={station.id}
                       name={station.name}
                       address={station.location}
-                      contact={station.phone}
-                      hours={station.opening_hours || ""}
+                      contact={station.contact_info}
+                      hours={station.available_period || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}

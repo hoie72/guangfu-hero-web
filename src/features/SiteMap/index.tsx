@@ -29,7 +29,7 @@ export default function SiteMap() {
             className="fixed inset-0 bg-black/20 backdrop-blur-[4px]"
             onClick={() => setShowWarningModal(false)}
           />
-          <div className="relative bg-[#1E1E1E] rounded-[20px] max-w-md w-full p-6 shadow-2xl flex flex-col gap-6">
+          <div className="relative bg-[var(--text-black)] rounded-[20px] max-w-md w-full p-6 shadow-2xl flex flex-col gap-6">
             <header className="h-[25px] flex items-center">
               {/* 關閉按鈕 */}
               <button

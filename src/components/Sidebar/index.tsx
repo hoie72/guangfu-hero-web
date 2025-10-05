@@ -27,13 +27,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-[#1E1E1E] dark:bg-gray-900 text-white z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-64 bg-[var(--text-black)] dark:bg-gray-900 text-white z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Close button */}
         <div className="flex justify-between items-center p-4 border-b border-gray-700 dark:border-gray-800">
-          <button onClick={onClose} className="p-2 hover:bg-gray-700 dark:hover:bg-gray-800 rounded">
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-700 dark:hover:bg-gray-800 rounded"
+          >
             <svg
               className="w-6 h-6"
               fill="none"
@@ -165,7 +168,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
-            找 / 送物資
+            物資媒合
           </Link>
 
           <Link
@@ -173,7 +176,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-gray-800"
             onClick={onClose}
           >
-            當 / 找志工
+            志工媒合
           </Link>
 
           <a

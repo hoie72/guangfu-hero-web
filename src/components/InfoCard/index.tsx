@@ -66,19 +66,19 @@ const InfoCard: React.FC<InfoCardProps> = ({
     `}
     >
       <div className="flex flex-col pr-1">
-        <h3 className="text-xl font-bold text-[#1E1E1E] dark:text-white mb-1">
+        <h3 className="text-xl font-bold text-[var(--text-black)] dark:text-white mb-1">
           {name}
         </h3>
         {address && (
-          <div className="flex items-start gap-1 text-[#1E1E1E] dark:text-gray-200 mb-2">
+          <div className="flex items-start gap-1 text-[var(--text-black)] dark:text-gray-200 mb-2">
             <span>{address}</span>
           </div>
         )}
-        <div className="flex items-start gap-2 text-[#838383] dark:text-gray-400">
+        <div className="flex items-start gap-2 text-[var(--gray-2)] dark:text-gray-400">
           <div className="font-medium w-10">類型</div>
           <div className="w-[290px]">{type || "未提供"}</div>
         </div>
-        <div className="flex items-start gap-2 text-[#838383] dark:text-gray-400 mb-2">
+        <div className="flex items-start gap-2 text-[var(--gray-2)] dark:text-gray-400 mb-2">
           <div className="font-medium w-10">{hours ? "時段" : "資訊"}</div>
           <div className="w-[290px]">{hours ? hours : contact || "未提供"}</div>
         </div>

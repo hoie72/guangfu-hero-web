@@ -61,9 +61,7 @@ function TabsContent() {
 
       <div className="mt-3">
         {activeTab === "現場地圖" && <SiteMap />}
-
         {activeTab === "志工資訊" && <VolunteerInfo />}
-
         {activeTab === "災民協助" && <VictimAssistance />}
       </div>
     </div>

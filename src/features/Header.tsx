@@ -5,9 +5,12 @@ import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
+import AlertBanner from "@/components/AlertBanner";
+import WarningModal from "@/components/WarningModal";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
 
   const handleShare = async () => {
     // 確保在瀏覽器環境中執行
@@ -38,23 +41,22 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full bg-[#C96319] dark:bg-orange-800 shadow-sm">
+      <header className="w-full shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 relative">
             {/* Left: Hamburger menu */}
             <button
-              className="p-2 rounded-md text-white hover:bg-[#B55815] dark:hover:bg-orange-700"
+              className="p-2 rounded-md text-white"
               aria-label="開啟選單"
               onClick={() => setIsSidebarOpen(true)}
             >
               <svg
-                className="h-6 w-6"
+                className="h-6 w-6 stroke-gray-500 dark:stroke-gray-300 hover:stroke-gray-700 dark:hover:stroke-white"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
               >
                 <path d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
@@ -64,7 +66,7 @@ export default function Header() {
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <Link href="/map">
                 <Image
-                  src={getAssetPath("/logo.png")}
+                  src={getAssetPath("/logo_new.svg")}
                   alt="Logo"
                   width={120}
                   height={40}
@@ -87,6 +89,11 @@ export default function Header() {
         </div>
       </header>
 
+      <AlertBanner onAlertClick={() => setShowWarningModal(true)} />
+      <WarningModal
+        isOpen={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+      />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   );

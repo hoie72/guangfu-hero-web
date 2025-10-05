@@ -26,8 +26,8 @@ const Button: React.FC<ButtonProps> = ({
         ${variant === "sub" ? "text-sm h-[36px] px-3" : "h-[44px] px-4"}
         ${
           active
-            ? "border-2 font-medium border-[#C96319] dark:border-orange-500 text-[#C96319] dark:text-orange-400"
-            : "border-[#838383] dark:border-gray-600 text-[#838383] dark:text-gray-400"
+            ? "border-2 font-medium border-[var(--primary)] dark:border-orange-500 text-[var(--primary)] dark:text-orange-400"
+            : "border-[var(--gray-2)] dark:border-gray-600 text-[var(--gray-2)] dark:text-gray-400"
         }
         ${className}
       `}

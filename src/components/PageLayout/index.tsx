@@ -18,6 +18,10 @@ export default function PageLayout({ children }: PageLayoutProps) {
     { name: "災民協助", path: "/victim/shelter" },
   ];
 
+  // 不顯示 tab 的頁面路徑
+  const noTabPages = ["/volunteer/about-us", "/privacy", "/terms"];
+  const shouldShowTabs = !noTabPages.some((path) => pathname.startsWith(path));
+
   // Helper function to check if current pathname matches a tab's path prefix
   const isActiveTab = (tabPath: string) => {
     if (tabPath === "/map") {
@@ -35,27 +39,30 @@ export default function PageLayout({ children }: PageLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <Header />
-      <main className="flex-1 pb-24">
+
+      <main className="flex-1 pb-[140px]">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Tab Navigation */}
-          <div className="flex border-b-2 border-gray-200 dark:border-gray-700">
-            {tabs.map((tab) => (
-              <Link
-                key={tab.path}
-                href={tab.path}
-                className={`px-6 py-3 text-base font-medium border-b-4 transition-colors ${
-                  isActiveTab(tab.path)
-                    ? "border-[#C96319] dark:border-orange-500 text-[#C96319] dark:text-orange-400"
-                    : "border-transparent text-[#1E1E1E] dark:text-gray-200 hover:text-[#C96319] dark:hover:text-orange-400"
-                }`}
-              >
-                {tab.name}
-              </Link>
-            ))}
-          </div>
+          {shouldShowTabs && (
+            <div className="flex border-b-2 border-gray-200 dark:border-gray-700">
+              {tabs.map((tab) => (
+                <Link
+                  key={tab.path}
+                  href={tab.path}
+                  className={`px-6 py-3 text-base font-medium border-b-4 transition-colors ${
+                    isActiveTab(tab.path)
+                      ? "border-[var(--primary)] dark:border-orange-500 text-[var(--primary)] dark:text-orange-400"
+                      : "border-transparent text-[var(----text-black)] dark:text-gray-200 hover:text-[var(--primary)] dark:hover:text-orange-400"
+                  }`}
+                >
+                  {tab.name}
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* Page Content */}
-          <div className="mt-3">{children}</div>
+          <div className={shouldShowTabs ? "mt-3" : ""}>{children}</div>
         </div>
       </main>
       <Footer />

@@ -5,8 +5,14 @@ import Button from "@/components/Button";
 import {
   getWaterRefillStations,
   getShowerStations,
+  getRestrooms,
+  getMedicalStations,
+  getAccommodations,
   type WaterRefillStations,
   type ShowerStations,
+  type RestRooms,
+  type MedicalStation,
+  type Accommodations,
 } from "@/lib/api";
 import InfoCard from "@/components/InfoCard";
 
@@ -56,6 +62,10 @@ export default function MapShow() {
     WaterRefillStations[]
   >([]);
   const [showerStations, setShowerStations] = useState<ShowerStations[]>([]);
+  const [restRooms, setRestRooms] = useState<RestRooms[]>([]);
+  const [medicalStations, setMedicalStations] = useState<MedicalStation[]>([]);
+  const [accommodations, setAccommodations] = useState<Accommodations[]>([]);
+  const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -85,17 +95,95 @@ export default function MapShow() {
     }
   }
 
+  async function fetchRestRooms() {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getRestrooms(50, 0);
+      setRestRooms(response.member);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "載入失敗");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchMedicalStations() {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getMedicalStations(50, 0);
+      setMedicalStations(response.member);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "載入失敗");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchAccommodations() {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getAccommodations(50, 0);
+      setAccommodations(response.member);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "載入失敗");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchAll() {
+    try {
+      setLoading(true);
+      setError(null);
+      const [
+          responseWaterRefillStations, responseShowerStations,
+          responseRestrooms, responseMedicalStations, responseAccommodations
+        ] = await Promise.all([
+        getWaterRefillStations(50, 0),
+        getShowerStations(50, 0),
+        getRestrooms(50, 0),
+        getMedicalStations(50, 0),
+        getAccommodations(50, 0),
+      ])
+      setWaterRefillStations(responseWaterRefillStations.member);
+      setShowerStations(responseShowerStations.member);
+      setRestRooms(responseRestrooms.member);
+      setMedicalStations(responseMedicalStations.member);
+      setAccommodations(responseAccommodations.member);
+      setAllData(waterRefillStations.concat(showerStations, restRooms, medicalStations, accommodations));
+      allData.sort((a, b) => a.created_at - b.created_at);
+      console.log(allData)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "載入失敗");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
   const handleCategoryClick = async (categoryKey: LocationCategory) => {
     setSelectedCategory(categoryKey);
-    if (categoryKey === "water_refill_stations") {
+    if (categoryKey === "all") {
+      await fetchAll();
+    } else if (categoryKey === "water_refill_stations") {
       await fetchWaterRefillStations();
     } else if (categoryKey === "shower_stations") {
       await fetchShowerStations();
+    } else if (categoryKey === "restrooms") {
+      await fetchRestRooms();
+    } else if (categoryKey === "medical_stations") {
+      await fetchMedicalStations();
+    } else if (categoryKey === "accommodations") {
+      await fetchAccommodations();
     }
   };
 
   const handleModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setShowMode(event.target.value as ShowMode);
+    fetchAll()
   };
 
   return (
@@ -149,6 +237,30 @@ export default function MapShow() {
               </div>
             )}
 
+            {!loading && !error && selectedCategory === "all" && (
+              <>
+                {allData.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    此分類暫無資料
+                  </div>
+                ) : (
+                  allData.map((station) => (
+                    <InfoCard
+                      key={station.id}
+                      name={station.name}
+                      address={station.location}
+                      contact={station.phone}
+                      hours={station.opening_hours || ""}
+                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        station.location
+                      )}`}
+                      fullData={station}
+                    />
+                  ))
+                )}
+              </>
+            )}
+
             {!loading &&
               !error &&
               selectedCategory === "water_refill_stations" && (
@@ -184,6 +296,78 @@ export default function MapShow() {
                   </div>
                 ) : (
                   showerStations.map((station) => (
+                    <InfoCard
+                      key={station.id}
+                      name={station.name}
+                      address={station.location}
+                      contact={station.phone}
+                      hours={station.opening_hours || ""}
+                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        station.location
+                      )}`}
+                      fullData={station}
+                    />
+                  ))
+                )}
+              </>
+            )}
+
+            {!loading && !error && selectedCategory === "restrooms" && (
+              <>
+                {restRooms.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    此分類暫無資料
+                  </div>
+                ) : (
+                  restRooms.map((station) => (
+                    <InfoCard
+                      key={station.id}
+                      name={station.name}
+                      address={station.location}
+                      contact={station.phone}
+                      hours={station.opening_hours || ""}
+                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        station.location
+                      )}`}
+                      fullData={station}
+                    />
+                  ))
+                )}
+              </>
+            )}
+
+            {!loading && !error && selectedCategory === "medical_stations" && (
+              <>
+                {medicalStations.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    此分類暫無資料
+                  </div>
+                ) : (
+                  medicalStations.map((station) => (
+                    <InfoCard
+                      key={station.id}
+                      name={station.name}
+                      address={station.location}
+                      contact={station.phone}
+                      hours={station.opening_hours || ""}
+                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        station.location
+                      )}`}
+                      fullData={station}
+                    />
+                  ))
+                )}
+              </>
+            )}
+
+            {!loading && !error && selectedCategory === "accommodations" && (
+              <>
+                {accommodations.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    此分類暫無資料
+                  </div>
+                ) : (
+                  accommodations.map((station) => (
                     <InfoCard
                       key={station.id}
                       name={station.name}

@@ -485,7 +485,7 @@ export default function VolunteerInfo({
                         慈濟志工社群
                         <br />
                         <a
-                          className="border-b"
+                          className="border-b text-[var(--secondary)]"
                           href="https://line.me/ti/g2/gNNwamqenP9lV5jJHFVvIC2SYJOWrPbwJNMLXA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -502,7 +502,7 @@ export default function VolunteerInfo({
                         動森島民
                         <br />
                         <a
-                          className="border-b"
+                          className="border-b text-[var(--secondary)]"
                           href="https://line.me/ti/g2/RBQui9B01TU9u5fnru_3KCS9J4BuvZInmkO7DA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -519,7 +519,7 @@ export default function VolunteerInfo({
                         花蓮救災-大部隊不去的地方
                         <br />
                         <a
-                          className="border-b"
+                          className="border-b text-[var(--secondary)]"
                           href="https://line.me/ti/g2/xFQQW0R_NpxuFQ2diepCNKrqzYne-lqMLolknQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -536,7 +536,7 @@ export default function VolunteerInfo({
                         出發阿陶莫
                         <br />
                         <a
-                          className="border-b dark:text-blue-400"
+                          className="border-b text-[var(--secondary)]"
                           target="_blank"
                           rel="noopener noreferrer"
                           href="#"

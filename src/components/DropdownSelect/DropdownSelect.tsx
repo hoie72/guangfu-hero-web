@@ -46,7 +46,7 @@ export default function DropdownSelect({
     <div ref={dropdownRef} className="relative inline-block text-sm">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between gap-1 px-3 py-2 w-max bg-[#F4F4F5] rounded-md dark:bg-gray-800 dark:text-gray-100"
+        className="flex items-center justify-between gap-2 px-3 py-2 w-max bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-100"
       >
         <span>{selectedLabel}</span>
         <Image
@@ -62,12 +62,11 @@ export default function DropdownSelect({
       </button>
 
       {open && (
-        <div className="absolute left-0 z-10 mt-1 bg-[#F4F4F5] rounded-md dark:bg-gray-800">
+        <div className="w-[93px] absolute left-0 z-10 mt-1 bg-[#F4F4F5] rounded-md dark:bg-gray-800">
           {options.map(({ value, label }) => (
             <button
               key={value}
               onClick={() => {
-                console.log("ttt");
                 onChange(value);
                 setOpen(false);
               }}

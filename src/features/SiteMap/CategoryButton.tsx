@@ -28,9 +28,9 @@ const CategoryButton = ({
       {active && (
         <Image
           src={getAssetPath("/check.svg")}
-          alt="up"
-          width={16}
-          height={16}
+          alt="check"
+          width={14}
+          height={14}
         />
       )}
       {children}

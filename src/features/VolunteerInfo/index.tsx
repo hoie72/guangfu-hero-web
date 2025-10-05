@@ -11,6 +11,7 @@ import FoodSuppliesChecklist from "@/features/VolunteerInfo/FoodSuppliesChecklis
 import DisasterReliefToolsChecklist from "@/features/VolunteerInfo/DisasterReliefToolsChecklist";
 import OtherEssentialChecklist from "./OtherEssentialChecklistProps";
 import { getAssetPath } from "@/lib/utils";
+import StepNumber from "@/components/StepNumber";
 
 type InfoCategory = "行前必讀" | "交通資訊" | "住宿資訊";
 type TransportMode = "大眾運輸" | "共乘資訊";
@@ -89,9 +90,12 @@ export default function VolunteerInfo({
         {selectedCategory === "行前必讀" && (
           <div className="space-y-4">
             {/* 如何加入志工 */}
-            <h2 className="text-[var(--text-black)] font-semibold mb-4">
-              一、如何加入志工
-            </h2>
+            <div className="flex items-center gap-3 mb-4">
+              <StepNumber number={1} />
+              <h2 className="text-[var(--text-black)] font-semibold text-xl">
+                如何加入志工
+              </h2>
+            </div>
 
             <div className="relative">
               <div className="absolute left-[7px] top-2 bottom-0 w-[2px] h-[88%] bg-[var(--orange-point)]"></div>
@@ -114,7 +118,10 @@ export default function VolunteerInfo({
             {/* 裝備清單 */}
             <div className="mt-8">
               <div className="space-y-3">
-                <h3 className="font-bold text-xl">二、裝備清單</h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <StepNumber number={2} />
+                  <h3 className="font-bold text-xl">裝備清單</h3>
+                </div>
                 <div className="bg-[var(--gray-baclground)] rounded-lg p-4  space-y-6">
                   <ClothingProtectionChecklist
                     checkedItems={checkedItems}
@@ -156,45 +163,44 @@ export default function VolunteerInfo({
 
             {/* 專才志工識別證 */}
             <div className="mt-8">
-              <h3 className="font-bold text-xl mb-3">三、專才志工識別證</h3>
-              <div className="bg-white">
-                <p className="mb-4">
-                  別上志工專才辨識證，讓大家一眼就能快速辨識你的專業能力，立馬派遣上工，成為災區即時戰力。
-                </p>
-                <p className="text-sm text-gray-600 mb-4">
-                  <a
-                    href="https://drive.google.com/drive/folders/15D92UyiEKYKZInl1l0IAbFeKDOQRSfj1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#009688] underline"
-                  >
-                    點此於 Google Drive 下載
-                  </a>
-                  ，或以下方 QR code 至 711 掃描列印
-                </p>
-                <div className="w-full">
-                  <Image
-                    src={getAssetPath("/id_card.svg")}
-                    alt="專才志工識別證"
-                    width={400}
-                    height={300}
-                    className="w-full h-auto"
-                  />
-                </div>
+              <div className="flex items-center gap-3 mb-3">
+                <StepNumber number={3} />
+                <h3 className="font-bold text-xl">專才志工識別證</h3>
               </div>
+              <div className="mb-4">
+                別上志工專才辨識證，讓大家一眼就能快速辨識你的專業能力，立馬派遣工作，成為災區即戰力！
+              </div>
+              <a
+                href="https://drive.google.com/drive/folders/15D92UyiEKYKZInl1l0IAbFeKDOQRSfj1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-block text-white bg-[var(--primary)] hover:bg-[#e06d00] rounded-[12px] px-8 py-4 font-medium transition-colors text-center"
+              >
+                下載識別證
+              </a>
             </div>
 
             {/* 車輛辨識卡 */}
             <div className="mt-8">
-              <h3 className="font-bold text-xl mb-3">四、車輛辨識卡</h3>
+              <div className="flex items-center gap-3 mb-3">
+                <StepNumber number={4} />
+                <h3 className="font-bold text-xl">車輛辨識卡</h3>
+              </div>
+              <div className="text-[var(--secondary)] mb-1 text-lg font-bold">
+                使用原因
+              </div>
+              <div className="mb-4">
+                災區的交通非常珍貴，希望每個進度災區的車輛可以藉由識別證提高辨識度，增加執行效率。
+              </div>
+              <div className="text-[var(--secondary)] mb-1 text-lg font-bold">
+                使用說明
+              </div>
+              <div className="mb-4">
+                1. 至超商 ibon下載
+                <br />
+                2. 將識別卡貼在車窗前
+              </div>
               <div className="w-full flex flex-col gap-2">
-                <Image
-                  src={getAssetPath("/car_card.svg")}
-                  alt="車輛辨識卡"
-                  width={400}
-                  height={300}
-                  className="w-full h-auto"
-                />
                 <Image
                   src={getAssetPath("/car_card_1.svg")}
                   alt="車輛辨識卡1"
@@ -209,19 +215,15 @@ export default function VolunteerInfo({
                   height={300}
                   className="w-full h-auto"
                 />
-                <Image
-                  src={getAssetPath("/car_card_3.svg")}
-                  alt="車輛辨識卡3"
-                  width={400}
-                  height={300}
-                  className="w-full h-auto"
-                />
               </div>
             </div>
 
             {/* 注意事項 */}
             <div className="mt-8">
-              <h3 className="font-bold text-xl mb-4">五、注意事項</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <StepNumber number={5} />
+                <h3 className="font-bold text-xl">注意事項</h3>
+              </div>
               <div className="bg-white border-2 border-[var(--secondary)] rounded-lg p-6 space-y-6">
                 <p className="text-[var(--text-black)] leading-relaxed">
                   最後，請記得救災是一場馬拉松。請詳讀以下事項，做好體力與心理準備——先照顧自己，才能真正幫助他人。
@@ -295,14 +297,12 @@ export default function VolunteerInfo({
             </div>
 
             {/* 線上志工 */}
-            <div className="mt-8">
-              <div className="rounded-lg p-8 text-center space-y-4">
+            <div>
+              <div className="rounded-lg p-8 text-center space-y-2">
                 <h3 className="font-bold text-xl text-[var(--text-black)]">
-                  如果你想盡一份心力但無法到場
+                  評估自己無法到第一線清淤超人
                 </h3>
-                <p className="text-[var(--gray-2)]">
-                  也可以加入線上志工，一起遠端貢獻心力
-                </p>
+                <p className="mb-6">也可以加入線上志工，一起遠端貢獻心力</p>
                 <a
                   href="https://sites.google.com/view/guangfu250923/%E6%88%91%E6%98%AF%E5%BF%97%E5%B7%A5/volunteers?authuser=0"
                   target="_blank"

@@ -5,9 +5,12 @@ import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
+import AlertBanner from "@/components/AlertBanner";
+import WarningModal from "@/components/WarningModal";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
 
   const handleShare = async () => {
     // 確保在瀏覽器環境中執行
@@ -86,6 +89,11 @@ export default function Header() {
         </div>
       </header>
 
+      <AlertBanner onAlertClick={() => setShowWarningModal(true)} />
+      <WarningModal
+        isOpen={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+      />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   );

@@ -18,7 +18,10 @@ const CategoryButton = ({
     <button
       onClick={onClick}
       className={`
-        rounded-md text-sm cursor-pointer p-2 inline-flex items-center gap-1
+        inline-flex items-center gap-1
+        p-2 rounded-md text-sm
+        whitespace-nowrap shrink-0 leading-none
+        w-fit
         ${active ? "bg-[#E2E2E2]" : "bg-[#F4F4F4]"}
       `}
     >

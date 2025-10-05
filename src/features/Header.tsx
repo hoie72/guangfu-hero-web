@@ -8,38 +8,34 @@ import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
 import AlertBanner from "@/components/AlertBanner";
 import WarningModal from "@/components/WarningModal";
-import Toast2 from "@/components/Toast2"; // Share Icon 專用的 Toast
 
 export default function Header() {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
-  const [showToast, setShowToast] = useState(false);
 
-  const handleShare = () => {
+  const handleShare = async () => {
     if (typeof window === "undefined") return;
 
     // 建構完整 URL
-    const shareUrl = window.location.href;
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}${pathname}`;
 
-    // 使用最簡單可靠的方法（execCommand）
-    const textarea = document.createElement("textarea");
-    textarea.value = shareUrl;
-    document.body.appendChild(textarea);
-    textarea.select();
-    
+    // 根據路徑決定標題
+    const getTitle = () => {
+      if (pathname.startsWith("/map")) return "花蓮援助平台 - 現場地圖";
+      if (pathname.startsWith("/volunteer")) return "花蓮援助平台 - 志工資訊";
+      if (pathname.startsWith("/victim")) return "花蓮援助平台 - 災民協助";
+      return "花蓮援助平台";
+    };
+
+    const title = getTitle();
+
     try {
-      const successful = document.execCommand("copy");
-      document.body.removeChild(textarea);
-      
-      if (successful) {
-        setShowToast(true);
-      } else {
-        alert(`請手動複製連結：\n${shareUrl}`);
-      }
-    } catch (err) {
-      document.body.removeChild(textarea);
-      alert(`請手動複製連結：\n${shareUrl}`);
+      await navigator.clipboard.writeText(shareUrl);
+      alert(`${title}\n連結已複製到剪貼簿`);
+    } catch (error) {
+      console.error("複製失敗:", error);
     }
   };
 
@@ -55,7 +51,7 @@ export default function Header() {
               onClick={() => setIsSidebarOpen(true)}
             >
               <svg
-                className="h-6 w-6 stroke-[var(--gray)] hover:stroke-gray-700"
+                className="h-6 w-6 stroke-gray-500 hover:stroke-gray-700"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -98,12 +94,6 @@ export default function Header() {
         onClose={() => setShowWarningModal(false)}
       />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
-      {/* Toast2 - Share Icon */}
-      <Toast2
-        isVisible={showToast}
-        onClose={() => setShowToast(false)}
-      />
     </>
   );
 }

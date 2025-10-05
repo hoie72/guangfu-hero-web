@@ -51,7 +51,7 @@ export default function Header() {
               onClick={() => setIsSidebarOpen(true)}
             >
               <svg
-                className="h-6 w-6 stroke-gray-500 dark:stroke-gray-300 hover:stroke-gray-700 dark:hover:stroke-white"
+                className="h-6 w-6 stroke-gray-500 hover:stroke-gray-700"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -82,7 +82,6 @@ export default function Header() {
                 alt="分享"
                 width={24}
                 height={24}
-                className="dark:invert"
               />
             </button>
           </div>

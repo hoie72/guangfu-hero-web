@@ -72,16 +72,16 @@ const ReportModal: React.FC<ReportModalProps> = ({
       {/* Modal 內容 */}
       <div className="fixed inset-0 z-[80] flex items-end pointer-events-none">
         <div
-          className="bg-white dark:bg-gray-800 rounded-t-2xl w-full max-h-[85vh] overflow-y-auto animate-slide-up shadow-lg pointer-events-auto"
+          className="bg-white rounded-t-2xl w-full max-h-[85vh] overflow-y-auto animate-slide-up shadow-lg pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {step === "form" ? (
             <>
               {/* Header */}
-              <div className="flex justify-between items-center p-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex justify-between items-center p-6 pb-4 border-b border-gray-200">
                 <button
                   onClick={handleClose}
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                  className="text-gray-600 hover:text-gray-800"
                 >
                   <svg
                     className="w-6 h-6"
@@ -97,12 +97,10 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     />
                   </svg>
                 </button>
-                <h2 className="text-xl font-bold text-[#1E1E1E] dark:text-white">
-                  回報問題
-                </h2>
+                <h2 className="text-xl font-bold text-[#1E1E1E]">回報問題</h2>
                 <button
                   onClick={handleClose}
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xl"
+                  className="text-gray-400 hover:text-gray-600 text-xl"
                 >
                   ✕
                 </button>
@@ -111,33 +109,33 @@ const ReportModal: React.FC<ReportModalProps> = ({
               <div className="px-6 py-4 space-y-4">
                 {/* 問題點類型 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     問題點類型
                   </label>
                   <input
                     type="text"
                     value={locationType}
                     disabled
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-lg cursor-not-allowed"
+                    className="w-full px-4 py-3 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed"
                   />
                 </div>
 
                 {/* 問題點名稱 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     問題點名稱
                   </label>
                   <input
                     type="text"
                     value={locationName}
                     disabled
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-lg cursor-not-allowed"
+                    className="w-full px-4 py-3 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed"
                   />
                 </div>
 
                 {/* 問題原因 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     問題原因 <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -148,7 +146,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     }}
                     placeholder="請描述您發現的問題..."
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-[#009688] dark:focus:ring-teal-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-[#009688] focus:border-transparent resize-none"
                   />
                   {error && (
                     <p className="mt-2 text-sm text-red-500">{error}</p>
@@ -161,14 +159,14 @@ const ReportModal: React.FC<ReportModalProps> = ({
                 <button
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="flex-1 bg-[#C96319] dark:bg-orange-700 text-white py-3 rounded-lg font-medium hover:bg-[#B55815] dark:hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-[#C96319] text-white py-3 rounded-lg font-medium hover:bg-[#B55815] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "提交中..." : "提交回報"}
                 </button>
@@ -181,7 +179,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                 <div className="flex justify-end mb-4">
                   <button
                     onClick={handleClose}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xl"
+                    className="text-gray-400 hover:text-gray-600 text-xl"
                   >
                     ✕
                   </button>
@@ -189,9 +187,9 @@ const ReportModal: React.FC<ReportModalProps> = ({
 
                 <div className="text-center py-8">
                   {/* 成功圖示 */}
-                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
-                      className="w-8 h-8 text-green-600 dark:text-green-400"
+                      className="w-8 h-8 text-green-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -205,10 +203,10 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     </svg>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-[#1E1E1E] dark:text-white mb-2">
+                  <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">
                     提交完成
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-400 mb-8">
+                  <p className="text-gray-600 mb-8">
                     您的回報已成功送出
                     <br />
                     感謝您的協助!
@@ -216,7 +214,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
 
                   <button
                     onClick={handleClose}
-                    className="bg-[#C96319] dark:bg-orange-700 text-white py-3 px-8 rounded-lg font-medium hover:bg-[#B55815] dark:hover:bg-orange-600 transition-colors"
+                    className="bg-[#C96319] text-white py-3 px-8 rounded-lg font-medium hover:bg-[#B55815] transition-colors"
                   >
                     確定
                   </button>

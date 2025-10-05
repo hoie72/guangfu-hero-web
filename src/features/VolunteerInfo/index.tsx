@@ -114,40 +114,38 @@ export default function VolunteerInfo({
             {/* 裝備清單 */}
             <div className="mt-8">
               <div className="space-y-3">
-                <h3 className="font-bold text-xl dark:text-white">
-                  二、裝備清單
-                </h3>
-                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4  space-y-6">
+                <h3 className="font-bold text-xl">二、裝備清單</h3>
+                <div className="bg-[var(--gray-baclground)] rounded-lg p-4  space-y-6">
                   <ClothingProtectionChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
                   <FootwearHandsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
                   <MedicalItemsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
                   <FoodSuppliesChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
                   <DisasterReliefToolsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
                   <OtherEssentialChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
@@ -158,14 +156,12 @@ export default function VolunteerInfo({
 
             {/* 專才志工識別證 */}
             <div className="mt-8">
-              <h3 className="font-bold text-xl mb-3 dark:text-white">
-                三、專才志工識別證
-              </h3>
-              <div className="bg-white dark:bg-gray-800">
-                <p className="mb-4 dark:text-gray-200">
+              <h3 className="font-bold text-xl mb-3">三、專才志工識別證</h3>
+              <div className="bg-white">
+                <p className="mb-4">
                   別上志工專才辨識證，讓大家一眼就能快速辨識你的專業能力，立馬派遣上工，成為災區即時戰力。
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-sm text-gray-600 mb-4">
                   <a
                     href="https://drive.google.com/drive/folders/15D92UyiEKYKZInl1l0IAbFeKDOQRSfj1"
                     target="_blank"
@@ -190,9 +186,7 @@ export default function VolunteerInfo({
 
             {/* 車輛辨識卡 */}
             <div className="mt-8">
-              <h3 className="font-bold text-xl mb-3 dark:text-white">
-                四、車輛辨識卡
-              </h3>
+              <h3 className="font-bold text-xl mb-3">四、車輛辨識卡</h3>
               <div className="w-full flex flex-col gap-2">
                 <Image
                   src={getAssetPath("/car_card.svg")}
@@ -227,26 +221,24 @@ export default function VolunteerInfo({
 
             {/* 注意事項 */}
             <div className="mt-8">
-              <h3 className="font-bold text-xl mb-4 dark:text-white">
-                五、注意事項
-              </h3>
-              <div className="bg-white dark:bg-gray-800 border-2 border-[var(--secondary)] rounded-lg p-6 space-y-6">
-                <p className="text-[var(--text-black)] dark:text-gray-200 leading-relaxed">
+              <h3 className="font-bold text-xl mb-4">五、注意事項</h3>
+              <div className="bg-white border-2 border-[var(--secondary)] rounded-lg p-6 space-y-6">
+                <p className="text-[var(--text-black)] leading-relaxed">
                   最後，請記得救災是一場馬拉松。請詳讀以下事項，做好體力與心理準備——先照顧自己，才能真正幫助他人。
                 </p>
 
                 <div className="space-y-4">
-                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       安全第一
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       留意堰塞湖與潰堤風險，熟悉避難守則與撤離路線，遇到警報或洪水危險，務必立即撤離。
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       結伴同行
                     </h4>
                     <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
@@ -254,38 +246,38 @@ export default function VolunteerInfo({
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       保持聯繫
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       手機保持電量，攜帶行動電源，確保能通訊與定位。
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       補給防護
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       隨時補水，戴帽子穿排汗衣，適時休息避免中暑與脫水。交通不便、物資有限，請自備足夠飲水與糧食。
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       身心調適
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       身心調適：體力是最大資源，先顧好自己。若遇屍體或重災情要有心理準備，需要時務必求援。
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)] dark:text-white">
+                    <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       交通安排
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       勿開車進入光復，將道路留給救援及大型機具。事先購買回程車票，避免返程無座。
                       <br />
                       <a
@@ -305,10 +297,10 @@ export default function VolunteerInfo({
             {/* 線上志工 */}
             <div className="mt-8">
               <div className="rounded-lg p-8 text-center space-y-4">
-                <h3 className="font-bold text-xl text-[var(--text-black)] dark:text-white">
+                <h3 className="font-bold text-xl text-[var(--text-black)]">
                   如果你想盡一份心力但無法到場
                 </h3>
-                <p className="text-[var(--gray-2)] dark:text-gray-400">
+                <p className="text-[var(--gray-2)]">
                   也可以加入線上志工，一起遠端貢獻心力
                 </p>
                 <a
@@ -412,7 +404,7 @@ export default function VolunteerInfo({
                       每小時一班
                     </p>
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                      <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
                         <Image
                           src={getAssetPath("/station_1.svg")}
                           alt="花蓮車站 A"
@@ -421,7 +413,7 @@ export default function VolunteerInfo({
                           className="w-full h-auto"
                         />
                       </div>
-                      <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                      <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
                         <Image
                           src={getAssetPath("/station_2.svg")}
                           alt="花蓮車站 B"
@@ -431,7 +423,7 @@ export default function VolunteerInfo({
                         />
                       </div>
                     </div>
-                    <div className="text-sm text-gray-700 dark:text-gray-300 space-y-2 mb-4">
+                    <div className="text-sm text-gray-700 space-y-2 mb-4">
                       <p>
                         ※專車路線往返新城｜花蓮｜吉安｜壽豐｜玉里等站與志工住宿地點。
                       </p>
@@ -467,9 +459,9 @@ export default function VolunteerInfo({
                     </p>
                   </div>
 
-                  <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                  <div className="bg-[var(--gray-baclground)] rounded-lg p-6 space-y-6">
                     <div className="flex gap-2">
-                      <div className="w-70 font-bold dark:text-white">
+                      <div className="w-70 font-bold">
                         車站前小蜜蜂臨時泊車點
                         <br />
                         （無固定位置）
@@ -478,7 +470,7 @@ export default function VolunteerInfo({
                         出車站後，跟著現場的招牌指引就能找到！救災需求千變萬化，泊車點也跟著滾動調整，因此無確切地址。
                       </p>
                     </div>
-                    <div className="bg-white dark:bg-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+                    <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
                       <Image
                         src={getAssetPath("/sign.svg")}
                         alt="sign"
@@ -489,11 +481,11 @@ export default function VolunteerInfo({
                     </div>
 
                     <div className="flex gap-2">
-                      <div className="w-70 font-bold dark:text-white">
+                      <div className="w-70 font-bold">
                         慈濟志工社群
                         <br />
                         <a
-                          className="border-b dark:text-blue-400"
+                          className="border-b"
                           href="https://line.me/ti/g2/gNNwamqenP9lV5jJHFVvIC2SYJOWrPbwJNMLXA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -501,16 +493,16 @@ export default function VolunteerInfo({
                           加入 Line@
                         </a>
                       </div>
-                      <p className="text-[var(--gray-2)] dark:text-gray-400">
+                      <p className="text-[var(--gray-2)]">
                         由慈濟組織的志工社群，可依指示至記事本了解群內運作模式。
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-70 font-bold dark:text-white">
+                      <div className="w-70 font-bold">
                         動森島民
                         <br />
                         <a
-                          className="border-b dark:text-blue-400"
+                          className="border-b"
                           href="https://line.me/ti/g2/RBQui9B01TU9u5fnru_3KCS9J4BuvZInmkO7DA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -518,16 +510,16 @@ export default function VolunteerInfo({
                           加入 Line@
                         </a>
                       </div>
-                      <p className="text-[var(--gray-2)] dark:text-gray-400">
+                      <p className="text-[var(--gray-2)]">
                         由當地災民自行組織，可依指示至記事本了解群內運作模式。
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-70 font-bold dark:text-white">
+                      <div className="w-70 font-bold">
                         花蓮救災-大部隊不去的地方
                         <br />
                         <a
-                          className="border-b dark:text-blue-400"
+                          className="border-b"
                           href="https://line.me/ti/g2/xFQQW0R_NpxuFQ2diepCNKrqzYne-lqMLolknQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -535,12 +527,12 @@ export default function VolunteerInfo({
                           加入 Line@
                         </a>
                       </div>
-                      <p className="text-[var(--gray-2)] dark:text-gray-400">
+                      <p className="text-[var(--gray-2)]">
                         由熱心超人組織，可依指示至記事本了解群內運作模式。
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-70 font-bold dark:text-white">
+                      <div className="w-70 font-bold">
                         出發阿陶莫
                         <br />
                         <a
@@ -552,7 +544,7 @@ export default function VolunteerInfo({
                           加入 Line@
                         </a>
                       </div>
-                      <p className="text-[var(--gray-2)] dark:text-gray-400">
+                      <p className="text-[var(--gray-2)]">
                         由熱心超人組織，可依指示至記事本了解群內運作模式。
                       </p>
                     </div>
@@ -564,31 +556,27 @@ export default function VolunteerInfo({
             {selectedTransportMode === "共乘資訊" && (
               <div className="space-y-4">
                 <div>
-                  <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-5">
+                  <div className="bg-[var(--gray-baclground)] rounded-lg p-5">
                     <h2 className="text-xl font-bold text-center mb-3">
                       請勿開車進入光復
                     </h2>
                     <div className="flex gap-4">
                       <div className="flex flex-col w-1/2">
-                        <div className="text-center bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
+                        <div className="text-center bg-[#F9E6C0] rounded py-1 px-2 font-bold mb-2">
                           南下路線
                         </div>
-                        <div className="dark:text-gray-200">
-                          請停在花蓮火車站，改搭區間車往光復。
-                        </div>
+                        <div>請停在花蓮火車站，改搭區間車往光復。</div>
                       </div>
                       <div className="flex flex-col w-1/2">
-                        <div className="text-center bg-[#F9E6C0] dark:bg-yellow-900/50 rounded py-1 px-2 font-bold mb-2 dark:text-yellow-200">
+                        <div className="text-center bg-[#F9E6C0] rounded py-1 px-2 font-bold mb-2">
                           北上路線
                         </div>
-                        <div className="dark:text-gray-200">
-                          請停在鳳林火車站，改搭區間車往光復。
-                        </div>
+                        <div>請停在鳳林火車站，改搭區間車往光復。</div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white dark:bg-gray-800 overflow-hidden my-4">
+                  <div className="bg-white overflow-hidden my-4">
                     <Image
                       src={getAssetPath("/alt_road.svg")}
                       alt="alt-road"
@@ -638,13 +626,9 @@ export default function VolunteerInfo({
           </div>
         )}
         {selectedCategory === "住宿資訊" && (
-          <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4 dark:text-white">
-              住宿資訊
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              住宿資訊的內容將顯示在這裡
-            </p>
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">住宿資訊</h2>
+            <p className="text-gray-600">住宿資訊的內容將顯示在這裡</p>
           </div>
         )}
       </div>

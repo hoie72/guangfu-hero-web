@@ -2,7 +2,16 @@
 
 :root {
   --background: #ffffff;
+  --light-gray-background: #F9F8F5;
+  --gray-baclground: #f1f1f1;
   --foreground: #171717;
+  --text-black: #1E1E1E;
+  --light-orange: #F9E6C0;
+  --orange-point: #FECA5F;
+  --orange: #F37C0E;
+  --gray: #434343;
+  --gray-2: #838383;
+  --gray-3: #E6E6E6;
 }
 
 @theme inline {
@@ -15,7 +24,16 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
+    --light-gray-background: #F9F8F5;
+    --gray-baclground: #1e2939;
     --foreground: #ededed;
+    --text-black: #fff;
+    --light-orange: #ff6900;
+    --orange-point: #9f2d00;
+    --orange: #F37C0E;
+    --gray: #e5e7eb;
+    --gray-2: #e5e7eb;
+    --gray-3: #E6E6E6;
   }
 }
 

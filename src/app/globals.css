@@ -2,7 +2,11 @@
 
 :root {
   --background: #ffffff;
+  --gray-baclground: #f1f1f1;
   --foreground: #171717;
+  --text-black: #1E1E1E;
+  --light-orange: #F9E6C0;
+  --orange-point: #FECA5F;
 }
 
 @theme inline {
@@ -15,7 +19,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
+    --gray-baclground: #1e2939;
     --foreground: #ededed;
+    --text-black: #fff;
+    --light-orange: #ff6900;
+    --orange-point: #9f2d00;
   }
 }
 

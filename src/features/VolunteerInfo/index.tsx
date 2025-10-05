@@ -27,6 +27,15 @@ interface VolunteerInfoProps {
   initialCategory?: InfoCategory;
 }
 
+const VolunteerSteps = [
+    { title: "確認資訊", text: "查詢災區天氣、交通、人力需求等，評估自身情況" },
+    { title: "加入志工", text: "加入個人志工／國際志工說明？" },
+    { title: "行前準備", text: "確認交通資訊、裝備（下滑有裝備清單喔）" },
+    { title: "出發光復", text: "切勿勉強赴災！最好回程車票、連絡向導" },
+    { title: "進入災區", text: "抵達災區後，尋找聯絡人，帶你抵達受困區的地點" },
+    { title: "替換衣物再離開", text: "至臨時救衣點，避免染病、也不造成他人困擾" },
+  ];
+
 export default function VolunteerInfo({ initialCategory = "行前必讀" }: VolunteerInfoProps) {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] =
@@ -78,66 +87,60 @@ export default function VolunteerInfo({ initialCategory = "行前必讀" }: Volu
       <div className="space-y-4">
         {selectedCategory === "行前必讀" && (
           <div className="space-y-4">
-            <h3 className="font-bold text-xl dark:text-white">一、如何加入志工</h3>
-            <Accordion title="確認資訊" icon="🔍">
-              <p>查詢災區天氣、交通、人力需求等，評估自身情況</p>
-            </Accordion>
+            {/* 如何加入志工 */}
+            <h2 className="text-[var(--text-black)] font-semibold mb-4">一、如何加入志工</h2>
 
-            <Accordion title="加入志工" icon="📝">
-              <p>加入個人志工 / 團隊志工 說明？</p>
-            </Accordion>
+            <div className="relative">
+              <div className="absolute left-[7px] top-2 bottom-0 w-[2px] h-[88%] bg-[var(--orange-point)]"></div>
 
-            <Accordion title="行前準備" icon="🎒">
-              <p>確認交通資訊、裝備（下滑有裝備清單）</p>
-            </Accordion>
-
-            <Accordion title="出發光復" icon="🚗">
-              <p>切勿開車進入光復！ 買好回程車票，避免向隅</p>
-            </Accordion>
-
-            <Accordion title="進入災區" icon="⚠️">
-              <p>抵達光復後，尋找聯絡人，帶你抵達災區目的地</p>
-            </Accordion>
-
-            <Accordion title="替換衣物再離開" icon="👕">
-              <p>丟棄髒衣物，避免感染，也不造成他人困擾</p>
-            </Accordion>
+              {VolunteerSteps.map((step, index) => (
+                <div key={index} className="relative flex items-start mb-5">
+                  <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-[var(--orange-point)] border border-[var(--orange-point)]"></div>
+                  <div className="flex flex-row gap-2 ml-6">
+                    <div className="min-w-[80px] size-fit bg-[var(--light-orange)] text[var(--text-black)] px-3 py-1 rounded text-sm font-medium">
+                      <span>{step.title}</span>
+                    </div>
+                    <p className="text-[var(--text-black)] text-sm mt-1 leading-snug">{step.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* 裝備清單 */}
             <div className="mt-8">
               <div className="space-y-3">
                 <h3 className="font-bold text-xl dark:text-white">二、裝備清單</h3>
-                <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4  space-y-6">
                   <ClothingProtectionChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
                   <FootwearHandsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
                   <MedicalItemsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
                   <FoodSuppliesChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
                   <DisasterReliefToolsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[#f1f1f1] dark:bg-gray-800 rounded-lg p-6 space-y-6">
+                <div className="bg-[var(--gray-baclground)] dark:bg-gray-800 rounded-lg p-4 space-y-6">
                   <OtherEssentialChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}

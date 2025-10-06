@@ -7,7 +7,7 @@ interface TeamGroupProps {
 
 const TeamGroup: React.FC<TeamGroupProps> = ({ groupName, personNames }) => {
   return (
-    <div className="bg-gray-100 rounded-lg px-5 py-3">
+    <div className="bg-[var(--gray-4)] rounded-lg px-5 py-3">
       {/* 標題 */}
       <div className="text-center mb-4">
         <h3 className="text-lg font-medium text-black">{groupName}</h3>

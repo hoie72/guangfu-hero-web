@@ -18,14 +18,14 @@ const MenuItem = ({ item, onClose }: MenuItemProps) => {
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="px-6 py-4 hover:bg-gray-700 dark:hover:bg-gray-800 border-b border-[#434343]"
+      className="px-6 py-4 hover:bg-[var(--gray)] border-b border-[var(--gray)]"
     >
       {item.name}
     </a>
   ) : (
     <Link
       href={item.href}
-      className="px-6 py-4 hover:bg-gray-700 border-b border-[#434343]"
+      className="px-6 py-4 hover:bg-[var(--gray)] border-b border-[var(--gray)]"
       onClick={onClose}
     >
       {item.name}

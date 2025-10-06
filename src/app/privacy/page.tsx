@@ -9,7 +9,7 @@ export default function PrivacyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold mb-8">隱私權政策</h1>
 
-          <div className="space-y-6 text-gray-700">
+          <div className="space-y-6 text-[var(--gray)]">
             <section>
               <p className="mb-4">
                 適用網站:光復救災資訊整合及本團隊所架設之平台(下稱「本網站」)
@@ -199,7 +199,7 @@ export default function PrivacyPage() {
               </p>
             </section>
 
-            <section className="bg-gray-100 p-4 rounded mt-8">
+            <section className="bg-[var(--gray-4)] p-4 rounded mt-8">
               <p className="font-bold">本隱私權政策自公告日起生效</p>
               <p>公告日期:2025 年 10 月 1 日</p>
               <p>版本:1.0</p>

@@ -78,10 +78,10 @@ const ReportModal: React.FC<ReportModalProps> = ({
           {step === "form" ? (
             <>
               {/* Header */}
-              <div className="flex justify-between items-center p-6 pb-4 border-b border-gray-200">
+              <div className="flex justify-between items-center p-6 pb-4 border-b border-[var(--gray-3)]">
                 <button
                   onClick={handleClose}
-                  className="text-gray-600 hover:text-gray-800"
+                  className="text-[var(--gray)] hover:text-gray-800"
                 >
                   <svg
                     className="w-6 h-6"
@@ -97,10 +97,10 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     />
                   </svg>
                 </button>
-                <h2 className="text-xl font-bold text-[#1E1E1E]">回報問題</h2>
+                <h2 className="text-xl font-bold text-[var(--text-black)]">回報問題</h2>
                 <button
                   onClick={handleClose}
-                  className="text-gray-400 hover:text-gray-600 text-xl"
+                  className="text-[var(--gray-2)] hover:text-[var(--gray)] text-xl"
                 >
                   ✕
                 </button>
@@ -109,33 +109,33 @@ const ReportModal: React.FC<ReportModalProps> = ({
               <div className="px-6 py-4 space-y-4">
                 {/* 問題點類型 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[var(--gray)] mb-2">
                     問題點類型
                   </label>
                   <input
                     type="text"
                     value={locationType}
                     disabled
-                    className="w-full px-4 py-3 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed"
+                    className="w-full px-4 py-3 bg-[var(--gray-4)] text-[var(--gray)] rounded-lg cursor-not-allowed"
                   />
                 </div>
 
                 {/* 問題點名稱 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[var(--gray)] mb-2">
                     問題點名稱
                   </label>
                   <input
                     type="text"
                     value={locationName}
                     disabled
-                    className="w-full px-4 py-3 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed"
+                    className="w-full px-4 py-3 bg-[var(--gray-4)] text-[var(--gray)] rounded-lg cursor-not-allowed"
                   />
                 </div>
 
                 {/* 問題原因 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[var(--gray)] mb-2">
                     問題原因 <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -146,7 +146,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     }}
                     placeholder="請描述您發現的問題..."
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-[#009688] focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-[var(--gray-3)] bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-[#009688] focus:border-transparent resize-none"
                   />
                   {error && (
                     <p className="mt-2 text-sm text-red-500">{error}</p>
@@ -159,7 +159,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                 <button
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-[var(--gray-3)] text-[var(--gray)] py-3 rounded-lg font-medium hover:bg-[var(--gray-2)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   取消
                 </button>
@@ -179,7 +179,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                 <div className="flex justify-end mb-4">
                   <button
                     onClick={handleClose}
-                    className="text-gray-400 hover:text-gray-600 text-xl"
+                    className="text-[var(--gray-2)] hover:text-[var(--gray)] text-xl"
                   >
                     ✕
                   </button>
@@ -203,10 +203,10 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     </svg>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">
+                  <h2 className="text-2xl font-bold text-[var(--text-black)] mb-2">
                     提交完成
                   </h2>
-                  <p className="text-gray-600 mb-8">
+                  <p className="text-[var(--gray)] mb-8">
                     您的回報已成功送出
                     <br />
                     感謝您的協助!

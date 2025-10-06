@@ -21,7 +21,7 @@ const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`}
+      className={`bg-white rounded-lg border border-[var(--gray-3)] overflow-hidden ${className}`}
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -32,7 +32,7 @@ const Accordion: React.FC<AccordionProps> = ({
           <h3 className="font-bold text-lg">{title}</h3>
         </div>
         <svg
-          className={`w-6 h-6 text-gray-600 transition-transform flex-shrink-0 ${
+          className={`w-6 h-6 text-[var(--gray)] transition-transform flex-shrink-0 ${
             isOpen ? "rotate-180" : ""
           }`}
           fill="none"
@@ -48,7 +48,7 @@ const Accordion: React.FC<AccordionProps> = ({
         </svg>
       </button>
       {isOpen && (
-        <div className="px-4 pb-4 pt-0 text-sm text-gray-600">{children}</div>
+        <div className="px-4 pb-4 pt-0 text-sm text-[var(--gray)]">{children}</div>
       )}
     </div>
   );

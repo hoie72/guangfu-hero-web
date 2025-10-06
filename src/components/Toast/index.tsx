@@ -29,7 +29,7 @@ export default function Toast({
 
   return (
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
-      <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-4 py-3 flex items-center gap-3 min-w-[200px]">
+      <div className="bg-white rounded-lg shadow-lg border border-[var(--gray-3)] px-4 py-3 flex items-center gap-3 min-w-[200px]">
         <div className="flex-shrink-0">
           <svg
             width="20"
@@ -52,7 +52,7 @@ export default function Toast({
 
         <button
           onClick={onClose}
-          className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+          className="flex-shrink-0 text-[var(--gray-2)] hover:text-[var(--gray)] transition-colors"
           aria-label="關閉提示"
         >
           <svg

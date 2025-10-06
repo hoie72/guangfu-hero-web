@@ -25,12 +25,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "yarn"
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Build with Next.js
-        run: npm run build
+        run: yarn build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

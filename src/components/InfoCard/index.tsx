@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import {
-  type Accommodations,
-  type RestRooms,
-  type Shelter,
-  type MedicalStation,
-  type MentalHealthResource,
-  type WaterRefillStations,
-  type ShowerStations,
-} from "@/lib/api";
+  Accommodations,
+  RestRooms,
+  Shelter,
+  MedicalStation,
+  MentalHealthResource,
+  WaterRefillStations,
+  ShowerStations,
+} from "@/lib/types";
 import DetailModal from "./DetailModal";
 
 export type DataType =

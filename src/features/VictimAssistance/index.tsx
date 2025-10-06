@@ -144,7 +144,7 @@ export default function VictimAssistance({
 
       <div className="space-y-4">
         {loading && (
-          <div className="text-center py-8 text-gray-500">載入中...</div>
+          <div className="text-center py-8 text-[var(--gray)]">載入中...</div>
         )}
 
         {error && (
@@ -171,7 +171,7 @@ export default function VictimAssistance({
         {!loading && !error && selectedCategory === "醫療站" && (
           <>
             {medicalStations.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-[var(--gray)]">
                 此分類暫無資料
               </div>
             ) : (
@@ -196,7 +196,7 @@ export default function VictimAssistance({
         {!loading && !error && selectedCategory === "心理援助" && (
           <>
             {filteredMentalHealthResources.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-[var(--gray)]">
                 此分類暫無資料
               </div>
             ) : (

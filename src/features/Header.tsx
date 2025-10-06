@@ -8,18 +8,16 @@ import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
 import AlertBanner from "@/components/AlertBanner";
 import WarningModal from "@/components/WarningModal";
-import Toast from "@/components/Toast";
 
 export default function Header() {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
-  const [showToast, setShowToast] = useState(false);
 
   const handleShare = async () => {
     if (typeof window === "undefined") return;
 
-    // URL
+    // 建構完整 URL
     const baseUrl = window.location.origin;
     const shareUrl = `${baseUrl}${pathname}`;
 
@@ -32,37 +30,10 @@ export default function Header() {
     };
 
     const title = getTitle();
-    const text = "花蓮光復鄉災害援助資訊平台";
 
-    // 優先使用 Web Share API
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: title,
-          text: text,
-          url: shareUrl,
-        });
-      } catch (error) {
-        // if不支援分享功能 轉為複製功能
-        if (
-          error instanceof Error &&
-          error.name !== "AbortError" &&
-          error.name !== "NotAllowedError"
-        ) {
-          // 回退到複製功能
-          await fallbackToCopy(shareUrl);
-        }
-      }
-    } else {
-      // if 不支援 Web Share API 使用複製功能
-      await fallbackToCopy(shareUrl);
-    }
-  };
-
-  const fallbackToCopy = async (url: string) => {
     try {
-      await navigator.clipboard.writeText(url);
-      setShowToast(true);
+      await navigator.clipboard.writeText(shareUrl);
+      alert(`${title}\n連結已複製到剪貼簿`);
     } catch (error) {
       console.error("複製失敗:", error);
     }
@@ -123,13 +94,6 @@ export default function Header() {
         onClose={() => setShowWarningModal(false)}
       />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-
-      {/* Toast */}
-      <Toast
-        message="複製成功"
-        isVisible={showToast}
-        onClose={() => setShowToast(false)}
-      />
     </>
   );
 }

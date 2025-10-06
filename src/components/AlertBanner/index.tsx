@@ -63,9 +63,9 @@ export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
   return (
     <div>
       <div
-        className={`bg-[#FFEEBA] dark:bg-yellow-900/50 h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60 transition-colors ${
+        className={`bg-[#FFEEBA] h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] transition-colors ${
           currentInfo.actionable
-            ? "cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60"
+            ? "cursor-pointer hover:bg-[#FFE5A0]"
             : "cursor-default"
         } ${isDragging ? "select-none" : ""}`}
         onClick={() => currentInfo.actionable && onAlertClick()}
@@ -81,7 +81,7 @@ export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
       >
         <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full select-none">
           <PrevButton setIsPaused={setIsPaused} prev={prev} />
-          <div className="flex-1 text-center text-[var(--text-black)] dark:text-yellow-100 font-medium ">
+          <div className="flex-1 text-center text-[var(--text-black)] font-medium ">
             {currentInfo.text}
             {!currentInfo.actionable && (
               <span className="sr-only">（此訊息不可點擊）</span>

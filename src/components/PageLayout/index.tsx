@@ -44,7 +44,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Tab Navigation */}
           {shouldShowTabs && (
-            <div className="flex border-b-2 border-gray-200">
+            <div className="flex border-b-2 border-[var(--gray-3)]">
               {tabs.map((tab) => (
                 <Link
                   key={tab.path}

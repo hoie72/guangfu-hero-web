@@ -7,7 +7,7 @@ interface CloseButtonProps {
 
 const CloseButton = ({ onClose }: CloseButtonProps) => (
   <div className="flex justify-between items-center p-4">
-    <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded">
+    <button onClick={onClose} className="p-2 hover:bg-[var(--gray)] rounded">
       <svg
         className="w-6 h-6"
         fill="none"

@@ -104,7 +104,7 @@ export default function VolunteerInfo({
                 <div key={index} className="relative flex items-start mb-5">
                   <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-[var(--primary-point)] border border-[var(--primary-point)]"></div>
                   <div className="flex flex-row gap-2 ml-6">
-                    <div className="min-w-[80px] size-fit bg-[var(--light-primar)] text[var(--text-black)] px-3 py-1 rounded text-sm font-medium">
+                    <div className="min-w-[80px] size-fit bg-[var(--light-primary)] text[var(--text-black)] px-3 py-1 rounded text-sm font-medium">
                       <span>{step.title}</span>
                     </div>
                     <p className="text-[var(--text-black)] text-sm mt-1 leading-snug">
@@ -122,37 +122,37 @@ export default function VolunteerInfo({
                   <StepNumber number={2} />
                   <h3 className="font-bold text-xl">裝備清單</h3>
                 </div>
-                <div className="bg-[var(--gray-baclground)] rounded-lg p-4  space-y-6">
+                <div className="bg-[var(--gray-background)] rounded-lg p-4  space-y-6">
                   <ClothingProtectionChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-background)] rounded-lg p-4 space-y-6">
                   <FootwearHandsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-background)] rounded-lg p-4 space-y-6">
                   <MedicalItemsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-background)] rounded-lg p-4 space-y-6">
                   <FoodSuppliesChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-background)] rounded-lg p-4 space-y-6">
                   <DisasterReliefToolsChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
                   />
                 </div>
-                <div className="bg-[var(--gray-baclground)] rounded-lg p-4 space-y-6">
+                <div className="bg-[var(--gray-background)] rounded-lg p-4 space-y-6">
                   <OtherEssentialChecklist
                     checkedItems={checkedItems}
                     onCheckChange={handleCheckboxChange}
@@ -393,7 +393,7 @@ export default function VolunteerInfo({
                   </h3>
 
                   <div>
-                    <p className="rounded-lg bg-[var(--light-primar)] text-center text-md mb-2">
+                    <p className="rounded-lg bg-[var(--light-primary)] text-center text-md mb-2">
                       交通部觀光署接駁車
                     </p>
                     <p className="text-center text-sm text-[var(--text-black)]  mb-2">
@@ -448,7 +448,7 @@ export default function VolunteerInfo({
                   </div>
 
                   <div className="text-[var(--text-black)]">
-                    <p className="rounded-lg bg-[var(--light-primar)] text-center text-md mb-2">
+                    <p className="rounded-lg bg-[var(--light-primary)] text-center text-md mb-2">
                       尋找小蜜蜂接駁
                     </p>
                     <p>
@@ -459,7 +459,7 @@ export default function VolunteerInfo({
                     </p>
                   </div>
 
-                  <div className="bg-[var(--gray-baclground)] rounded-lg p-6 space-y-6">
+                  <div className="bg-[var(--gray-background)] rounded-lg p-6 space-y-6">
                     <div className="flex gap-2">
                       <div className="w-70 font-bold">
                         車站前小蜜蜂臨時泊車點
@@ -556,7 +556,7 @@ export default function VolunteerInfo({
             {selectedTransportMode === "共乘資訊" && (
               <div className="space-y-4">
                 <div>
-                  <div className="bg-[var(--gray-baclground)] rounded-lg p-5">
+                  <div className="bg-[var(--gray-background)] rounded-lg p-5">
                     <h2 className="text-xl font-bold text-center mb-3">
                       請勿開車進入光復
                     </h2>
@@ -588,7 +588,7 @@ export default function VolunteerInfo({
                       資料來源：2025/09/26 花蓮縣政府公告
                     </div>
                   </div>
-                  <p className="rounded-lg bg-[var(--light-primar)] text-center text-md mb-2">
+                  <p className="rounded-lg bg-[var(--light-primary)] text-center text-md mb-2">
                     各區共乘資訊
                   </p>
                   <p className="m-2">

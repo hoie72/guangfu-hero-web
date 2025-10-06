@@ -123,6 +123,7 @@ export default function Header() {
         onClose={() => setShowWarningModal(false)}
       />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
       {/* Toast */}
       <Toast
         message="複製成功"

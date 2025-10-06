@@ -16,11 +16,7 @@ const CarouselIndicators = ({
   currentSlide,
 }: CarouselIndicatorsProps) => {
   return (
-<<<<<<< HEAD
     <div className="flex justify-center gap-2 py-2 bg-white">
-=======
-    <div className="flex justify-center gap-2 py-2 bg-white dark:bg-gray-900">
->>>>>>> main
       {alerts.map((alert, index) => (
         <button
           key={index}

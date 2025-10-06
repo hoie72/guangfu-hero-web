@@ -15,11 +15,7 @@ const PrevButton = ({ setIsPaused, prev }: PrevButtonProps) => {
         setIsPaused(true);
         prev();
       }}
-<<<<<<< HEAD
       className="hidden sm:inline-flex items-center justify-center w-8 h-8 mr-2 rounded-full text-[var(--text-black)] focus:outline-none focus:ring-2 focus:ring-yellow-600"
-=======
-      className="hidden sm:inline-flex items-center justify-center w-8 h-8 mr-2 rounded-full text-[var(--text-black)] dark:text-yellow-100 hover:bg-black/5 dark:hover:bg-yellow-100/10 focus:outline-none focus:ring-2 focus:ring-yellow-600"
->>>>>>> main
       aria-label="上一則警示"
     >
       <span aria-hidden>‹</span>

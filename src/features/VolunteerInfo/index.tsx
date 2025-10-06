@@ -490,7 +490,7 @@ export default function VolunteerInfo({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
@@ -507,7 +507,7 @@ export default function VolunteerInfo({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
@@ -524,7 +524,7 @@ export default function VolunteerInfo({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
@@ -541,7 +541,7 @@ export default function VolunteerInfo({
                           rel="noopener noreferrer"
                           href="https://line.me/ti/g/kT5bXAtJ4U"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">

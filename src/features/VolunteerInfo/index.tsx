@@ -243,7 +243,7 @@ export default function VolunteerInfo({
                     <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       結伴同行
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       避免單獨行動，與夥伴結伴，彼此照應更安全。
                     </p>
                   </div>
@@ -366,7 +366,7 @@ export default function VolunteerInfo({
             {selectedTransportMode === "大眾運輸" && (
               <>
                 <div>
-                  <h3 className="text-xl font-bold mb-3 dark:text-white">
+                  <h3 className="text-xl font-bold mb-3">
                     一、如何到花蓮：台鐵
                   </h3>
                   <a
@@ -490,7 +490,7 @@ export default function VolunteerInfo({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
@@ -507,7 +507,7 @@ export default function VolunteerInfo({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
@@ -524,7 +524,7 @@ export default function VolunteerInfo({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
@@ -541,7 +541,7 @@ export default function VolunteerInfo({
                           rel="noopener noreferrer"
                           href="https://line.me/ti/g/kT5bXAtJ4U"
                         >
-                          加入 Line@
+                          加入 LINE 社群
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">

@@ -3,6 +3,8 @@
 :root {
   color-scheme: light;
   --primary: #f37c0e;
+  --primary-point: #feca5f;
+  --light-primary: #f9e6c0;
   --secondary: #179bc6;
   --secondary-hover: #1488ad;
   --secondary-light: #e9fffd;
@@ -11,9 +13,6 @@
   --gray-baclground: #f1f1f1;
   --foreground: #171717;
   --text-black: #1e1e1e;
-  --light-orange: #f9e6c0;
-  --orange-point: #feca5f;
-  --orange: #f37c0e;
   --gray: #434343;
   --gray-2: #838383;
   --gray-3: #e6e6e6;

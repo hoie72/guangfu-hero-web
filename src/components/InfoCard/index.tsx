@@ -79,7 +79,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
         )}
         <div className="flex items-start gap-2 text-[var(--gray-2)]">
-          <div className="font-medium w-10">類型</div>
+          <div className="text-[var(--text-black)] font-medium w-10">類型</div>
           <div className="w-[290px]">{type || "未提供"}</div>
         </div>
         <div className="flex items-start gap-2 text-[var(--gray-2)] mb-2">

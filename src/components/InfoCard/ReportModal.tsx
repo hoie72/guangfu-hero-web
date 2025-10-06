@@ -97,7 +97,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     />
                   </svg>
                 </button>
-                <h2 className="text-xl font-bold text-[#1E1E1E]">回報問題</h2>
+                <h2 className="text-xl font-bold text-[var(--text-black)]">回報問題</h2>
                 <button
                   onClick={handleClose}
                   className="text-gray-400 hover:text-gray-600 text-xl"
@@ -203,7 +203,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
                     </svg>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">
+                  <h2 className="text-2xl font-bold text-[var(--text-black)] mb-2">
                     提交完成
                   </h2>
                   <p className="text-gray-600 mb-8">

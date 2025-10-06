@@ -20,7 +20,7 @@ const SubMenuItem = ({
   onClose,
 }: SubMenuItemProps) => {
   return (
-    <div className="border-b border-[#434343]">
+    <div className="border-b border-[var(--gray)]">
       <button
         onClick={() => toggleSection(item.name)}
         className="w-full px-6 py-4 hover:bg-gray-700 flex justify-between items-center"

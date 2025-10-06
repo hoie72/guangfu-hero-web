@@ -98,13 +98,13 @@ export default function VolunteerInfo({
             </div>
 
             <div className="relative">
-              <div className="absolute left-[7px] top-2 bottom-0 w-[2px] h-[88%] bg-[var(--orange-point)]"></div>
+              <div className="absolute left-[7px] top-2 bottom-0 w-[2px] h-[88%] bg-[var(--primary-point)]"></div>
 
               {VolunteerSteps.map((step, index) => (
                 <div key={index} className="relative flex items-start mb-5">
-                  <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-[var(--orange-point)] border border-[var(--orange-point)]"></div>
+                  <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-[var(--primary-point)] border border-[var(--primary-point)]"></div>
                   <div className="flex flex-row gap-2 ml-6">
-                    <div className="min-w-[80px] size-fit bg-[var(--light-orange)] text[var(--text-black)] px-3 py-1 rounded text-sm font-medium">
+                    <div className="min-w-[80px] size-fit bg-[var(--light-primar)] text[var(--text-black)] px-3 py-1 rounded text-sm font-medium">
                       <span>{step.title}</span>
                     </div>
                     <p className="text-[var(--text-black)] text-sm mt-1 leading-snug">
@@ -393,7 +393,7 @@ export default function VolunteerInfo({
                   </h3>
 
                   <div>
-                    <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
+                    <p className="rounded-lg bg-[var(--light-primar)] text-center text-md mb-2">
                       交通部觀光署接駁車
                     </p>
                     <p className="text-center text-sm text-[var(--text-black)]  mb-2">
@@ -448,7 +448,7 @@ export default function VolunteerInfo({
                   </div>
 
                   <div className="text-[var(--text-black)]">
-                    <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
+                    <p className="rounded-lg bg-[var(--light-primar)] text-center text-md mb-2">
                       尋找小蜜蜂接駁
                     </p>
                     <p>
@@ -562,13 +562,13 @@ export default function VolunteerInfo({
                     </h2>
                     <div className="flex gap-4">
                       <div className="flex flex-col w-1/2">
-                        <div className="text-center bg-[#F9E6C0] rounded py-1 px-2 font-bold mb-2">
+                        <div className="text-center bg-[var(--light-primary)] rounded py-1 px-2 font-bold mb-2">
                           南下路線
                         </div>
                         <div>請停在花蓮火車站，改搭區間車往光復。</div>
                       </div>
                       <div className="flex flex-col w-1/2">
-                        <div className="text-center bg-[#F9E6C0] rounded py-1 px-2 font-bold mb-2">
+                        <div className="text-center bg-[var(--light-primary)] rounded py-1 px-2 font-bold mb-2">
                           北上路線
                         </div>
                         <div>請停在鳳林火車站，改搭區間車往光復。</div>
@@ -588,7 +588,7 @@ export default function VolunteerInfo({
                       資料來源：2025/09/26 花蓮縣政府公告
                     </div>
                   </div>
-                  <p className="rounded-lg bg-[var(--light-orange)] text-center text-md mb-2">
+                  <p className="rounded-lg bg-[var(--light-primar)] text-center text-md mb-2">
                     各區共乘資訊
                   </p>
                   <p className="m-2">

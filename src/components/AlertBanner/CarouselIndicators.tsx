@@ -16,7 +16,7 @@ const CarouselIndicators = ({
   currentSlide,
 }: CarouselIndicatorsProps) => {
   return (
-    <div className="flex justify-center gap-2 py-2 bg-[var(--background)]">
+    <div className="flex justify-center gap-2 py-2 bg-white">
       {alerts.map((alert, index) => (
         <button
           key={index}

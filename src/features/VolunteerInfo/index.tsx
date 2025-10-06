@@ -366,7 +366,7 @@ export default function VolunteerInfo({
             {selectedTransportMode === "大眾運輸" && (
               <>
                 <div>
-                  <h3 className="text-xl font-bold mb-3 text-[var(--text-black)]">
+                  <h3 className="text-xl font-bold mb-3">
                     一、如何到花蓮：台鐵
                   </h3>
                   <a

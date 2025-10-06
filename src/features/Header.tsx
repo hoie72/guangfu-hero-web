@@ -23,10 +23,10 @@ export default function Header() {
 
     // 根據路徑決定標題
     const getTitle = () => {
-      if (pathname.startsWith("/map")) return "花蓮援助平台 - 現場地圖";
-      if (pathname.startsWith("/volunteer")) return "花蓮援助平台 - 志工資訊";
-      if (pathname.startsWith("/victim")) return "花蓮援助平台 - 災民協助";
-      return "花蓮援助平台";
+      if (pathname.startsWith("/map")) return "光復超人 - 現場地圖";
+      if (pathname.startsWith("/volunteer")) return "光復超人 - 志工資訊";
+      if (pathname.startsWith("/victim")) return "光復超人 - 災民協助";
+      return "光復超人";
     };
 
     const title = getTitle();

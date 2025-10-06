@@ -2,19 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import Button from "@/components/Button";
 import {
   getWaterRefillStations,
   getShowerStations,
   getRestrooms,
   getMedicalStations,
   getAccommodations,
-  type WaterRefillStations,
-  type ShowerStations,
-  type RestRooms,
-  type MedicalStation,
-  type Accommodations,
 } from "@/lib/api";
+import {
+  WaterRefillStations,
+  ShowerStations,
+  RestRooms,
+  MedicalStation,
+  Accommodations,
+} from "@/lib/types";
 import InfoCard from "@/components/InfoCard";
 import DropdownSelect from "@/components/DropdownSelect";
 import CategoryButton from "./CategoryButton";

@@ -31,7 +31,7 @@ interface InfoCardProps {
   infoUrl?: string;
   mapUrl?: string;
   className?: string;
-  facilities?: string[];
+  tags?: string[];
   fullData?: DataType;
 }
 
@@ -43,7 +43,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   contact,
   mapUrl,
   className = "",
-  facilities,
+  tags,
   fullData,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,21 +72,17 @@ const InfoCard: React.FC<InfoCardProps> = ({
     `}
     >
       <div className="flex flex-col pr-1">
-        {
-          facilities && (
-            <div className="flex flex-row gap-2 mb-1">
-              {
-                facilities.map((item, key) => {
-                  return (
-                    <div className="flex size-fit px-3 py-1 bg-[var(--gray-4)] text-[var(--gray-2)] text-sm rounded" key={key}>
-                      {item}
-                    </div>
-                  )
-                })
-              }
-            </div>
-          )
-        }
+        <div className="flex flex-row gap-2 mb-1">
+          {tags &&
+            tags.map((item, idx) => (
+              <div
+                className="flex size-fit px-3 py-1 bg-[var(--gray-4)] text-[var(--gray-2)] text-sm rounded"
+                key={idx}
+              >
+                {item}
+              </div>
+            ))}
+        </div>
         <h3 className="text-xl font-bold text-[var(--text-black)] mb-1">
           {name}
         </h3>

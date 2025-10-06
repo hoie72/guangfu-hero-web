@@ -63,7 +63,7 @@ export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
   return (
     <div>
       <div
-        className={`bg-[#FFEEBA] dark:bg-yellow-900/50 h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60 transition-colors ${
+        className={`bg-[var(--tertiary)] dark:bg-yellow-900/50 h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60 transition-colors ${
           currentInfo.actionable
             ? "cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60"
             : "cursor-default"

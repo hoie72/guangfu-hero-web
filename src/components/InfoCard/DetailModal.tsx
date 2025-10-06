@@ -102,19 +102,19 @@ const DetailModal = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-start p-6 pb-4">
-            <div className="px-3 py-1 bg-[var(--gray-4)] text-[var] text-sm rounded">
+            <div className="px-3 py-1 bg-[var(--gray-4)] text-[var(--gray-2)] text-sm rounded">
               {type || "定點"}
             </div>
             <button
               onClick={() => setIsModalOpen(false)}
-              className="text-gray-400 hover:text-gray-600 text-xl"
+              className="text-[var(--gray-2)] hover:text-[var(--gray)] text-xl"
             >
               ✕
             </button>
           </div>
 
           <div className="px-6 pb-4">
-            <h2 className="text-xl font-bold text-[var(--text-black)]">
+            <h2 className="pb-2 border-b border-[var(--gray-3)] text-xl font-bold text-[var(--text-black)]">
               {name}
             </h2>
           </div>
@@ -123,10 +123,10 @@ const DetailModal = ({
             {formattedData.length > 0 ? (
               formattedData.map(({ label, value }, index) => (
                 <div key={index} className="flex gap-3">
-                  <div className="text-[var(--gray-2)] min-w-[80px] shrink-0 whitespace-nowrap">
+                  <div className="text-[text-[var(--text-black)]] min-w-[80px] shrink-0 whitespace-nowrap">
                     {label}
                   </div>
-                  <div className="text-[var(--text-black)] flex-1 break-words overflow-wrap-anywhere">
+                  <div className="text-[var(--gray-2)] flex-1 break-words overflow-wrap-anywhere">
                     {Array.isArray(value) ? (
                       value.join("、")
                     ) : typeof value === "boolean" ? (
@@ -153,7 +153,7 @@ const DetailModal = ({
                 </div>
               ))
             ) : (
-              <div className="text-gray-600">無詳細資料</div>
+              <div className="text-[var(--gray)]">無詳細資料</div>
             )}
           </div>
 

@@ -230,7 +230,7 @@ export default function VolunteerInfo({
                 </p>
 
                 <div className="space-y-4">
-                  <div className="border-b border-gray-200 pb-4">
+                  <div className="border-b border-[var(--gray-3)] pb-4">
                     <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       安全第一
                     </h4>
@@ -239,16 +239,16 @@ export default function VolunteerInfo({
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 pb-4">
+                  <div className="border-b border-[var(--gray-3)] pb-4">
                     <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       結伴同行
                     </h4>
-                    <p className="text-[var(--gray-2)] dark:text-gray-400 leading-relaxed">
+                    <p className="text-[var(--gray-2)] leading-relaxed">
                       避免單獨行動，與夥伴結伴，彼此照應更安全。
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 pb-4">
+                  <div className="border-b border-[var(--gray-3)] pb-4">
                     <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       保持聯繫
                     </h4>
@@ -257,7 +257,7 @@ export default function VolunteerInfo({
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 pb-4">
+                  <div className="border-b border-[var(--gray-3)] pb-4">
                     <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       補給防護
                     </h4>
@@ -266,7 +266,7 @@ export default function VolunteerInfo({
                     </p>
                   </div>
 
-                  <div className="border-b border-gray-200 pb-4">
+                  <div className="border-b border-[var(--gray-3)] pb-4">
                     <h4 className="font-bold text-lg mb-2 text-[var(--text-black)]">
                       身心調適
                     </h4>
@@ -366,7 +366,7 @@ export default function VolunteerInfo({
             {selectedTransportMode === "大眾運輸" && (
               <>
                 <div>
-                  <h3 className="text-xl font-bold mb-3 dark:text-white">
+                  <h3 className="text-xl font-bold mb-3 text-[var(--text-black)]">
                     一、如何到花蓮：台鐵
                   </h3>
                   <a
@@ -404,7 +404,7 @@ export default function VolunteerInfo({
                       每小時一班
                     </p>
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
+                      <div className="bg-white rounded-lg overflow-hidden border border-[var(--gray-3)]">
                         <Image
                           src={getAssetPath("/station_1.svg")}
                           alt="花蓮車站 A"
@@ -413,7 +413,7 @@ export default function VolunteerInfo({
                           className="w-full h-auto"
                         />
                       </div>
-                      <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
+                      <div className="bg-white rounded-lg overflow-hidden border border-[var(--gray-3)]">
                         <Image
                           src={getAssetPath("/station_2.svg")}
                           alt="花蓮車站 B"
@@ -423,7 +423,7 @@ export default function VolunteerInfo({
                         />
                       </div>
                     </div>
-                    <div className="text-sm text-gray-700 space-y-2 mb-4">
+                    <div className="text-sm text-[var(--gray)] space-y-2 mb-4">
                       <p>
                         ※專車路線往返新城｜花蓮｜吉安｜壽豐｜玉里等站與志工住宿地點。
                       </p>
@@ -470,7 +470,7 @@ export default function VolunteerInfo({
                         出車站後，跟著現場的招牌指引就能找到！救災需求千變萬化，泊車點也跟著滾動調整，因此無確切地址。
                       </p>
                     </div>
-                    <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
+                    <div className="bg-white rounded-lg overflow-hidden border border-[var(--gray-3)]">
                       <Image
                         src={getAssetPath("/sign.svg")}
                         alt="sign"
@@ -628,7 +628,7 @@ export default function VolunteerInfo({
         {selectedCategory === "住宿資訊" && (
           <div className="p-6 bg-gray-50 rounded-lg">
             <h2 className="text-2xl font-bold mb-4">住宿資訊</h2>
-            <p className="text-gray-600">住宿資訊的內容將顯示在這裡</p>
+            <p className="text-[var(--gray)]">住宿資訊的內容將顯示在這裡</p>
           </div>
         )}
       </div>

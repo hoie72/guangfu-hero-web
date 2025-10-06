@@ -55,7 +55,7 @@ export default function Header() {
               onClick={() => setIsSidebarOpen(true)}
             >
               <svg
-                className="h-6 w-6 stroke-gray-500 hover:stroke-gray-700"
+                className="h-6 w-6 stroke-[var(--gray)] hover:stroke-gray-700"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"

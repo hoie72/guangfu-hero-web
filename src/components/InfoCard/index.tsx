@@ -63,7 +63,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
     <div
       className={`
       bg-white
-      border-b border-gray-200
+      border-b border-[var(--gray-3)]
       px-1
       py-3
       ${className}

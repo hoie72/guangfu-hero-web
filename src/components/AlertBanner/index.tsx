@@ -1,62 +1,10 @@
-// "use client";
-
-// import { useState, useEffect } from "react";
-
-// const alerts = [
-//   "現場隨時有溢流風險，點此詳讀避難守則警報響起請往高處避難",
-//   "請注意個人安全，結伴同行更安全",
-//   "保持聯繫，手機保持電量",
-// ];
-
-// interface AlertBannerProps {
-//   onAlertClick: () => void;
-// }
-
-// export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
-//   const [currentSlide, setCurrentSlide] = useState(0);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setCurrentSlide((prev) => (prev + 1) % alerts.length);
-//     }, 5000);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <div>
-//       <div
-//         className="bg-[#FFEEBA] dark:bg-yellow-900/50 h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60 transition-colors"
-//         onClick={onAlertClick}
-//       >
-//         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//           <div className="text-center text-[var(--text-black)] dark:text-yellow-100 font-medium">
-//             {alerts[currentSlide]}
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Carousel Indicators */}
-//       <div className="flex justify-center gap-2 py-2 bg-white dark:bg-gray-900">
-//         {alerts.map((_, index) => (
-//           <button
-//             key={index}
-//             onClick={() => setCurrentSlide(index)}
-//             className={`w-[6px] h-[6px] rounded-full transition-colors ${
-//               index === currentSlide
-//                 ? "bg-[var(--gray-2)] dark:bg-gray-300"
-//                 : "bg-[var(--gray-3)] dark:bg-gray-600"
-//             }`}
-//             aria-label={`Go to slide ${index + 1}`}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState, useEffect } from "react";
+import CarouselIndicators from "./CarouselIndicators";
+import { useDrag } from "@/hooks/useDrag";
+import PrevButton from "./PrevButton";
+import NextButton from "./NextButton";
 
 // 將簡單字串改為含有行為屬性的物件，便於控制哪些訊息可點擊
 const alerts = [
@@ -84,25 +32,11 @@ export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
     return () => clearInterval(timer);
   }, [isPaused]);
 
-  const current = alerts[currentSlide];
+  const currentInfo = alerts[currentSlide];
 
-  const handleClick = () => {
-    if (current.actionable) {
-      onAlertClick();
-    }
-  };
-
-  const goTo = (index: number) => {
-    setCurrentSlide((index + alerts.length) % alerts.length);
-  };
-
-  const next = () => {
-    goTo(currentSlide + 1);
-  };
-
-  const prev = () => {
-    goTo(currentSlide - 1);
-  };
+  const next = () => setCurrentSlide((prev) => (prev + 1) % alerts.length);
+  const prev = () =>
+    setCurrentSlide((prev) => (prev - 1 + alerts.length) % alerts.length);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
     if (e.key === "ArrowRight") {
@@ -112,88 +46,56 @@ export default function AlertBanner({ onAlertClick }: AlertBannerProps) {
       setIsPaused(true);
       prev();
     } else if (e.key === "Enter" || e.key === " ") {
-      if (current.actionable) {
+      if (currentInfo.actionable) {
         onAlertClick();
       }
     }
   };
 
+  // Use drag hook for swipe/drag navigation
+  const { isDragging, dragHandlers } = useDrag({
+    onSwipeLeft: next,
+    onSwipeRight: prev,
+    onDragStart: () => setIsPaused(true),
+    onDragEnd: () => setIsPaused(false),
+  });
+
   return (
     <div>
       <div
         className={`bg-[#FFEEBA] dark:bg-yellow-900/50 h-[64px] flex items-center justify-center cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60 transition-colors ${
-          current.actionable
+          currentInfo.actionable
             ? "cursor-pointer hover:bg-[#FFE5A0] dark:hover:bg-yellow-900/60"
             : "cursor-default"
-        }`}
-        onClick={handleClick}
-        role={current.actionable ? "button" : undefined}
-        aria-pressed={current.actionable ? false : undefined}
-        aria-disabled={!current.actionable || undefined}
+        } ${isDragging ? "select-none" : ""}`}
+        onClick={() => currentInfo.actionable && onAlertClick()}
+        role={currentInfo.actionable ? "button" : undefined}
+        aria-pressed={currentInfo.actionable ? false : undefined}
+        aria-disabled={!currentInfo.actionable || undefined}
         aria-roledescription="carousel"
         aria-label="警示輪播"
         tabIndex={0}
         onKeyDown={handleKeyDown}
         onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        {...dragHandlers}
       >
         <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full select-none">
-          {/* Prev 按鈕 */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsPaused(true);
-              prev();
-            }}
-            className="hidden sm:inline-flex items-center justify-center w-8 h-8 mr-2 rounded-full text-[var(--text-black)] dark:text-yellow-100 hover:bg-black/5 dark:hover:bg-yellow-100/10 focus:outline-none focus:ring-2 focus:ring-yellow-600"
-            aria-label="上一則警示"
-          >
-            <span aria-hidden>‹</span>
-          </button>
-
+          <PrevButton setIsPaused={setIsPaused} prev={prev} />
           <div className="flex-1 text-center text-[var(--text-black)] dark:text-yellow-100 font-medium ">
-            {current.text}
-            {!current.actionable && (
+            {currentInfo.text}
+            {!currentInfo.actionable && (
               <span className="sr-only">（此訊息不可點擊）</span>
             )}
           </div>
-
-          {/* Next 按鈕 */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsPaused(true);
-              next();
-            }}
-            className="hidden sm:inline-flex items-center justify-center w-8 h-8 ml-2 rounded-full text-[var(--text-black)] dark:text-yellow-100 hover:bg-black/5 dark:hover:bg-yellow-100/10 focus:outline-none focus:ring-2 focus:ring-yellow-600"
-            aria-label="下一則警示"
-          >
-            <span aria-hidden>›</span>
-          </button>
+          <NextButton setIsPaused={setIsPaused} next={next} />
         </div>
       </div>
-
-      {/* Carousel Indicators */}
-      <div className="flex justify-center gap-2 py-2 bg-white dark:bg-gray-900">
-        {alerts.map((alert, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setCurrentSlide(index);
-              setIsPaused(true);
-            }}
-            className={`w-[6px] h-[6px] rounded-full transition-colors ${
-              index === currentSlide
-                ? "bg-[var(--gray-2)]"
-                : "bg-[var(--gray-3)]"
-            }`}
-            aria-label={`跳到第 ${index + 1} 則警示：${alert.text}`}
-            aria-current={index === currentSlide}
-          />
-        ))}
-      </div>
+      <CarouselIndicators
+        alerts={alerts}
+        setCurrentSlide={setCurrentSlide}
+        setIsPaused={setIsPaused}
+        currentSlide={currentSlide}
+      />
     </div>
   );
 }

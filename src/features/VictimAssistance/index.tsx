@@ -6,10 +6,8 @@ import {
   getShelters,
   getMedicalStations,
   getMentalHealthResources,
-  type Shelter,
-  type MedicalStation,
-  type MentalHealthResource,
 } from "@/lib/api";
+import { Shelter, MedicalStation, MentalHealthResource } from "@/lib/types";
 import Button from "@/components/Button";
 import InfoCard from "@/components/InfoCard";
 

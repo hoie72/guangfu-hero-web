@@ -125,7 +125,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
       {/* 彈窗 */}
       {isModalOpen && (
         <DetailModal
-          setIsModalOpen={setIsModalOpen}
+          onClose={() => setIsModalOpen(false)}
           type={type}
           name={name}
           fullData={fullData}

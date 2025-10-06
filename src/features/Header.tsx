@@ -8,7 +8,7 @@ import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
 import AlertBanner from "@/components/AlertBanner";
 import WarningModal from "@/components/WarningModal";
-import Toast from "@/components/Toast";
+import Toast2 from "@/components/Toast2"; // Share Icon 專用的 Toast
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,55 +16,30 @@ export default function Header() {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const handleShare = async () => {
+  const handleShare = () => {
     if (typeof window === "undefined") return;
 
-    // URL
-    const baseUrl = window.location.origin;
-    const shareUrl = `${baseUrl}${pathname}`;
+    // 建構完整 URL
+    const shareUrl = window.location.href;
 
-    // 根據路徑決定標題
-    const getTitle = () => {
-      if (pathname.startsWith("/map")) return "光復超人 - 現場地圖";
-      if (pathname.startsWith("/volunteer")) return "光復超人 - 志工資訊";
-      if (pathname.startsWith("/victim")) return "光復超人 - 災民協助";
-      return "光復超人";
-    };
-
-    const title = getTitle();
-    const text = "花蓮光復鄉災害援助資訊平台";
-
-    // 優先使用 Web Share API
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: title,
-          text: text,
-          url: shareUrl,
-        });
-      } catch (error) {
-        // if不支援分享功能 轉為複製功能
-        if (
-          error instanceof Error &&
-          error.name !== "AbortError" &&
-          error.name !== "NotAllowedError"
-        ) {
-          // 回退到複製功能
-          await fallbackToCopy(shareUrl);
-        }
-      }
-    } else {
-      // if 不支援 Web Share API 使用複製功能
-      await fallbackToCopy(shareUrl);
-    }
-  };
-
-  const fallbackToCopy = async (url: string) => {
+    // 使用最簡單可靠的方法（execCommand）
+    const textarea = document.createElement("textarea");
+    textarea.value = shareUrl;
+    document.body.appendChild(textarea);
+    textarea.select();
+    
     try {
-      await navigator.clipboard.writeText(url);
-      setShowToast(true);
-    } catch (error) {
-      console.error("複製失敗:", error);
+      const successful = document.execCommand("copy");
+      document.body.removeChild(textarea);
+      
+      if (successful) {
+        setShowToast(true);
+      } else {
+        alert(`請手動複製連結：\n${shareUrl}`);
+      }
+    } catch (err) {
+      document.body.removeChild(textarea);
+      alert(`請手動複製連結：\n${shareUrl}`);
     }
   };
 
@@ -123,9 +98,9 @@ export default function Header() {
         onClose={() => setShowWarningModal(false)}
       />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      {/* Toast */}
-      <Toast
-        message="複製成功"
+      
+      {/* Toast2 - Share Icon */}
+      <Toast2
         isVisible={showToast}
         onClose={() => setShowToast(false)}
       />

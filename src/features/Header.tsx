@@ -8,32 +8,63 @@ import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
 import AlertBanner from "@/components/AlertBanner";
 import WarningModal from "@/components/WarningModal";
+import Toast from "@/components/Toast";
 
 export default function Header() {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const handleShare = async () => {
     if (typeof window === "undefined") return;
 
-    // 建構完整 URL
     const baseUrl = window.location.origin;
     const shareUrl = `${baseUrl}${pathname}`;
 
     // 根據路徑決定標題
     const getTitle = () => {
-      if (pathname.startsWith("/map")) return "花蓮援助平台 - 現場地圖";
-      if (pathname.startsWith("/volunteer")) return "花蓮援助平台 - 志工資訊";
-      if (pathname.startsWith("/victim")) return "花蓮援助平台 - 災民協助";
-      return "花蓮援助平台";
+      if (pathname.startsWith("/map")) return "光復超人 - 現場地圖";
+      if (pathname.startsWith("/volunteer")) return "光復超人 - 志工資訊";
+      if (pathname.startsWith("/victim")) return "光復超人 - 災民協助";
+      return "光復超人";
     };
 
     const title = getTitle();
+    const text = "花蓮光復鄉災害援助資訊平台";
 
+    // 優先使用 Web Share API
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          text: text,
+          url: shareUrl,
+        });
+        // 分享成功，不顯示任何提示
+      } catch (error) {
+        // 使用者取消分享或分享失敗，靜默處理
+        // 如果是因為不支援而失敗，則回退到複製功能
+        if (
+          error instanceof Error &&
+          error.name !== "AbortError" &&
+          error.name !== "NotAllowedError"
+        ) {
+          // 回退到複製功能
+          await fallbackToCopy(shareUrl);
+        }
+      }
+    } else {
+      // 不支援 Web Share API，使用複製功能
+      await fallbackToCopy(shareUrl);
+    }
+  };
+
+  // 回退方案：複製到剪貼簿
+  const fallbackToCopy = async (url: string) => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert(`${title}\n連結已複製到剪貼簿`);
+      await navigator.clipboard.writeText(url);
+      setShowToast(true);
     } catch (error) {
       console.error("複製失敗:", error);
     }
@@ -94,6 +125,13 @@ export default function Header() {
         onClose={() => setShowWarningModal(false)}
       />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      {/* Toast */}
+      <Toast
+        message="複製成功"
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+      />
     </>
   );
 }

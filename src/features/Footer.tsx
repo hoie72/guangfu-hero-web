@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex gap-3 justify-center">
           <Link
             href="/resources"
-            className="flex-1 max-w-[160px] bg-[var(--secondary)] hover:bg-[#B55815] py-3 px-6 rounded-lg text-center font-bold transition-colors"
+            className="flex-1 max-w-[160px] bg-[var(--secondary)] hover:bg-[#166f8c] py-3 px-6 rounded-lg text-center font-bold transition-colors"
           >
             物資媒合
           </Link>

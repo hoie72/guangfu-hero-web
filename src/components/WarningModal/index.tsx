@@ -114,7 +114,7 @@ export default function WarningModal({ isOpen, onClose }: WarningModalProps) {
           {/* 關閉按鈕：移到右側，使用絕對定位保持標題置中 */}
           <button
             onClick={onClose}
-            className="absolute right-0 top-1/2 -translate-y-1/2 text-white hover:text-[var(--gray-3)] text-2xl w-6 h-6 flex items-center justify-center cursor-pointer"
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-2xl w-6 h-6 flex items-center justify-center cursor-pointer"
             aria-label="關閉視窗"
           >
             ✕

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import ReactGA from "react-ga4";
 
 export default function Footer() {
   return (
@@ -8,12 +11,18 @@ export default function Footer() {
           <Link
             href="/resources"
             className="flex-1 max-w-[160px] bg-[var(--secondary)] hover:bg-[#166f8c] py-3 px-6 rounded-lg text-center font-bold transition-colors"
+            onClick={() => {
+              ReactGA.event("物資媒合");
+            }}
           >
             物資媒合
           </Link>
           <Link
             href="/volunteer-register"
             className="flex-1 max-w-[160px] bg-[var(--primary)] hover:bg-[#B55815] py-3 px-6 rounded-lg text-center font-bold transition-colors"
+            onClick={() => {
+              ReactGA.event("志工媒合");
+            }}
           >
             志工媒合
           </Link>

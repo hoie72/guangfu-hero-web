@@ -171,7 +171,7 @@ export default function VolunteerInfo({
                 別上志工專才辨識證，讓大家一眼就能快速辨識你的專業能力，立馬派遣工作，成為災區即戰力！
               </div>
               <a
-                href="https://drive.google.com/drive/folders/15D92UyiEKYKZInl1l0IAbFeKDOQRSfj1"
+                href="https://drive.google.com/drive/folders/1B9y7Rl56xpG0vjLrV37h0CqqUNrLHr_d?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-block text-white bg-[var(--primary)] hover:bg-[#e06d00] rounded-[12px] px-8 py-4 font-medium transition-colors text-center"

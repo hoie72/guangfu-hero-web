@@ -18,10 +18,11 @@ const Wrapper = ({
     <div className="min-h-screen flex flex-col">
       <Header />
       <main
-        className="flex-1 mt-[65px] mb-[85px] overflow-y-auto"
-        style={{
-          maxHeight: hideFooter ? "calc(100vh - 65px)" : "calc(100vh - 145px)",
-        }}
+        className={`flex-1 mt-[65px] mb-[85px] overflow-y-auto ${
+          hideFooter
+            ? "max-h-screen-minus-header"
+            : "max-h-screen-minus-header-footer"
+        }`}
       >
         {!hideBanner && <Banner />}
         {children}

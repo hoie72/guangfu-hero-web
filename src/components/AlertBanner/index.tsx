@@ -12,7 +12,10 @@ const alerts = [
     text: "現場隨時有溢流風險，點此詳讀避難守則警報響起請往高處避難",
     actionable: true,
   },
-  { text: "光復鄉已恢復上班上課。下水道作業慎防沼氣，請勿點火！補水防中暑！", actionable: false },
+  {
+    text: "光復鄉已恢復上班上課。下水道作業慎防沼氣，請勿點火！補水防中暑！",
+    actionable: false,
+  },
   { text: "請注意個人安全，結伴同行更安全", actionable: false },
   { text: "保持聯繫，手機保持電量", actionable: false },
 ];

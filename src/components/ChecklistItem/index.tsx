@@ -28,7 +28,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
       <div className="flex-1">
         <span
           className={`font-medium ${
-            checked ? "line-through text-gray-400" : ""
+            checked ? "line-through text-[var(--gray-2)]" : ""
           } ${highlight ? "text-orange-600" : ""}`}
         >
           {label}
@@ -37,12 +37,12 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
           <div className="mt-1 space-y-0.5">
             {Array.isArray(description) ? (
               description.map((desc, index) => (
-                <p key={index} className="text-xs text-gray-500">
+                <p key={index} className="text-xs text-[var(--gray)]">
                   {desc}
                 </p>
               ))
             ) : (
-              <p className="text-xs text-gray-500">{description}</p>
+              <p className="text-xs text-[var(--gray)]">{description}</p>
             )}
           </div>
         )}

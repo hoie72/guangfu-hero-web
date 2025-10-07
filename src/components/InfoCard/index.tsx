@@ -31,6 +31,7 @@ interface InfoCardProps {
   infoUrl?: string;
   mapUrl?: string;
   className?: string;
+  tags?: string[];
   fullData?: DataType;
 }
 
@@ -42,6 +43,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   contact,
   mapUrl,
   className = "",
+  tags,
   fullData,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,13 +65,24 @@ const InfoCard: React.FC<InfoCardProps> = ({
     <div
       className={`
       bg-white
-      border-b border-gray-200
+      border-b border-[var(--gray-3)]
       px-1
       py-3
       ${className}
     `}
     >
       <div className="flex flex-col pr-1">
+        <div className="flex flex-row gap-2 mb-1">
+          {tags &&
+            tags.map((item, idx) => (
+              <div
+                className="flex size-fit px-3 py-1 bg-[var(--gray-4)] text-[var(--gray-2)] text-sm rounded"
+                key={idx}
+              >
+                {item}
+              </div>
+            ))}
+        </div>
         <h3 className="text-xl font-bold text-[var(--text-black)] mb-1">
           {name}
         </h3>
@@ -79,7 +92,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </div>
         )}
         <div className="flex items-start gap-2 text-[var(--gray-2)]">
-          <div className="font-medium w-10">類型</div>
+          <div className="text-[var(--text-black)] font-medium w-10">類型</div>
           <div className="w-[290px]">{type || "未提供"}</div>
         </div>
         <div className="flex items-start gap-2 text-[var(--gray-2)] mb-2">
@@ -112,7 +125,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
       {/* 彈窗 */}
       {isModalOpen && (
         <DetailModal
-          setIsModalOpen={setIsModalOpen}
+          onClose={() => setIsModalOpen(false)}
           type={type}
           name={name}
           fullData={fullData}

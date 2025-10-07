@@ -24,6 +24,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+       <head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-G71PVV5FTV`} strategy="afterInteractive"
+        />
+        <script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-G71PVV5FTV', { debug_mode: true });
+          `}
+        </script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

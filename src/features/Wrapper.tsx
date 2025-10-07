@@ -11,7 +11,7 @@ interface WrapperProps {
 
 const Wrapper = ({
   hideBanner = false,
-  hideFooter,
+  hideFooter = false,
   children,
 }: WrapperProps) => {
   return (

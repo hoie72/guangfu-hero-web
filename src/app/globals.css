@@ -18,6 +18,7 @@
   --gray-2: #838383;
   --gray-3: #e6e6e6;
   --gray-4: #f4f4f5;
+  --black-overlay:#00000033;
 }
 
 @theme inline {
@@ -35,10 +36,33 @@ body {
   /* font-size: 20px; */
 }
 
+/* iOS Safari viewport height fix */
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  :root {
+    --viewport-height: 100vh;
+  }
+}
+
+/* Utility classes for dynamic viewport heights */
+.max-h-screen-minus-header {
+  max-height: calc(var(--viewport-height, 100vh) - 65px);
+}
+
+.max-h-screen-minus-header-footer {
+  max-height: calc(var(--viewport-height, 100vh) - 145px);
+}
+
 @keyframes slide-up {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -52,6 +76,7 @@ body {
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }

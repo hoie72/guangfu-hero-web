@@ -88,7 +88,7 @@ const DetailModal = ({ onClose, type, name, fullData }: DetailModalProps) => {
   return (
     <div>
       <div
-        className="fixed inset-0 z-40 backdrop-blur-sm bg-[#00000033]"
+        className="fixed inset-0 z-40 backdrop-blur-sm bg-[var(--black-overlay)]"
         onClick={onClose}
       />
       <div className="fixed inset-0 z-50 flex items-end pointer-events-none">

@@ -6,13 +6,10 @@ import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
-import AlertBanner from "@/components/AlertBanner";
-import WarningModal from "@/components/WarningModal";
 
 export default function Header() {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [showWarningModal, setShowWarningModal] = useState(false);
 
   const handleShare = async () => {
     if (typeof window === "undefined") return;
@@ -41,7 +38,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full shadow-sm">
+      <header className="w-full shadow-sm fixed top-0 bg-white z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 relative">
             {/* Left: Hamburger menu */}
@@ -88,11 +85,6 @@ export default function Header() {
         </div>
       </header>
 
-      <AlertBanner onAlertClick={() => setShowWarningModal(true)} />
-      <WarningModal
-        isOpen={showWarningModal}
-        onClose={() => setShowWarningModal(false)}
-      />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   );

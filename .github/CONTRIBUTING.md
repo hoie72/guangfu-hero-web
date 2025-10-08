@@ -17,7 +17,7 @@
 ```bash
 git checkout dev
 git pull origin dev
-npm ci        # 或 yarn install / pnpm i
+npm install        # 或 yarn install / pnpm i
 npm run build # 確認能正常編譯
 ```
 

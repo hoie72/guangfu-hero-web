@@ -59,6 +59,26 @@ const CATEGORIES = [
 const MAP_URL = "https://guangfu250923-map.pttapp.cc/map.html";
 const MAP_HEIGHT = 422;
 
+const getMapUrl = (station: {
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+  location?: string;
+}) => {
+  if (station.coordinates) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      `${station.coordinates.lat},${station.coordinates.lng}`
+    )}`;
+  }
+
+  if (station.location)
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      station.location
+    )}`;
+
+  return undefined;
+};
 export default function SiteMap() {
   const searchParams = useSearchParams();
   const [showMode, setShowMode] = useState<ShowMode>("mapShow");
@@ -283,9 +303,7 @@ export default function SiteMap() {
                       address={station.location}
                       contact={station.phone}
                       hours={station.opening_hours || ""}
-                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        station.location
-                      )}`}
+                      mapUrl={getMapUrl(station)}
                       fullData={station}
                     />
                   ))
@@ -310,9 +328,7 @@ export default function SiteMap() {
                         address={station.location}
                         contact={station.phone}
                         hours={station.opening_hours || ""}
-                        mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                          station.location
-                        )}`}
+                        mapUrl={getMapUrl(station)}
                         fullData={station}
                       />
                     ))
@@ -335,9 +351,7 @@ export default function SiteMap() {
                       address={station.location}
                       contact={station.phone}
                       hours={station.time_slots || ""}
-                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        station.location
-                      )}`}
+                      mapUrl={getMapUrl(station)}
                       fullData={station}
                     />
                   ))
@@ -360,9 +374,7 @@ export default function SiteMap() {
                       address={station.location}
                       contact={station.phone}
                       hours={station.opening_hours || ""}
-                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        station.location
-                      )}`}
+                      mapUrl={getMapUrl(station)}
                       fullData={station}
                     />
                   ))
@@ -385,9 +397,7 @@ export default function SiteMap() {
                       address={station.location}
                       contact={station.phone}
                       hours={station.operating_hours || ""}
-                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        station.location
-                      )}`}
+                      mapUrl={getMapUrl(station)}
                       fullData={station}
                     />
                   ))
@@ -409,9 +419,7 @@ export default function SiteMap() {
                       address={station.location}
                       contact={station.contact_info}
                       hours={station.available_period || ""}
-                      mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        station.location
-                      )}`}
+                      mapUrl={getMapUrl(station)}
                       fullData={station}
                     />
                   ))

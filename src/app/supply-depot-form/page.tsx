@@ -2,17 +2,25 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 /**
  * RWD 物資站志工填單頁
  * - 需求列表改為從遠端 API 取得
  * - 以 offset 為分頁方式：0 第一頁、50 第二頁、100 第三頁…
- * - 純 Tailwind CSS，無第三方 UI 依賴
+ * - 僅已登入 LINE 的使用者可填，未登入顯示門擋頁
  */
 
 const PAGE_SIZE = 50;
 const API_BASE =
-  "https://guangfu250923.pttapp.cc/supplies?embed=all&limit=" + PAGE_SIZE + "&offset=";
+  "https://guangfu250923.pttapp.cc/supplies?embed=all&limit=" +
+  PAGE_SIZE +
+  "&offset=";
+
+// ---- LINE OAuth 設定（使用環境變數，client 端要用 NEXT_PUBLIC_*）----
+const LINE_CLIENT_ID = process.env.NEXT_PUBLIC_LINE_CLIENT_ID;
+const LINE_REDIRECT_URI = process.env.NEXT_PUBLIC_LINE_REDIRECT_URI; // 例： https://app-dev.yourdomain.com/line/callback 或 http://localhost:3000/line/callback
+const LINE_SCOPE = "openid%20profile%20email"; // 需要 email 再留，否則可改成 "openid%20profile"
 
 type NeedItem = { name: string; qty: number | string; unit: string };
 type Need = {
@@ -25,7 +33,6 @@ type Need = {
 
 // 嘗試把不確定結構的 API 統一轉成 Need[]
 function normalizeApiToNeeds(payload: any): Need[] {
-  // 常見可能：{ data: [...] } / { results: [...] } / 直接陣列
   const arr: any[] = Array.isArray(payload)
     ? payload
     : Array.isArray(payload?.data)
@@ -44,14 +51,8 @@ function normalizeApiToNeeds(payload: any): Need[] {
 
     const title = row.title ?? row.name ?? row.subject ?? `需求 ${id}`;
     const desc =
-      row.desc ??
-      row.description ??
-      row.note ??
-      row.notes ??
-      row.summary ??
-      "";
+      row.desc ?? row.description ?? row.note ?? row.notes ?? row.summary ?? "";
 
-    // 嘗試找出需求明細的陣列欄位
     const rawItems =
       row.items ??
       row.requirements ??
@@ -71,7 +72,9 @@ function normalizeApiToNeeds(payload: any): Need[] {
 
     const tagsSrc = row.tags ?? row.labels ?? row.categories ?? [];
     const tags = Array.isArray(tagsSrc)
-      ? tagsSrc.map((t: any) => (typeof t === "string" ? t : t?.name ?? "")).filter(Boolean)
+      ? tagsSrc
+          .map((t: any) => (typeof t === "string" ? t : t?.name ?? ""))
+          .filter(Boolean)
       : [];
 
     return { id, title, desc, items, tags };
@@ -79,10 +82,17 @@ function normalizeApiToNeeds(payload: any): Need[] {
 }
 
 export default function ReliefFormPage() {
-  // 右側「可提供的物資」動態列
-  const [supplies, setSupplies] = useState([{ id: cryptoRandomId(), name: "", qty: "", unit: "" }]);
+  const router = useRouter();
 
-  // 左側「需求清單」來自 API
+  // ---- 登入門檻狀態 ----
+  const [authChecked, setAuthChecked] = useState(false); // 是否檢查完 localStorage
+  const [authed, setAuthed] = useState(false); // 是否已登入（依據 localStorage 是否有 line_oauth_state）
+  // ---- 右側「可提供的物資」動態列 ----
+  const [supplies, setSupplies] = useState([
+    { id: cryptoRandomId(), name: "", qty: "", unit: "" },
+  ]);
+
+  // ---- 左側「需求清單」來自 API ----
   const [needs, setNeeds] = useState<Need[]>([]);
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,8 +102,18 @@ export default function ReliefFormPage() {
 
   const pageIndex = useMemo(() => Math.floor(offset / PAGE_SIZE) + 1, [offset]);
 
+  // 進入頁面先檢查是否已登入（localStorage 有 line_oauth_state）
   useEffect(() => {
-    // 取消上一個請求（避免快速切頁競爭）
+    if (typeof window === "undefined") return;
+    const flag = !!localStorage.getItem("line_oauth_state");
+    setAuthed(flag);
+    setAuthChecked(true);
+  }, []);
+
+  // 只有已登入時才抓需求清單
+  useEffect(() => {
+    if (!authed) return;
+
     abortRef.current?.abort();
     const ac = new AbortController();
     abortRef.current = ac;
@@ -106,21 +126,16 @@ export default function ReliefFormPage() {
           method: "GET",
           cache: "no-store",
           signal: ac.signal,
-          headers: {
-            Accept: "application/json",
-          },
+          headers: { Accept: "application/json" },
         });
-        if (!res.ok) {
+        if (!res.ok)
           throw new Error(`API 錯誤：${res.status} ${res.statusText}`);
-        }
         const json = await res.json();
-
         const normalized = normalizeApiToNeeds(json);
-        console.log(normalized,'normalized-');
         setNeeds(normalized);
-
-        // 是否還有下一頁：若回傳數量 == PAGE_SIZE，推測仍有下一頁
-        setHasNext(Array.isArray(normalized) && normalized.length === PAGE_SIZE);
+        setHasNext(
+          Array.isArray(normalized) && normalized.length === PAGE_SIZE
+        );
       } catch (err: any) {
         if (err?.name === "AbortError") return;
         setErrMsg(err?.message ?? "發生未知錯誤");
@@ -133,18 +148,85 @@ export default function ReliefFormPage() {
 
     fetchList();
     return () => ac.abort();
-  }, [offset]);
+  }, [offset, authed]);
 
   const goPrev = () => setOffset((o) => Math.max(0, o - PAGE_SIZE));
   const goNext = () => setOffset((o) => o + PAGE_SIZE);
 
+  // 觸發 LINE SSO
+  const startLineLogin = () => {
+    if (typeof window === "undefined") return;
+
+    // 可選：讓登入後能回到原頁面
+    const next = encodeURIComponent(
+      (window.location.pathname || "/") + (window.location.search || "")
+    );
+
+    // state 可用來攜帶 callback 或自訂資訊
+    const state = encodeURIComponent(
+      JSON.stringify({
+        next,
+      })
+    );
+    // 重新導向到你後端的 LINE OAuth 起始點
+    window.location.href = `https://guangfu250923.pttapp.cc/auth/line/start?state=${encodeURIComponent(
+      state
+    )}&redirect_uri=${encodeURIComponent(
+      `${window.location.origin}/auth/line/callback`
+    )}`;
+  };
+
+  // 顯示「檢查中」骨架
+  if (!authChecked) {
+    return (
+      <main className="min-h-dvh grid place-items-center bg-gradient-to-b from-slate-50 to-slate-100">
+        <div className="animate-pulse rounded-2xl border border-slate-200 bg-white px-6 py-4 text-slate-600 shadow-sm">
+          正在檢查登入狀態…
+        </div>
+      </main>
+    );
+  }
+
+  // 未登入：顯示門擋頁（登入 / 返回首頁）
+  if (!authed) {
+    return (
+      <main className="min-h-dvh grid place-items-center bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h1 className="text-xl font-semibold">需要先登入 LINE 才能填寫</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            請先完成 LINE 登入後再回來此頁進行填寫。你也可以先返回首頁。
+          </p>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
+            <button
+              type="button"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm shadow-sm hover:bg-slate-50"
+              onClick={() => (window.location.href = "/")}
+            >
+              返回首頁
+            </button>
+            <button
+              type="button"
+              className="rounded-xl border-0 bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
+              onClick={startLineLogin}
+            >
+              前往 LINE 登入
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // 已登入：顯示原頁面
   return (
     <main className="min-h-dvh bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
       <div className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
         {/* Header */}
         <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">物資站志工填單頁面</h1>
+            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+              物資站志工填單頁面
+            </h1>
             <p className="mt-1 text-sm text-slate-600">
               請填寫物資站資訊與可提供的物資，送出後由系統彙整。
             </p>
@@ -152,16 +234,21 @@ export default function ReliefFormPage() {
 
           <div className="flex gap-2">
             <button
+              disabled
               type="button"
               className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-slate-50 active:scale-[0.99]"
               onClick={() => alert("登入流程請串接 LINE / OAuth")}
             >
-              登入
+              已登入
             </button>
             <button
               type="button"
               className="rounded-2xl border border-transparent bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-600 active:scale-[0.99]"
-              onClick={() => alert("登出（清理 session）")}
+              onClick={() => {
+                // 示意登出：清掉 localStorage 的登入旗標
+                localStorage.removeItem("line_oauth_state");
+                window.location.reload();
+              }}
             >
               登出
             </button>
@@ -175,8 +262,17 @@ export default function ReliefFormPage() {
             <Card>
               <CardHeader id="station-info">物資站資訊</CardHeader>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="物資站名稱" id="stationName" placeholder="例：光復里物資站" />
-                <Field label="物資站電話" id="stationPhone" type="tel" placeholder="例：0912-345-678" />
+                <Field
+                  label="物資站名稱"
+                  id="stationName"
+                  placeholder="例：光復里物資站"
+                />
+                <Field
+                  label="物資站電話"
+                  id="stationPhone"
+                  type="tel"
+                  placeholder="例：0912-345-678"
+                />
                 <Field
                   label="物資站地址"
                   id="stationAddress"
@@ -261,7 +357,9 @@ export default function ReliefFormPage() {
                       id={`s-name-${row.id}`}
                       placeholder="例：礦泉水"
                       value={row.name}
-                      onChange={(v) => updateSupply(row.id, { name: v }, supplies, setSupplies)}
+                      onChange={(v) =>
+                        updateSupply(row.id, { name: v }, supplies, setSupplies)
+                      }
                       className="sm:col-span-6"
                     />
                     <Field
@@ -271,7 +369,9 @@ export default function ReliefFormPage() {
                       inputMode="numeric"
                       placeholder="例：10"
                       value={row.qty}
-                      onChange={(v) => updateSupply(row.id, { qty: v }, supplies, setSupplies)}
+                      onChange={(v) =>
+                        updateSupply(row.id, { qty: v }, supplies, setSupplies)
+                      }
                       className="sm:col-span-3"
                     />
                     <Field
@@ -279,7 +379,9 @@ export default function ReliefFormPage() {
                       id={`s-unit-${row.id}`}
                       placeholder="例：箱 / 瓶 / 包"
                       value={row.unit}
-                      onChange={(v) => updateSupply(row.id, { unit: v }, supplies, setSupplies)}
+                      onChange={(v) =>
+                        updateSupply(row.id, { unit: v }, supplies, setSupplies)
+                      }
                       className="sm:col-span-3"
                     />
                   </motion.div>
@@ -290,7 +392,10 @@ export default function ReliefFormPage() {
                     type="button"
                     className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
                     onClick={() =>
-                      setSupplies((s) => [...s, { id: cryptoRandomId(), name: "", qty: "", unit: "" }])
+                      setSupplies((s) => [
+                        ...s,
+                        { id: cryptoRandomId(), name: "", qty: "", unit: "" },
+                      ])
                     }
                     aria-label="新增一列物資"
                   >
@@ -305,9 +410,9 @@ export default function ReliefFormPage() {
                 <button
                   type="button"
                   className="order-2 rounded-2xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-800 shadow-sm hover:bg-slate-50 sm:order-1"
-                  onClick={() => alert("已存為草稿（示意）")}
+                  onClick={() => router.push("/")}
                 >
-                  存成草稿
+                  回首頁
                 </button>
 
                 <button
@@ -356,10 +461,20 @@ function handleSubmit(supplies: { name: string; qty: string; unit: string }[]) {
 
 /** UI atoms */
 function Card({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">{children}</div>;
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      {children}
+    </div>
+  );
 }
 
-function CardHeader({ children, id }: { children: React.ReactNode; id?: string }) {
+function CardHeader({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <h2 id={id} className="mb-4 text-lg font-semibold tracking-tight">
       {children}
@@ -388,7 +503,9 @@ function Field({
 }) {
   return (
     <label className={`block ${className || ""}`} htmlFor={id}>
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-slate-700">
+        {label}
+      </span>
       <input
         id={id}
         name={id}
@@ -425,7 +542,9 @@ function NeedCard({ data }: { data: Need }) {
             ))}
           </div>
         </div>
-        {data.desc && <p className="mt-1 text-sm text-slate-600">{data.desc}</p>}
+        {data.desc && (
+          <p className="mt-1 text-sm text-slate-600">{data.desc}</p>
+        )}
         <ul className="mt-2 grid grid-cols-1 gap-1 sm:grid-cols-2">
           {data.items.map((it, i) => (
             <li

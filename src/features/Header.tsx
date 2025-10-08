@@ -18,7 +18,6 @@ export default function Header() {
   const openLogin = () => setLoginOpen(true);
   const closeLogin = () => setLoginOpen(false);
 
-  const API_BASE_URL = "https://guangfu250923.pttapp.cc";
   // 觸發 LINE SSO
   const startLineLogin = () => {
     if (typeof window === "undefined") return;
@@ -130,27 +129,28 @@ export default function Header() {
                 />
               </button>
 
-                {/* 根據 localStorage 判斷是否已使用 LINE 登入，顯示登出或開啟登入 Modal */}
-                {typeof window !== "undefined" && localStorage.getItem("line_oauth_state") ? (
+              {/* 根據 localStorage 判斷是否已使用 LINE 登入，顯示登出或開啟登入 Modal */}
+              {/* {typeof window !== "undefined" &&
+              localStorage.getItem("line_oauth_state") ? (
                 <button
                   className="px-3 py-1.5 rounded-md text-sm font-medium bg-red-600 text-white hover:bg-red-500"
                   onClick={() => {
-                  // 清除與 LINE 登入相關的 localStorage（根據實際鍵名調整）
-                  localStorage.removeItem("line_oauth_state");
-                  // 若有後端登出接口，也可以在這裡呼叫，或直接重新載入頁面更新 UI
-                  window.location.reload();
+                    // 清除與 LINE 登入相關的 localStorage（根據實際鍵名調整）
+                    localStorage.removeItem("line_oauth_state");
+                    // 若有後端登出接口，也可以在這裡呼叫，或直接重新載入頁面更新 UI
+                    window.location.reload();
                   }}
                 >
                   登出
                 </button>
-                ) : (
+              ) : (
                 <button
                   className="px-3 py-1.5 rounded-md text-sm font-medium bg-gray-900 text-white hover:bg-gray-800"
                   onClick={openLogin}
                 >
                   Login
                 </button>
-                )}
+              )} */}
             </div>
           </div>
         </div>
@@ -215,7 +215,7 @@ export default function Header() {
                 onClick={startLineLogin}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#000000] text-white py-2.5 text-sm font-medium hover:brightness-95"
               >
-               <Image src="/line.svg" alt="" width={48} height={48} />
+                <Image src="/line.svg" alt="" width={48} height={48} />
                 使用 LINE 登入
               </button>
 

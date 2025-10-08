@@ -251,12 +251,17 @@ export default function SiteMap() {
         )}
       </div>
       <div>
-        {showMode === "mapShow" && (
+        {showMode === 'mapShow' && (
           <iframe
             src={MAP_URL}
             title="地圖顯示"
             width="100%"
             height={MAP_HEIGHT}
+            allow="geolocation"
+            sandbox="
+              allow-scripts
+              allow-same-origin
+            "
           />
         )}
         {showMode === "listShow" && (

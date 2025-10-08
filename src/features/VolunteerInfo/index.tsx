@@ -379,7 +379,7 @@ export default function VolunteerInfo({
                   </a>
                   <a
                     href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip121/query"
-                    className="flex text-[var(--gray)] underline text-sm"
+                    className="flex text-[var(--gray)] underline text-sm mb-2"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

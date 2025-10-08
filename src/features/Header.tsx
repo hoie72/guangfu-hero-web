@@ -19,7 +19,6 @@ export default function Header() {
   const closeLogin = () => setLoginOpen(false);
 
   const API_BASE_URL = "https://guangfu250923.pttapp.cc";
-  
   // 觸發 LINE SSO
   const startLineLogin = () => {
     if (typeof window === "undefined") return;

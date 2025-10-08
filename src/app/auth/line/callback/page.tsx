@@ -52,7 +52,7 @@ export default function LineLocalCallback() {
           throw new Error(text || `Exchange failed: ${res.status}`);
         }
 
-        window.localStorage.setItem("line_oauth_state", await JSON.stringify(res));
+        window.localStorage.setItem("line_oauth_state", JSON.stringify(await res.json()));
         setMsg("LINE 登入成功，正在導向…");
         
 

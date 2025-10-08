@@ -1,69 +1,69 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   getWaterRefillStations,
   getShowerStations,
   getRestrooms,
   getMedicalStations,
-  getAccommodations
-} from '@/lib/api';
+  getAccommodations,
+} from "@/lib/api";
 import {
   WaterRefillStations,
   ShowerStations,
   RestRooms,
   MedicalStation,
-  Accommodations
-} from '@/lib/types';
-import InfoCard from '@/components/InfoCard';
-import DropdownSelect from '@/components/DropdownSelect';
-import CategoryButton from './CategoryButton';
+  Accommodations,
+} from "@/lib/types";
+import InfoCard from "@/components/InfoCard";
+import DropdownSelect from "@/components/DropdownSelect";
+import CategoryButton from "./CategoryButton";
 
 type LocationCategory =
-  | 'all'
-  | 'water_refill_stations'
-  | 'shower_stations'
-  | 'restrooms'
-  | 'medical_stations'
-  | 'accommodations';
-type ShowMode = 'mapShow' | 'listShow';
+  | "all"
+  | "water_refill_stations"
+  | "shower_stations"
+  | "restrooms"
+  | "medical_stations"
+  | "accommodations";
+type ShowMode = "mapShow" | "listShow";
 
 const CATEGORIES = [
   {
-    key: 'all',
-    name: '全部'
+    key: "all",
+    name: "全部",
   },
   {
-    key: 'water_refill_stations',
-    name: '加水站'
+    key: "water_refill_stations",
+    name: "加水站",
   },
   {
-    key: 'shower_stations',
-    name: '洗澡點'
+    key: "shower_stations",
+    name: "洗澡點",
   },
   {
-    key: 'restrooms',
-    name: '廁所'
+    key: "restrooms",
+    name: "廁所",
   },
   {
-    key: 'medical_stations',
-    name: '醫療站'
+    key: "medical_stations",
+    name: "醫療站",
   },
   {
-    key: 'accommodations',
-    name: '住宿'
-  }
+    key: "accommodations",
+    name: "住宿",
+  },
 ];
 
-const MAP_URL = 'https://guangfu250923-map.pttapp.cc/map.html';
+const MAP_URL = "https://guangfu250923-map.pttapp.cc/map.html";
 const MAP_HEIGHT = 422;
 
 export default function SiteMap() {
   const searchParams = useSearchParams();
-  const [showMode, setShowMode] = useState<ShowMode>('mapShow');
+  const [showMode, setShowMode] = useState<ShowMode>("mapShow");
   const [selectedCategory, setSelectedCategory] =
-    useState<LocationCategory>('all');
+    useState<LocationCategory>("all");
   const [waterRefillStations, setWaterRefillStations] = useState<
     WaterRefillStations[]
   >([]);
@@ -85,13 +85,13 @@ export default function SiteMap() {
 
   // 處理 URL 參數
   useEffect(() => {
-    const view = searchParams.get('view');
-    const category = searchParams.get('category');
+    const view = searchParams.get("view");
+    const category = searchParams.get("category");
 
-    if (view === 'list') {
-      setShowMode('listShow');
-      if (category === 'accommodations') {
-        setSelectedCategory('accommodations');
+    if (view === "list") {
+      setShowMode("listShow");
+      if (category === "accommodations") {
+        setSelectedCategory("accommodations");
         fetchAccommodations();
       }
     }
@@ -104,7 +104,7 @@ export default function SiteMap() {
       const response = await getWaterRefillStations(50, 0);
       setWaterRefillStations(response.member);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入失敗');
+      setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
@@ -117,7 +117,7 @@ export default function SiteMap() {
       const response = await getShowerStations(50, 0);
       setShowerStations(response.member);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入失敗');
+      setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
@@ -130,7 +130,7 @@ export default function SiteMap() {
       const response = await getRestrooms(50, 0);
       setRestRooms(response.member);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入失敗');
+      setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
@@ -143,7 +143,7 @@ export default function SiteMap() {
       const response = await getMedicalStations(50, 0);
       setMedicalStations(response.member);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入失敗');
+      setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
@@ -156,7 +156,7 @@ export default function SiteMap() {
       const response = await getAccommodations(50, 0);
       setAccommodations(response.member);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入失敗');
+      setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
@@ -171,13 +171,13 @@ export default function SiteMap() {
         responseShowerStations,
         responseRestrooms,
         responseMedicalStations,
-        responseAccommodations
+        responseAccommodations,
       ] = await Promise.all([
         getWaterRefillStations(50, 0),
         getShowerStations(50, 0),
         getRestrooms(50, 0),
         getMedicalStations(50, 0),
-        getAccommodations(50, 0)
+        getAccommodations(50, 0),
       ]);
       setWaterRefillStations(responseWaterRefillStations.member);
       setShowerStations(responseShowerStations.member);
@@ -190,12 +190,12 @@ export default function SiteMap() {
         ...responseShowerStations.member,
         ...responseRestrooms.member,
         ...responseMedicalStations.member,
-        ...responseAccommodations.member
+        ...responseAccommodations.member,
       ];
       combined.sort((a, b) => a.created_at - b.created_at);
       setAllData(combined);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入失敗');
+      setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
       setLoading(false);
     }
@@ -203,17 +203,17 @@ export default function SiteMap() {
 
   const handleCategoryClick = async (categoryKey: LocationCategory) => {
     setSelectedCategory(categoryKey);
-    if (categoryKey === 'all') {
+    if (categoryKey === "all") {
       await fetchAll();
-    } else if (categoryKey === 'water_refill_stations') {
+    } else if (categoryKey === "water_refill_stations") {
       await fetchWaterRefillStations();
-    } else if (categoryKey === 'shower_stations') {
+    } else if (categoryKey === "shower_stations") {
       await fetchShowerStations();
-    } else if (categoryKey === 'restrooms') {
+    } else if (categoryKey === "restrooms") {
       await fetchRestRooms();
-    } else if (categoryKey === 'medical_stations') {
+    } else if (categoryKey === "medical_stations") {
       await fetchMedicalStations();
-    } else if (categoryKey === 'accommodations') {
+    } else if (categoryKey === "accommodations") {
       await fetchAccommodations();
     }
   };
@@ -224,8 +224,8 @@ export default function SiteMap() {
   };
 
   const options = [
-    { label: '地圖顯示', value: 'mapShow' },
-    { label: '列表顯示', value: 'listShow' }
+    { label: "地圖顯示", value: "mapShow" },
+    { label: "列表顯示", value: "listShow" },
   ];
 
   return (
@@ -236,7 +236,7 @@ export default function SiteMap() {
           onChange={handleModeChange as (value: string) => void}
           options={options}
         />
-        {showMode === 'listShow' && (
+        {showMode === "listShow" && (
           <div className="ml-4 flex gap-2 overflow-y-scroll [scrollbar-width:none]">
             {CATEGORIES.map(({ key, name }) => (
               <CategoryButton
@@ -264,19 +264,17 @@ export default function SiteMap() {
             "
           />
         )}
-        {showMode === 'listShow' && (
+        {showMode === "listShow" && (
           <div className="space-y-4">
             {loading && (
-              <div className="text-center py-8 text-[var(--gray)]">
-                載入中...
-              </div>
+              <div className="text-center py-8 text-[var(--gray)]">載入中...</div>
             )}
 
             {error && (
               <div className="text-center py-8 text-red-500">錯誤: {error}</div>
             )}
 
-            {!loading && !error && selectedCategory === 'all' && (
+            {!loading && !error && selectedCategory === "all" && (
               <>
                 {allData.length === 0 ? (
                   <div className="text-center py-8 text-[var(--gray)]">
@@ -289,7 +287,7 @@ export default function SiteMap() {
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.opening_hours || ''}
+                      hours={station.opening_hours || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -302,7 +300,7 @@ export default function SiteMap() {
 
             {!loading &&
               !error &&
-              selectedCategory === 'water_refill_stations' && (
+              selectedCategory === "water_refill_stations" && (
                 <>
                   {waterRefillStations.length === 0 ? (
                     <div className="text-center py-8 text-[var(--gray)]">
@@ -316,7 +314,7 @@ export default function SiteMap() {
                         type={station.water_type}
                         address={station.location}
                         contact={station.phone}
-                        hours={station.opening_hours || ''}
+                        hours={station.opening_hours || ""}
                         mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                           station.location
                         )}`}
@@ -327,7 +325,7 @@ export default function SiteMap() {
                 </>
               )}
 
-            {!loading && !error && selectedCategory === 'shower_stations' && (
+            {!loading && !error && selectedCategory === "shower_stations" && (
               <>
                 {showerStations.length === 0 ? (
                   <div className="text-center py-8 text-[var(--gray)]">
@@ -341,7 +339,7 @@ export default function SiteMap() {
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.time_slots || ''}
+                      hours={station.time_slots || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -352,7 +350,7 @@ export default function SiteMap() {
               </>
             )}
 
-            {!loading && !error && selectedCategory === 'restrooms' && (
+            {!loading && !error && selectedCategory === "restrooms" && (
               <>
                 {restRooms.length === 0 ? (
                   <div className="text-center py-8 text-[var(--gray)]">
@@ -366,7 +364,7 @@ export default function SiteMap() {
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.opening_hours || ''}
+                      hours={station.opening_hours || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -377,7 +375,7 @@ export default function SiteMap() {
               </>
             )}
 
-            {!loading && !error && selectedCategory === 'medical_stations' && (
+            {!loading && !error && selectedCategory === "medical_stations" && (
               <>
                 {medicalStations.length === 0 ? (
                   <div className="text-center py-8 text-[var(--gray)]">
@@ -391,7 +389,7 @@ export default function SiteMap() {
                       name={station.name}
                       address={station.location}
                       contact={station.phone}
-                      hours={station.operating_hours || ''}
+                      hours={station.operating_hours || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}
@@ -402,7 +400,7 @@ export default function SiteMap() {
               </>
             )}
 
-            {!loading && !error && selectedCategory === 'accommodations' && (
+            {!loading && !error && selectedCategory === "accommodations" && (
               <>
                 {accommodations.length === 0 ? (
                   <div className="text-center py-8 text-[var(--gray)]">
@@ -415,7 +413,7 @@ export default function SiteMap() {
                       name={station.name}
                       address={station.location}
                       contact={station.contact_info}
-                      hours={station.available_period || ''}
+                      hours={station.available_period || ""}
                       mapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                         station.location
                       )}`}

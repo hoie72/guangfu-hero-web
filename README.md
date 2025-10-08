@@ -1,5 +1,7 @@
 # 光復超人 GuangFu Hero
 
+[中文版](./README_zh-TW.md) | English
+
 > 無論在哪裡，都能成為光復的超人
 
 A disaster relief coordination platform connecting volunteers and victims in Hualien, Taiwan. Built by remote volunteers who want to support disaster relief efforts from afar.

@@ -20,7 +20,7 @@ const foodSuppliesItems: ChecklistItemData[] = [
   },
   {
     id: "supplement",
-    label: "沖泡鍵/電解質補給品",
+    label: "鹽糖/電解質補給品",
     description: "補充鹽分",
   },
   {

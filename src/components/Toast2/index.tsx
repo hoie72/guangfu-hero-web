@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface Toast2Props {
   isVisible: boolean;
@@ -13,20 +13,33 @@ export default function Toast2({
   onClose,
   duration = 3000,
 }: Toast2Props) {
+  const [isClosing, setIsClosing] = useState(false);
+
   useEffect(() => {
     if (isVisible) {
+      setIsClosing(false);
+      
+      // 自動關閉
       const timer = setTimeout(() => {
-        onClose();
+        setIsClosing(true);
+        
+        setTimeout(() => {
+          onClose();
+        }, 300); // 淡出動畫 0.3 秒
       }, duration);
 
       return () => clearTimeout(timer);
     }
   }, [isVisible, duration, onClose]);
 
-  if (!isVisible) return null;
+  if (!isVisible && !isClosing) return null;
 
   return (
-    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
+    <div 
+      className={`fixed left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2 z-50 ${
+        isClosing ? 'animate-fade-out' : 'animate-fade-in'
+      }`}
+    >
       <div className="bg-white rounded-lg shadow-lg border border-gray-200 pl-4 pr-4 py-3 flex items-center gap-3">
         {/* 綠色勾勾 icon */}
         <div className="flex-shrink-0">
@@ -52,7 +65,12 @@ export default function Toast2({
 
         {/* 關閉按鈕 */}
         <button
-          onClick={onClose}
+          onClick={() => {
+            setIsClosing(true);
+            setTimeout(() => {
+              onClose();
+            }, 300);
+          }}
           className="flex-shrink-0 ml-1 text-gray-400 hover:text-gray-600 transition-colors p-0.5 rounded"
           aria-label="關閉提示"
         >

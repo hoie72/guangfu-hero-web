@@ -1,6 +1,12 @@
-"use client";
-
+import { Metadata } from "next";
 import Wrapper from "@/features/Wrapper";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function VolunteerRegisterPage() {
   return (

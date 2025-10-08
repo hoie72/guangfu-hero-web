@@ -9,6 +9,10 @@ import NextButton from "./NextButton";
 // 將簡單字串改為含有行為屬性的物件，便於控制哪些訊息可點擊
 const alerts = [
   {
+    text: "近期地震導致壩體狀況不穩定，請確認已無風險後再進入災區 <光復鄉、鳳林鎮、萬榮鄉>",
+    actionable: false,
+  },
+  {
     text: "現場隨時有溢流風險，點此詳讀避難守則警報響起請往高處避難",
     actionable: true,
   },

@@ -19,8 +19,6 @@ export default function Header() {
   const closeLogin = () => setLoginOpen(false);
 
   const API_BASE_URL = "https://guangfu250923.pttapp.cc";
-  const CALLBACK_URL = "https://gf250923.org/auth/line/callback";
-
   // 觸發 LINE SSO
   const startLineLogin = () => {
     if (typeof window === "undefined") return;
@@ -33,15 +31,13 @@ export default function Header() {
     // state 可用來攜帶 callback 或自訂資訊
     const state = encodeURIComponent(
       JSON.stringify({
-        redirect: CALLBACK_URL,
         next,
       })
     );
-    const callback = `${location.origin}${location.pathname}`;
     // 重新導向到你後端的 LINE OAuth 起始點
     window.location.href = `${API_BASE_URL}/auth/line/start?state=${encodeURIComponent(
       state
-    )}&redirect_uri=${encodeURIComponent(callback)}`;
+    )}`;
   };
 
   const handleShare = async () => {
@@ -132,13 +128,27 @@ export default function Header() {
                 />
               </button>
 
-              {/* 新增：Login 按鈕（打開 Modal） */}
-              <button
-                className="px-3 py-1.5 rounded-md text-sm font-medium bg-gray-900 text-white hover:bg-gray-800"
-                onClick={openLogin}
-              >
-                Login
-              </button>
+                {/* 根據 localStorage 判斷是否已使用 LINE 登入，顯示登出或開啟登入 Modal */}
+                {typeof window !== "undefined" && localStorage.getItem("line_oauth_state") ? (
+                <button
+                  className="px-3 py-1.5 rounded-md text-sm font-medium bg-red-600 text-white hover:bg-red-500"
+                  onClick={() => {
+                  // 清除與 LINE 登入相關的 localStorage（根據實際鍵名調整）
+                  localStorage.removeItem("line_oauth_state");
+                  // 若有後端登出接口，也可以在這裡呼叫，或直接重新載入頁面更新 UI
+                  window.location.reload();
+                  }}
+                >
+                  登出
+                </button>
+                ) : (
+                <button
+                  className="px-3 py-1.5 rounded-md text-sm font-medium bg-gray-900 text-white hover:bg-gray-800"
+                  onClick={openLogin}
+                >
+                  Login
+                </button>
+                )}
             </div>
           </div>
         </div>

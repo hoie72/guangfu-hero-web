@@ -35,8 +35,10 @@ export default function Header() {
       })
     );
     // 重新導向到你後端的 LINE OAuth 起始點
-    window.location.href = `${API_BASE_URL}/auth/line/start?state=${encodeURIComponent(
+    window.location.href = `https://guangfu250923.pttapp.cc/auth/line/start?state=${encodeURIComponent(
       state
+    )}&redirect_uri=${encodeURIComponent(
+      `${window.location.origin}/auth/line/callback`
     )}`;
   };
 

@@ -159,13 +159,7 @@ src/
 
 ## 📜 授權
 
-本專案為私有專案，由光復超人志工團隊維護。
-
-## 🌐 部署
-
-部署此 Next.js 應用程式最簡單的方式是使用 [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)。
-
-更多細節請參考 [Next.js 部署文件](https://nextjs.org/docs/app/building-your-application/deploying)。
+本專案為公開專案，由光復超人志工團隊維護。
 
 ## 💝 使命
 

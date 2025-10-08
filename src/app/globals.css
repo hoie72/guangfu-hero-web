@@ -18,6 +18,7 @@
   --gray-2: #838383;
   --gray-3: #e6e6e6;
   --gray-4: #f4f4f5;
+  --black-overlay:#00000033;
 }
 
 @theme inline {
@@ -35,10 +36,33 @@ body {
   /* font-size: 20px; */
 }
 
+/* iOS Safari viewport height fix */
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  :root {
+    --viewport-height: 100vh;
+  }
+}
+
+/* Utility classes for dynamic viewport heights */
+.max-h-screen-minus-header {
+  max-height: calc(var(--viewport-height, 100vh) - 65px);
+}
+
+.max-h-screen-minus-header-footer {
+  max-height: calc(var(--viewport-height, 100vh) - 145px);
+}
+
 @keyframes slide-up {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -52,6 +76,7 @@ body {
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -64,4 +89,35 @@ body {
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+/* Toast2 淡入淡出 */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.3s ease-in forwards;
 }

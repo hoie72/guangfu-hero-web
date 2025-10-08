@@ -2,8 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Header from "@/features/Header";
-import Footer from "@/features/Footer";
+import Wrapper from "@/features/Wrapper";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -37,35 +36,30 @@ export default function PageLayout({ children }: PageLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header />
+    <Wrapper>
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Tab Navigation */}
+        {shouldShowTabs && (
+          <div className="flex border-b-2 border-[var(--gray-3)]">
+            {tabs.map((tab) => (
+              <Link
+                key={tab.path}
+                href={tab.path}
+                className={`px-6 py-3 text-base font-medium border-b-4 transition-colors ${
+                  isActiveTab(tab.path)
+                    ? "border-[var(--primary)] text-[var(--primary)]"
+                    : "border-transparent text-[var(----text-black)] hover:text-[var(--primary)]"
+                }`}
+              >
+                {tab.name}
+              </Link>
+            ))}
+          </div>
+        )}
 
-      <main className="flex-1 pb-[140px]">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Tab Navigation */}
-          {shouldShowTabs && (
-            <div className="flex border-b-2 border-[var(--gray-3)]">
-              {tabs.map((tab) => (
-                <Link
-                  key={tab.path}
-                  href={tab.path}
-                  className={`px-6 py-3 text-base font-medium border-b-4 transition-colors ${
-                    isActiveTab(tab.path)
-                      ? "border-[var(--primary)] text-[var(--primary)]"
-                      : "border-transparent text-[var(----text-black)] hover:text-[var(--primary)]"
-                  }`}
-                >
-                  {tab.name}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {/* Page Content */}
-          <div className={shouldShowTabs ? "mt-3" : ""}>{children}</div>
-        </div>
-      </main>
-      <Footer />
-    </div>
+        {/* Page Content */}
+        <div className={shouldShowTabs ? "mt-3" : ""}>{children}</div>
+      </div>
+    </Wrapper>
   );
 }

@@ -6,13 +6,12 @@ import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
-import AlertBanner from "@/components/AlertBanner";
-import WarningModal from "@/components/WarningModal";
+import Toast2 from "@/components/Toast2";
 
 export default function Header() {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const handleShare = async () => {
     if (typeof window === "undefined") return;
@@ -31,9 +30,35 @@ export default function Header() {
 
     const title = getTitle();
 
+    // 檢查是否支援 Web Share API
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          url: shareUrl,
+        });
+      } catch (error) {
+        // 如果使用者取消分享或發生錯誤=複製功能
+        if (error instanceof Error && error.name !== "AbortError") {
+          await fallbackToCopy(shareUrl);
+        }
+      }
+    } else {
+      // 不支援 Web Share API,直接使用複製功能
+      await fallbackToCopy(shareUrl);
+    }
+  };
+
+  const fallbackToCopy = async (url: string) => {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      console.warn("Clipboard API 不可用 - 需要 HTTPS 或 localhost 環境");
+      return;
+    }
+
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert(`${title}\n連結已複製到剪貼簿`);
+      await navigator.clipboard.writeText(url);
+      // 複製成功,顯示 Toast2
+      setShowToast(true);
     } catch (error) {
       console.error("複製失敗:", error);
     }
@@ -41,7 +66,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full shadow-sm">
+      <header className="w-full shadow-sm fixed top-0 bg-white z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 relative">
             {/* Left: Hamburger menu */}
@@ -88,12 +113,14 @@ export default function Header() {
         </div>
       </header>
 
-      <AlertBanner onAlertClick={() => setShowWarningModal(true)} />
-      <WarningModal
-        isOpen={showWarningModal}
-        onClose={() => setShowWarningModal(false)}
-      />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      {/* Toast 提示 */}
+      <Toast2 
+        isVisible={showToast} 
+        onClose={() => setShowToast(false)} 
+        duration={3000}
+      />
     </>
   );
 }

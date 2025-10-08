@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { GoogleAnalytics } from "@/features/google-analytics";
+import { generateSiteMetadata } from "@/lib/metadata/main";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,10 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "光復超人",
-  description: "提供花蓮地區災害援助資訊、志工招募與災民協助服務",
-};
+export const generateMetadata = generateSiteMetadata;
 
 export default function RootLayout({
   children,
@@ -29,6 +27,7 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <GoogleAnalytics />
     </html>
   );
 }

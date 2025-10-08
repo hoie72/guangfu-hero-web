@@ -65,7 +65,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
     <>
       {/* 背景遮罩 */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-[70] backdrop-blur-sm"
+        className="fixed inset-0 z-[70] bg-[var(--black-overlay)] backdrop-blur-sm"
         onClick={handleClose}
       />
 

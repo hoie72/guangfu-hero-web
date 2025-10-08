@@ -17,7 +17,7 @@ const alerts = [
     actionable: true,
   },
   {
-    text: "光復鄉已恢復上班上課。下水道作業慎防沼氣，請勿點火！補水防中暑！",
+    text: "多補水防中暑！如不慎受傷，請前往醫療站處置。下水道作業慎防沼氣，請勿點火！",
     actionable: false,
   },
   { text: "請注意個人安全，結伴同行更安全", actionable: false },

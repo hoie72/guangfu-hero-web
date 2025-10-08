@@ -159,7 +159,7 @@ We welcome contributions from volunteers! This is an ongoing relief effort, and 
 
 ## 📜 License
 
-This project is public and maintained by the GuangFu Hero volunteer team.
+This project is private and maintained by the GuangFu Hero volunteer team.
 
 
 ## 💝 Mission

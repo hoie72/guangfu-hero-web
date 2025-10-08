@@ -9,7 +9,7 @@ import NextButton from "./NextButton";
 // 將簡單字串改為含有行為屬性的物件，便於控制哪些訊息可點擊
 const alerts = [
   {
-    text: "地震導致有壩體破壞疑慮，請確認已無風險後再進入災區 <光復鄉、鳳林鎮、萬榮鄉>",
+    text: "近期地震導致壩體狀況不穩定，請確認已無風險後再進入災區 <光復鄉、鳳林鎮、萬榮鄉>",
     actionable: false,
   },
   {

@@ -44,7 +44,7 @@ export default function LineLocalCallback() {
         const res = await fetch("https://guangfu250923.pttapp.cc/auth/line/token", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ code, state }),
+          body: JSON.stringify({ code, state, redirect_uri: `${window.location.origin}/auth/line/callback` }),
         });
 
         if (!res.ok) {
@@ -52,7 +52,7 @@ export default function LineLocalCallback() {
           throw new Error(text || `Exchange failed: ${res.status}`);
         }
 
-        window.localStorage.setItem("line_oauth_state", await res.json());
+        window.localStorage.setItem("line_oauth_state", JSON.stringify(await res.json()));
         setMsg("LINE 登入成功，正在導向…");
         
 

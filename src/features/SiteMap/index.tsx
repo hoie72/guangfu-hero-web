@@ -122,7 +122,10 @@ export default function SiteMap() {
       setLoading(true);
       setError(null);
       const response = await getWaterRefillStations(50, 0);
-      setWaterRefillStations(response.member);
+      const filteredStations = response.member.filter(
+        (station) => !!station.coordinates || !!station.location
+      );
+      setWaterRefillStations(filteredStations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -135,7 +138,10 @@ export default function SiteMap() {
       setLoading(true);
       setError(null);
       const response = await getShowerStations(50, 0);
-      setShowerStations(response.member);
+      const filteredStations = response.member.filter(
+        (station) => !!station.coordinates || !!station.location
+      );
+      setShowerStations(filteredStations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -148,7 +154,10 @@ export default function SiteMap() {
       setLoading(true);
       setError(null);
       const response = await getRestrooms(50, 0);
-      setRestRooms(response.member);
+      const filteredStations = response.member.filter(
+        (station) => !!station.coordinates || !!station.location
+      );
+      setRestRooms(filteredStations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -161,7 +170,10 @@ export default function SiteMap() {
       setLoading(true);
       setError(null);
       const response = await getMedicalStations(50, 0);
-      setMedicalStations(response.member);
+      const filteredStations = response.member.filter(
+        (station) => !!station.coordinates || !!station.location
+      );
+      setMedicalStations(filteredStations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -174,7 +186,10 @@ export default function SiteMap() {
       setLoading(true);
       setError(null);
       const response = await getAccommodations(50, 0);
-      setAccommodations(response.member);
+      const filteredStations = response.member.filter(
+        (station) => !!station.coordinates || !!station.location
+      );
+      setAccommodations(filteredStations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -212,8 +227,11 @@ export default function SiteMap() {
         ...responseMedicalStations.member,
         ...responseAccommodations.member,
       ];
-      combined.sort((a, b) => a.created_at - b.created_at);
-      setAllData(combined);
+      const filteredStations = combined.filter(
+        (station) => !!station.coordinates || !!station.location
+      );
+      filteredStations.sort((a, b) => a.created_at - b.created_at);
+      setAllData(filteredStations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "載入失敗");
     } finally {
@@ -282,7 +300,9 @@ export default function SiteMap() {
         {showMode === "listShow" && (
           <div className="space-y-4">
             {loading && (
-              <div className="text-center py-8 text-[var(--gray)]">載入中...</div>
+              <div className="text-center py-8 text-[var(--gray)]">
+                載入中...
+              </div>
             )}
 
             {error && (

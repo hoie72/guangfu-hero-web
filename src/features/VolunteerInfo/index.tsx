@@ -368,7 +368,7 @@ export default function VolunteerInfo({
               <>
                 <div>
                   <h3 className="text-xl font-bold mb-3">
-                    一、如何到花蓮：台鐵
+                    一、如何到花蓮：台鐵/遊覽車
                   </h3>
                   <a
                     href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip112/gobytime"
@@ -380,11 +380,19 @@ export default function VolunteerInfo({
                   </a>
                   <a
                     href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip121/query"
+                    className="flex text-[var(--gray)] underline text-sm mb-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    台鐵訂票來這邊
+                  </a>
+                  <a
+                    href="https://gobus.moushih.com/"
                     className="flex text-[var(--gray)] underline text-sm"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    訂票來這邊
+                    遊覽車媒合去Gobus
                   </a>
                 </div>
 

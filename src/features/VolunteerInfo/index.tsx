@@ -384,7 +384,7 @@ export default function VolunteerInfo({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    訂票來這邊
+                    台鐵訂票來這邊
                   </a>
                   <a
                     href="https://gobus.moushih.com/"

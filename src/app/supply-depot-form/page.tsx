@@ -622,85 +622,81 @@ export default function ReliefFormPage() {
               <CardHeader id="provide">可提供的物資</CardHeader>
 
               <div className="space-y-3">
-                {supplies.map((row) => {
-                  return (
-                    <motion.div
-                      key={row.id}
-                      layout
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="grid grid-cols-1 gap-3 sm:grid-cols-12 items-end border-b pb-3 border-gray-200"
+                {supplies.map((row) => (
+                  <motion.div
+                    key={row.id}
+                    layout
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="grid grid-cols-1 gap-3 sm:grid-cols-12 items-end border-b pb-3 border-gray-200"
+                  >
+                    <div className="sm:col-span-full">
+                      <DropdownSelect
+                        value={row.supplyItemId}
+                        onChange={(value) =>
+                          setSupplies((prevSupplies) =>
+                            prevSupplies.map((supply) =>
+                              supply.id === row.id
+                                ? {
+                                    ...supply,
+                                    supplyItemId: value,
+                                    unit:
+                                      selectedNeedSupplyOptions.find(
+                                        (o) => o.id === value
+                                      )?.unit || "",
+                                  }
+                                : supply
+                            )
+                          )
+                        }
+                        defaultLabel="選擇物資名稱"
+                        options={selectedNeedSupplyOptions.map((option) => {
+                          return {
+                            value: option.id,
+                            label: option.name,
+                          };
+                        })}
+                      />
+                    </div>
+                    <Field
+                      label="數量"
+                      id={`s-qty-${row.id}`}
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="例：10"
+                      value={row.qty}
+                      min={0}
+                      onChange={(v) =>
+                        setSupplies((s) =>
+                          s.map((x) => (x.id === row.id ? { ...x, qty: v } : x))
+                        )
+                      }
+                      className="sm:col-span-3"
+                    />
+                    <Field
+                      label="量詞"
+                      id={`s-unit-${row.id}`}
+                      placeholder="例：箱 / 瓶 / 包"
+                      value={row.unit}
+                      onChange={(v) =>
+                        setSupplies((s) =>
+                          s.map((x) =>
+                            x.id === row.id ? { ...x, unit: v } : x
+                          )
+                        )
+                      }
+                      className="sm:col-span-3"
+                    />
+                    <button
+                      className="sm:col-span-2 text-red-600 hover:text-red-700 cursor-pointer"
+                      onClick={() =>
+                        setSupplies((s) => s.filter((x) => x.id !== row.id))
+                      }
                     >
-                      <div className="sm:col-span-full">
-                        <DropdownSelect
-                          value={row.supplyItemId}
-                          onChange={(value) =>
-                            setSupplies((prevSupplies) =>
-                              prevSupplies.map((supply) =>
-                                supply.id === row.id
-                                  ? {
-                                      ...supply,
-                                      supplyItemId: value,
-                                      unit:
-                                        selectedNeedSupplyOptions.find(
-                                          (o) => o.id === value
-                                        )?.unit || "",
-                                    }
-                                  : supply
-                              )
-                            )
-                          }
-                          defaultLabel="選擇物資名稱"
-                          options={selectedNeedSupplyOptions.map((option) => {
-                            return {
-                              value: option.id,
-                              label: option.name,
-                            };
-                          })}
-                        />
-                      </div>
-                      <Field
-                        label="數量"
-                        id={`s-qty-${row.id}`}
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="例：10"
-                        value={row.qty}
-                        min={0}
-                        onChange={(v) =>
-                          setSupplies((s) =>
-                            s.map((x) =>
-                              x.id === row.id ? { ...x, qty: v } : x
-                            )
-                          )
-                        }
-                        className="sm:col-span-3"
-                      />
-                      <Field
-                        label="量詞"
-                        id={`s-unit-${row.id}`}
-                        placeholder="例：箱 / 瓶 / 包"
-                        value={row.unit}
-                        onChange={(v) =>
-                          setSupplies((s) =>
-                            s.map((x) =>
-                              x.id === row.id ? { ...x, unit: v } : x
-                            )
-                          )
-                        }
-                        className="sm:col-span-3"
-                      />
-                      <button
-                        className="sm:col-span-2 text-red-600 hover:text-red-700 cursor-pointer"
-                        onClick={() =>
-                          setSupplies((s) => s.filter((x) => x.id !== row.id))
-                        }
-                      >
-                        刪除
-                      </button>
-                    </motion.div>
-                  );
-                })}
+                      刪除
+                    </button>
+                  </motion.div>
+                ))}
 
                 <div className="flex justify-end">
                   <button

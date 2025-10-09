@@ -1,14 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, supportsPartialKeyframes } from "framer-motion";
 import { useRouter } from "next/navigation";
+import DropdownSelect from "@/components/DropdownSelect";
 
 /** ---------------- 基本設定 ---------------- */
 const PAGE_SIZE = 50;
 const API_BASE = "https://guangfu250923.pttapp.cc/supplies?embed=all";
 
-type NeedItem = { name: string; qty: number | string; unit: string };
+type NeedItem = {
+  // 對應 supply_item_id（要送給後端）
+  id: string;
+  name: string;
+  qty: number | string;
+  unit: string;
+};
 type Need = {
   id: string;
   title: string;
@@ -17,13 +24,17 @@ type Need = {
   tags: string[];
 };
 
+/** 表單中每個可提供的物資 */
 type SupplyRow = {
+  /** random 字串，純前端表單識別用 */
   id: string;
+  /** 對應要傳給後端的 supply_item_id */
+  supplyItemId: string;
   name: string;
   qty: string;
   unit: string;
   tag?: string;
-}; // 僅前端紀錄
+};
 
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   v !== null && typeof v === "object";
@@ -97,13 +108,22 @@ function parseHydraToNeeds(payload: unknown): {
 
     // supplies -> items + tags（僅顯示）
     const suppliesArr = Array.isArray(row["supplies"])
-      ? (row["supplies"] as unknown[])
+      ? (row["supplies"] as {
+          id: string;
+          name: string;
+          supply_id: string; // 物資單 ID
+          tag?: string;
+          total_count: number;
+          unit: string;
+        }[])
       : [];
+
     const items: NeedItem[] = suppliesArr.filter(isRecord).map((it) => {
       const itemName = asString(it["name"]) ?? "未命名";
       const total = (it["total_count"] as number) ?? 0;
       const unit = asString(it["unit"]) ?? "";
-      return { name: itemName, qty: total, unit };
+
+      return { id: it.id, name: itemName, qty: total, unit };
     });
 
     const tags = Array.from(
@@ -176,14 +196,18 @@ async function handleSubmitStationOnly(
     return;
   }
 
+  if (supplies.some((s) => !s.id || s.count <= 0)) {
+    alert("請確認每筆物資的名稱、數量皆已填寫");
+    return;
+  }
+
   const payloadList = supplies.map((supplyItem) => ({
     name: station.name.trim(),
     address: station.address.trim(),
     phone: (station.phone || "").trim(),
     notes: (station.notes || "").trim(),
     supply_item_id: supplyItem.id,
-    // TODO: 待跟後端確認是否要送這個資料
-    // provide_unit: supplyItem.unit,
+    provide_unit: supplyItem.unit,
     provide_count: supplyItem.count,
     pii_date: 0, // 依後端需求固定送 0
   }));
@@ -237,9 +261,16 @@ export default function ReliefFormPage() {
   const [stationAddress, setStationAddress] = useState("");
   const [stationNotes, setStationNotes] = useState("");
 
-  // 右側「可提供的物資」動態列（僅前端紀錄）
+  // 右側「可提供的物資」動態列表
   const [supplies, setSupplies] = useState<SupplyRow[]>([
-    { id: cryptoRandomId(), name: "", qty: "", unit: "", tag: "" },
+    {
+      id: cryptoRandomId(),
+      name: "",
+      qty: "",
+      unit: "",
+      tag: "",
+      supplyItemId: "",
+    },
   ]);
 
   // 左側「需求清單」
@@ -252,6 +283,10 @@ export default function ReliefFormPage() {
 
   // 選取中的需求 id（PATCH 用）
   const [selectedNeedId, setSelectedNeedId] = useState<string | null>(null);
+  // 選取中的需求單，底下所有需要的物資選項
+  const [selectedNeedSupplyOptions, setSelectedNeedSupplyOptions] = useState<
+    NeedItem[]
+  >([]);
 
   const pageIndex = useMemo(() => Math.floor(offset / PAGE_SIZE) + 1, [offset]);
 
@@ -507,11 +542,12 @@ export default function ReliefFormPage() {
                           <NeedCard
                             data={n}
                             selected={selectedNeedId === n.id}
-                            onSelect={() =>
+                            onSelect={() => {
                               setSelectedNeedId((prev) =>
                                 prev === n.id ? null : n.id
-                              )
-                            }
+                              );
+                              setSelectedNeedSupplyOptions(n.items);
+                            }}
                           />
                         </li>
                       ))}
@@ -528,70 +564,85 @@ export default function ReliefFormPage() {
               <CardHeader id="provide">可提供的物資</CardHeader>
 
               <div className="space-y-3">
-                {supplies.map((row) => (
-                  <motion.div
-                    key={row.id}
-                    layout
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="grid grid-cols-1 gap-3 sm:grid-cols-12"
-                  >
-                    <Field
-                      label="物資名稱"
-                      id={`s-name-${row.id}`}
-                      placeholder="例：礦泉水"
-                      value={row.name}
-                      onChange={(v) =>
-                        setSupplies((s) =>
-                          s.map((x) =>
-                            x.id === row.id ? { ...x, name: v } : x
+                {supplies.map((row) => {
+                  return (
+                    <motion.div
+                      key={row.id}
+                      layout
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="grid grid-cols-1 gap-3 sm:grid-cols-12"
+                    >
+                      <div className="sm:col-span-3">
+                        <DropdownSelect
+                          value={row.supplyItemId}
+                          onChange={(value) =>
+                            setSupplies((prevSupplies) =>
+                              prevSupplies.map((supply) =>
+                                supply.id === row.id
+                                  ? {
+                                      ...supply,
+                                      supplyItemId: value,
+                                      unit:
+                                        selectedNeedSupplyOptions.find(
+                                          (o) => o.id === value
+                                        )?.unit || "",
+                                    }
+                                  : supply
+                              )
+                            )
+                          }
+                          defaultLabel="選擇物資名稱"
+                          options={selectedNeedSupplyOptions.map((option) => {
+                            return {
+                              value: option.id,
+                              label: option.name,
+                            };
+                          })}
+                        />
+                      </div>
+                      <Field
+                        label="數量"
+                        id={`s-qty-${row.id}`}
+                        type="number"
+                        inputMode="numeric"
+                        placeholder="例：10"
+                        value={row.qty}
+                        min={0}
+                        onChange={(v) =>
+                          setSupplies((s) =>
+                            s.map((x) =>
+                              x.id === row.id ? { ...x, qty: v } : x
+                            )
                           )
-                        )
-                      }
-                      className="sm:col-span-5"
-                    />
-                    <Field
-                      label="數量"
-                      id={`s-qty-${row.id}`}
-                      type="number"
-                      inputMode="numeric"
-                      placeholder="例：10"
-                      value={row.qty}
-                      onChange={(v) =>
-                        setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, qty: v } : x))
-                        )
-                      }
-                      className="sm:col-span-2"
-                    />
-                    <Field
-                      label="量詞"
-                      id={`s-unit-${row.id}`}
-                      placeholder="例：箱 / 瓶 / 包"
-                      value={row.unit}
-                      onChange={(v) =>
-                        setSupplies((s) =>
-                          s.map((x) =>
-                            x.id === row.id ? { ...x, unit: v } : x
+                        }
+                        className="sm:col-span-2"
+                      />
+                      <Field
+                        label="量詞"
+                        id={`s-unit-${row.id}`}
+                        placeholder="例：箱 / 瓶 / 包"
+                        value={row.unit}
+                        onChange={(v) =>
+                          setSupplies((s) =>
+                            s.map((x) =>
+                              x.id === row.id ? { ...x, unit: v } : x
+                            )
                           )
-                        )
-                      }
-                      className="sm:col-span-2"
-                    />
-                    <Field
-                      label="分類（可選）"
-                      id={`s-tag-${row.id}`}
-                      placeholder="例：食物/水"
-                      value={row.tag || ""}
-                      onChange={(v) =>
-                        setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, tag: v } : x))
-                        )
-                      }
-                      className="sm:col-span-3"
-                    />
-                  </motion.div>
-                ))}
+                        }
+                        className="sm:col-span-2"
+                      />
+                      <button
+                        className="sm:col-span-2 text-red-600 hover:text-red-700 cursor-pointer"
+                        onClick={() =>
+                          setSupplies((s) => s.filter((x) => x.id !== row.id))
+                        }
+                      >
+                        刪除
+                      </button>
+                    </motion.div>
+                  );
+                })}
 
                 <div className="flex justify-end">
                   <button
@@ -602,6 +653,7 @@ export default function ReliefFormPage() {
                         ...s,
                         {
                           id: cryptoRandomId(),
+                          supplyItemId: "",
                           name: "",
                           qty: "",
                           unit: "",
@@ -641,20 +693,11 @@ export default function ReliefFormPage() {
                           address: stationAddress,
                           notes: stationNotes,
                         },
-                        // TODO: 串接真實物資清單
-                        // supplies: supplies,
-                        supplies: [
-                          {
-                            id: "f75fc54d-92f3-4e82-a88a-ce1fb9ff11a0",
-                            count: 1,
-                            unit: "2",
-                          },
-                          {
-                            id: "8180c9cb-b119-41a3-bf38-42fb7120f463",
-                            count: 1,
-                            unit: "2",
-                          },
-                        ],
+                        supplies: supplies.map((supply) => ({
+                          id: supply.supplyItemId,
+                          count: Number(supply.qty),
+                          unit: supply.unit,
+                        })),
                       },
                       () => setOffset((o) => o) // 送出成功後重抓目前頁
                     )
@@ -703,6 +746,7 @@ function Field({
   placeholder,
   value,
   onChange,
+  min,
 }: {
   label: string;
   id: string;
@@ -712,6 +756,7 @@ function Field({
   placeholder?: string;
   value?: string;
   onChange?: (v: string) => void;
+  min?: number;
 }) {
   return (
     <label className={`block ${className || ""}`} htmlFor={id}>
@@ -725,6 +770,7 @@ function Field({
         inputMode={inputMode}
         placeholder={placeholder}
         value={value}
+        min={min}
         onChange={(e) => onChange?.(e.target.value)}
         className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-0 placeholder:text-slate-400 focus:border-amber-500 focus:shadow-[0_0_0_3px_rgba(245,158,11,0.15)]"
       />

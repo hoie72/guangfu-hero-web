@@ -9,19 +9,19 @@ import NextButton from "./NextButton";
 // 將簡單字串改為含有行為屬性的物件，便於控制哪些訊息可點擊
 const alerts = [
   {
-    text: "近期地震導致壩體狀況不穩定，請確認已無風險後再進入災區 <光復鄉、鳳林鎮、萬榮鄉>",
+    text: "近期地震導致壩體狀況不穩定，請確認已無風險後再進入〈光復鄉、鳳林鎮、萬榮鄉〉。",
     actionable: false,
   },
   {
-    text: "現場隨時有溢流風險，點此詳讀避難守則警報響起請往高處避難",
+    text: "現場隨時有溢流風險，點此詳讀避難守則，若警報響起請儘速往高處避難。",
     actionable: true,
   },
   {
-    text: "多補水防中暑！如不慎受傷，請前往醫療站處置。下水道作業慎防沼氣，請勿點火！",
+    text: "因應連假人潮眾多，邀請超人夥伴們～先領取任務再動身！",
     actionable: false,
   },
-  { text: "請注意個人安全，結伴同行更安全", actionable: false },
-  { text: "保持聯繫，手機保持電量", actionable: false },
+  { text: "多補水防中暑！注意自身安全，結伴同行更安心！如不慎受傷，請前往醫療站處置！", actionable: false },
+  { text: "與家人朋友保持聯繫，維持手機電量", actionable: false },
 ];
 
 interface AlertBannerProps {

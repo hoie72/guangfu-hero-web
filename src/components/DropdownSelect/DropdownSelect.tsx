@@ -14,12 +14,14 @@ interface DropdownSelectProps {
   value: string;
   onChange: (newValue: string) => void;
   options: Option[];
+  defaultLabel?: string;
 }
 
 export default function DropdownSelect({
   value: valueProp,
   onChange,
   options,
+  defaultLabel,
 }: DropdownSelectProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -48,7 +50,7 @@ export default function DropdownSelect({
         onClick={() => setOpen(!open)}
         className="flex items-center justify-between gap-2 px-3 py-2 w-max bg-white border border-[var(--gray-3)] rounded-md"
       >
-        <span>{selectedLabel}</span>
+        <span>{selectedLabel ?? defaultLabel}</span>
         <Image
           src={
             open

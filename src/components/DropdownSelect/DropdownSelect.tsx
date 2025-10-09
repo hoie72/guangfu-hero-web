@@ -64,7 +64,7 @@ export default function DropdownSelect({
       </button>
 
       {open && (
-        <div className="w-[93px] absolute left-0 z-10 mt-1 bg-[var(--gray-4)] rounded-md">
+        <div className="min-w-[93px] w-max absolute left-0 z-10 mt-1 bg-[var(--gray-4)] rounded-md">
           {options.map(({ value, label }) => (
             <button
               key={value}

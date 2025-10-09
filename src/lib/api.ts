@@ -164,6 +164,7 @@ export async function getSupplies(
     embed: "all",
     limit,
     offset,
+    // filterOutComplete: "true",
   });
   return response;
 }

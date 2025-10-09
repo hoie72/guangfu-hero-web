@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getSupplies } from "@/lib/api";
 import { Supply, SupplyItem } from "@/lib/types";
-import mock from "@/lib/mock.json";
+// import mock from "@/lib/mock.json";
 
 const LIMIT = 50;
 
@@ -31,8 +31,8 @@ export const useFetchAllData = (authed: boolean) => {
       offsetRef.current = 0;
 
       try {
-        const response = mock;
-        // const response = await getSupplies(LIMIT, 0);
+        // const response = mock;
+        const response = await getSupplies(LIMIT, 0);
 
         setSupplies(normalizeData(response.member));
         totalItemsRef.current = response.totalItems;

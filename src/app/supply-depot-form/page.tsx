@@ -35,7 +35,8 @@ interface SupplyFormData {
 
 const SupplyDepotFormPage = () => {
   const { authChecked, authed } = useCheckAuth(); // 檢查登入狀態
-  const { supplies, loading, error } = useFetchAllData(authed); // 取得物資資料
+  const { supplies, loading, error, loadingMore, hasMore, fetchNextBatch } =
+    useFetchAllData(authed); // 取得物資資料
   const methods = useForm<SupplyFormData>();
   const { handleSubmit } = methods;
 
@@ -202,6 +203,9 @@ const SupplyDepotFormPage = () => {
                 <SupplyRequirementList
                   supplies={supplies}
                   reportedSupplies={reportedSupplies}
+                  loadingMore={loadingMore}
+                  hasMore={hasMore}
+                  fetchNextBatch={fetchNextBatch}
                 />
               </Stack>
               <Button

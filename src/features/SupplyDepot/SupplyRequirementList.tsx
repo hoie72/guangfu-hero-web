@@ -8,6 +8,8 @@ import {
   Grid,
   ToggleButton,
   Chip,
+  CircularProgress,
+  Box,
 } from "@mui/material";
 import { NormalizedSupplyItem } from "@/features/SupplyDepot/useFetchAllData";
 import { useFormContext } from "react-hook-form";
@@ -16,16 +18,24 @@ import { ReportedSupplies } from "@/lib/supplyLocalStorage";
 interface SupplyRequirementListProps {
   supplies?: NormalizedSupplyItem[];
   reportedSupplies?: ReportedSupplies;
+  loadingMore?: boolean;
+  hasMore?: boolean;
+  fetchNextBatch?: () => void;
 }
 
 const SupplyRequirementList = ({
   supplies,
   reportedSupplies = {},
+  loadingMore = false,
+  hasMore = false,
+  fetchNextBatch,
 }: SupplyRequirementListProps) => {
   const { register } = useFormContext();
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
     {}
   );
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
   const handleChange = (id: string) => {
     setSelectedItems((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -53,6 +63,27 @@ const SupplyRequirementList = ({
       );
     };
   }, []);
+
+  // Infinite scroll: detect when scrolled near bottom
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer || !fetchNextBatch) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      // Trigger when scrolled to within 100px of bottom
+      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
+
+      if (isNearBottom && hasMore && !loadingMore) {
+        fetchNextBatch();
+      }
+    };
+
+    scrollContainer.addEventListener("scroll", handleScroll);
+    return () => {
+      scrollContainer.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasMore, loadingMore, fetchNextBatch]);
   return (
     <section aria-labelledby="station-info" className="space-y-6">
       <Card variant="outlined" sx={{ p: 2 }}>
@@ -69,7 +100,11 @@ const SupplyRequirementList = ({
               <Typography textAlign="center">可提供</Typography>
             </Grid>
           </Grid>
-          <Stack spacing={1} sx={{ maxHeight: "70dvh", overflow: "auto" }}>
+          <Stack
+            spacing={1}
+            sx={{ maxHeight: "70dvh", overflow: "auto" }}
+            ref={scrollContainerRef}
+          >
             {supplies?.map(
               ({ id, name, total_count, recieved_count, unit }) => {
                 const isReported = !!reportedSupplies[id];
@@ -117,6 +152,19 @@ const SupplyRequirementList = ({
                   </Grid>
                 );
               }
+            )}
+            {loadingMore && (
+              <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
+            )}
+            {!hasMore && supplies && supplies.length > 0 && (
+              <Typography
+                variant="caption"
+                sx={{ textAlign: "center", py: 2, color: "text.secondary" }}
+              >
+                已載入全部資料
+              </Typography>
             )}
           </Stack>
         </Stack>

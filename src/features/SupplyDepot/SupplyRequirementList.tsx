@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Typography,
@@ -10,20 +10,30 @@ import {
   Chip,
 } from "@mui/material";
 import { NormalizedSupplyItem } from "@/features/SupplyDepot/useFetchAllData";
+import { useFormContext } from "react-hook-form";
 
 interface SupplyRequirementListProps {
   supplies?: NormalizedSupplyItem[];
 }
 
 const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
+  const { register } = useFormContext();
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
     {}
   );
-  const handleChange = (event: React.MouseEvent<HTMLElement>, id: string) => {
-    const checked = event.target.value === "check";
-    setSelectedItems((prev) => ({ ...prev, [id]: checked }));
+  const handleChange = (id: string) => {
+    setSelectedItems((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-  //   const [selected, setSelected] = React.useState(false);
+
+  // Expose selectedItems to parent via form context
+  useEffect(() => {
+    // Store selected items in a hidden field so parent can access
+    document.dispatchEvent(
+      new CustomEvent("selectedItemsChange", {
+        detail: selectedItems,
+      })
+    );
+  }, [selectedItems]);
   return (
     <section aria-labelledby="station-info" className="space-y-6">
       <Card variant="outlined" sx={{ p: 2 }}>
@@ -34,7 +44,7 @@ const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
           <Grid container spacing={1}>
             <Grid size={1}></Grid>
             <Grid size={8}>
-              <Typography textAlign="center">需求</Typography>
+              <Typography textAlign="center">需求 (已送/需求)</Typography>
             </Grid>
             <Grid size={3}>
               <Typography textAlign="center">可提供</Typography>
@@ -60,18 +70,27 @@ const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
                       fullWidth
                       size="small"
                       sx={{ fontSize: 14 }}
-                      onChange={(e) => handleChange(e, id)}
+                      onChange={() => handleChange(id)}
                     >
                       {name} {recieved_count}/{total_count} {unit}
                     </ToggleButton>
                   </Grid>
                   <Grid size={3} alignItems="center" display="flex">
                     <TextField
-                      id="stationName"
                       placeholder="數量"
                       variant="outlined"
                       size="small"
                       type="number"
+                      disabled={!selectedItems?.[id]}
+                      {...register(`quantity_${id}`, {
+                        valueAsNumber: true,
+                        validate: (value) => {
+                          if (selectedItems?.[id] && (!value || value <= 0)) {
+                            return "請輸入數量";
+                          }
+                          return true;
+                        },
+                      })}
                     />
                   </Grid>
                 </Grid>

@@ -287,3 +287,25 @@ export interface SupplyItem {
   total_count: number;
   unit: string;
 }
+
+export interface ReportSupplyProvider {
+  name: string;
+  address: string;
+  phone: string;
+  notes: string;
+  supply_item_id: string;
+  provide_unit: string;
+  provide_count: number;
+  pii_date: number;
+}
+export interface ReportSupplyProviderResponse {
+  name: string;
+  address: string;
+  phone: string;
+  notes: string;
+  supply_item_id: string;
+  provide_unit: string;
+  provide_count: number;
+  pii_date: number;
+  id: string;
+}

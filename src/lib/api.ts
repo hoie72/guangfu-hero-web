@@ -12,6 +12,8 @@ import {
   MedicalStation,
   Shelter,
   SupplyResponse,
+  ReportSupplyProvider,
+  ReportSupplyProviderResponse,
 } from "./types";
 
 const API_BASE_URL = "https://guangfu250923.pttapp.cc";
@@ -164,4 +166,23 @@ export async function getSupplies(
     offset,
   });
   return response;
+}
+
+export async function submitSupplyProvider(
+  data: ReportSupplyProvider
+): Promise<ReportSupplyProviderResponse> {
+  const response = await fetch(`${API_BASE_URL}/supply_providers`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("提交失敗,請稍後再試");
+  }
+
+  return response.json();
 }

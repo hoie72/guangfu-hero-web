@@ -8,12 +8,145 @@ import { useCheckAuth } from "@/hooks/useCheckAuth";
 import FetchSupplyStatus from "@/features/SupplyDepot/FetchSupplyStatus";
 import SupplyStation from "@/features/SupplyDepot/SupplyStation";
 import SupplyRequirementList from "@/features/SupplyDepot/SupplyRequirementList";
-import { Stack, Button } from "@mui/material";
+import {
+  Stack,
+  Button,
+  Snackbar,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import Wrapper from "@/features/Wrapper";
+import { useForm, FormProvider } from "react-hook-form";
+import { submitSupplyProvider } from "@/lib/api";
+import { useState, useEffect } from "react";
+
+interface SupplyFormData {
+  name: string;
+  phone: string;
+  address: string;
+  notes?: string;
+  [key: `quantity_${string}`]: number;
+}
 
 const SupplyDepotFormPage = () => {
   const { authChecked, authed } = useCheckAuth(); // 檢查登入狀態
   const { supplies, loading, error } = useFetchAllData(authed); // 取得物資資料
+  const methods = useForm<SupplyFormData>();
+  const { handleSubmit } = methods;
+
+  const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [submitting, setSubmitting] = useState(false);
+  const [submitProgress, setSubmitProgress] = useState({
+    current: 0,
+    total: 0,
+  });
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error" | "info";
+  }>({ open: false, message: "", severity: "info" });
+
+  // Listen for selected items changes from SupplyRequirementList
+  useEffect(() => {
+    const handleSelectedItemsChange = (event: CustomEvent) => {
+      setSelectedItems(event.detail);
+    };
+    document.addEventListener(
+      "selectedItemsChange",
+      handleSelectedItemsChange as EventListener
+    );
+    return () => {
+      document.removeEventListener(
+        "selectedItemsChange",
+        handleSelectedItemsChange as EventListener
+      );
+    };
+  }, []);
+
+  const onSubmit = async (data: SupplyFormData) => {
+    if (!supplies) return;
+
+    // Filter selected items
+    const selectedSupplyItems = supplies.filter(
+      (item) => selectedItems[item.id]
+    );
+
+    if (selectedSupplyItems.length === 0) {
+      setSnackbar({
+        open: true,
+        message: "請至少選擇一項物資",
+        severity: "error",
+      });
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitProgress({ current: 0, total: selectedSupplyItems.length });
+
+    const errors: string[] = [];
+    let successCount = 0;
+
+    // Submit API calls one by one
+    for (let i = 0; i < selectedSupplyItems.length; i++) {
+      const item = selectedSupplyItems[i];
+      const quantity = data[`quantity_${item.id}`];
+
+      if (!quantity || quantity <= 0) {
+        errors.push(`${item.name}: 請輸入有效數量`);
+        continue;
+      }
+
+      setSubmitProgress({ current: i + 1, total: selectedSupplyItems.length });
+
+      const submitData = {
+        name: data.name,
+        address: data.address,
+        phone: data.phone,
+        notes: data.notes || "",
+        supply_item_id: item.id,
+        provide_unit: item.unit,
+        provide_count: quantity,
+        pii_date: 0, // 依後端需求固定送 0
+      };
+      console.log({ submitData });
+      try {
+        // await submitSupplyProvider(submitData);
+        successCount++;
+      } catch (err) {
+        errors.push(
+          `${item.name}: ${err instanceof Error ? err.message : "提交失敗"}`
+        );
+      }
+    }
+
+    setSubmitting(false);
+
+    // Show results
+    if (errors.length === 0) {
+      setSnackbar({
+        open: true,
+        message: `成功提交 ${successCount} 項物資!`,
+        severity: "success",
+      });
+      // Optional: Reset form or redirect
+      methods.reset();
+      setSelectedItems({});
+    } else if (successCount > 0) {
+      setSnackbar({
+        open: true,
+        message: `部分成功: ${successCount} 項成功, ${errors.length} 項失敗`,
+        severity: "info",
+      });
+    } else {
+      setSnackbar({
+        open: true,
+        message: `提交失敗: ${errors.join(", ")}`,
+        severity: "error",
+      });
+    }
+  };
 
   if (!authChecked) {
     return <AuthCheckSkeleton />;
@@ -27,20 +160,50 @@ const SupplyDepotFormPage = () => {
       <main className="min-h-dvh bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
         <div className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
           <Header />
-          <FetchSupplyStatus
-            loading={loading}
-            error={error}
-            count={supplies?.length || 0}
-          />
-          <Stack spacing={2} sx={{ mb: 2 }}>
-            <SupplyStation />
-            <SupplyRequirementList supplies={supplies} />
-          </Stack>
-          <Button variant="contained" sx={{ width: "100%" }}>
-            送出
-          </Button>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FetchSupplyStatus
+                loading={loading}
+                error={error}
+                count={supplies?.length || 0}
+              />
+              <Stack spacing={2} sx={{ mb: 2 }}>
+                <SupplyStation />
+                <SupplyRequirementList supplies={supplies} />
+              </Stack>
+              <Button
+                variant="contained"
+                sx={{ width: "100%" }}
+                onClick={handleSubmit(onSubmit)}
+                disabled={submitting}
+                startIcon={
+                  submitting ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : null
+                }
+              >
+                {submitting
+                  ? `送出中... (${submitProgress.current}/${submitProgress.total})`
+                  : "送出"}
+              </Button>
+            </form>
+          </FormProvider>
         </div>
       </main>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Wrapper>
   );
 };

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { getAssetPath } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
+import Link from "next/link";
 import Toast2 from "@/components/Toast2";
 
 export default function Header() {
@@ -13,40 +13,14 @@ export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  // 新增：登入 Modal 狀態
-  const [loginOpen, setLoginOpen] = useState(false);
-  const openLogin = () => setLoginOpen(true);
-  const closeLogin = () => setLoginOpen(false);
-
-  // 觸發 LINE SSO
-  const startLineLogin = () => {
-    if (typeof window === "undefined") return;
-
-    // 可選：讓登入後能回到原頁面
-    const next = encodeURIComponent(
-      (window.location.pathname || "/") + (window.location.search || "")
-    );
-
-    // state 可用來攜帶 callback 或自訂資訊
-    const state = encodeURIComponent(
-      JSON.stringify({
-        next,
-      })
-    );
-    // 重新導向到你後端的 LINE OAuth 起始點
-    window.location.href = `https://guangfu250923.pttapp.cc/auth/line/start?state=${encodeURIComponent(
-      state
-    )}&redirect_uri=${encodeURIComponent(
-      `${window.location.origin}/auth/line/callback`
-    )}`;
-  };
-
   const handleShare = async () => {
     if (typeof window === "undefined") return;
 
+    // 建構完整 URL
     const baseUrl = window.location.origin;
     const shareUrl = `${baseUrl}${pathname}`;
 
+    // 根據路徑決定標題
     const getTitle = () => {
       if (pathname.startsWith("/map")) return "光復超人 - 現場地圖";
       if (pathname.startsWith("/volunteer")) return "光復超人 - 志工資訊";
@@ -56,15 +30,21 @@ export default function Header() {
 
     const title = getTitle();
 
+    // 檢查是否支援 Web Share API
     if (navigator.share) {
       try {
-        await navigator.share({ title, url: shareUrl });
-      } catch (error: any) {
+        await navigator.share({
+          title: title,
+          url: shareUrl,
+        });
+      } catch (error) {
+        // 如果使用者取消分享或發生錯誤=複製功能
         if (!(error instanceof Error && error.name === "AbortError")) {
           await fallbackToCopy(shareUrl);
         }
       }
     } else {
+      // 不支援 Web Share API,直接使用複製功能
       await fallbackToCopy(shareUrl);
     }
   };
@@ -74,8 +54,10 @@ export default function Header() {
       console.warn("Clipboard API 不可用 - 需要 HTTPS 或 localhost 環境");
       return;
     }
+
     try {
       await navigator.clipboard.writeText(url);
+      // 複製成功,顯示 Toast2
       setShowToast(true);
     } catch (error) {
       console.error("複製失敗:", error);
@@ -118,40 +100,15 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Right: Share + Login */}
-            <div className="flex items-center gap-2">
-              <button className="p-2" aria-label="分享" onClick={handleShare}>
-                <Image
-                  src={getAssetPath("/share.svg")}
-                  alt="分享"
-                  width={24}
-                  height={24}
-                />
-              </button>
-
-              {/* 根據 localStorage 判斷是否已使用 LINE 登入，顯示登出或開啟登入 Modal */}
-              {/* {typeof window !== "undefined" &&
-              localStorage.getItem("line_oauth_state") ? (
-                <button
-                  className="px-3 py-1.5 rounded-md text-sm font-medium bg-red-600 text-white hover:bg-red-500"
-                  onClick={() => {
-                    // 清除與 LINE 登入相關的 localStorage（根據實際鍵名調整）
-                    localStorage.removeItem("line_oauth_state");
-                    // 若有後端登出接口，也可以在這裡呼叫，或直接重新載入頁面更新 UI
-                    window.location.reload();
-                  }}
-                >
-                  登出
-                </button>
-              ) : (
-                <button
-                  className="px-3 py-1.5 rounded-md text-sm font-medium bg-gray-900 text-white hover:bg-gray-800"
-                  onClick={openLogin}
-                >
-                  Login
-                </button>
-              )} */}
-            </div>
+            {/* Right: Share icon */}
+            <button className="p-2" aria-label="分享" onClick={handleShare}>
+              <Image
+                src={getAssetPath("/share.svg")}
+                alt="分享"
+                width={24}
+                height={24}
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -165,66 +122,6 @@ export default function Header() {
         onClose={() => setShowToast(false)}
         duration={3000}
       />
-
-      {/* === Login Modal === */}
-      {loginOpen && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center"
-          aria-modal="true"
-          role="dialog"
-          onClick={closeLogin}
-        >
-          {/* 背景遮罩 */}
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-
-          {/* Modal 本體 */}
-          <div
-            className="relative w-full max-w-sm mx-4 rounded-2xl bg-white shadow-xl p-6"
-            onClick={(e) => e.stopPropagation()} // 阻止冒泡，避免點內容就關閉
-          >
-            <div className="flex items-start justify-between">
-              <h3 className="text-base font-semibold text-gray-900">
-                選擇登入方式
-              </h3>
-              <button
-                className="p-2 -m-2 rounded-md text-gray-500 hover:bg-gray-100"
-                aria-label="關閉"
-                onClick={closeLogin}
-              >
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M18 6 6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <p className="mt-2 text-sm text-gray-600">
-              你可以使用 LINE 快速登入。
-            </p>
-
-            <div className="mt-5 space-y-3">
-              {/* LINE 登入 */}
-              <button
-                onClick={startLineLogin}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#000000] text-white py-2.5 text-sm font-medium hover:brightness-95"
-              >
-                <Image src="/line.svg" alt="" width={48} height={48} />
-                使用 LINE 登入
-              </button>
-
-              {/* 需要其他 Provider 時可以在這裡加 */}
-              {/* <button className="w-full ...">Google</button> */}
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

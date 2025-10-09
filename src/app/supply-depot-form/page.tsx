@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, /* useMemo, useRef,*/ useState } from "react";
 // import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 // import {
 //   SuppliesResponse,
@@ -97,7 +97,7 @@ import { useRouter } from "next/navigation";
 // }
 
 export default function ReliefFormPage() {
-  const router = useRouter();
+  // const router = useRouter();
 
   // ---- 登入門檻狀態 ----
   const [authChecked, setAuthChecked] = useState(false); // 是否檢查完 localStorage

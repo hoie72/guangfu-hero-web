@@ -572,9 +572,9 @@ export default function ReliefFormPage() {
                       layout
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="grid grid-cols-1 gap-3 sm:grid-cols-12"
+                      className="grid grid-cols-1 gap-3 sm:grid-cols-12 items-end border-b pb-3 border-gray-200"
                     >
-                      <div className="sm:col-span-3">
+                      <div className="sm:col-span-full">
                         <DropdownSelect
                           value={row.supplyItemId}
                           onChange={(value) =>
@@ -617,7 +617,7 @@ export default function ReliefFormPage() {
                             )
                           )
                         }
-                        className="sm:col-span-2"
+                        className="sm:col-span-3"
                       />
                       <Field
                         label="量詞"
@@ -631,7 +631,7 @@ export default function ReliefFormPage() {
                             )
                           )
                         }
-                        className="sm:col-span-2"
+                        className="sm:col-span-3"
                       />
                       <button
                         className="sm:col-span-2 text-red-600 hover:text-red-700 cursor-pointer"

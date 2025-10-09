@@ -166,7 +166,7 @@ export default function VolunteerInfo({
             <div className="mt-8">
               <div className="flex items-center gap-3 mb-3">
                 <StepNumber number={3} />
-                <h3 className="font-bold text-xl">專才志工識別證</h3>
+                <h3 className="font-bold text-xl">識別證/卡</h3>
               </div>
               <div className="text-[var(--secondary)] mb-1 text-lg font-bold">
                 使用原因

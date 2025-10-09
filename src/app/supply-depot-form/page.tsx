@@ -17,7 +17,13 @@ type Need = {
   tags: string[];
 };
 
-type SupplyRow = { id: string; name: string; qty: string; unit: string; tag?: string }; // 僅前端紀錄
+type SupplyRow = {
+  id: string;
+  name: string;
+  qty: string;
+  unit: string;
+  tag?: string;
+}; // 僅前端紀錄
 
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   v !== null && typeof v === "object";
@@ -93,14 +99,12 @@ function parseHydraToNeeds(payload: unknown): {
     const suppliesArr = Array.isArray(row["supplies"])
       ? (row["supplies"] as unknown[])
       : [];
-    const items: NeedItem[] = suppliesArr
-      .filter(isRecord)
-      .map((it) => {
-        const itemName = asString(it["name"]) ?? "未命名";
-        const total = (it["total_count"] as number) ?? 0;
-        const unit = asString(it["unit"]) ?? "";
-        return { name: itemName, qty: total, unit };
-      });
+    const items: NeedItem[] = suppliesArr.filter(isRecord).map((it) => {
+      const itemName = asString(it["name"]) ?? "未命名";
+      const total = (it["total_count"] as number) ?? 0;
+      const unit = asString(it["unit"]) ?? "";
+      return { name: itemName, qty: total, unit };
+    });
 
     const tags = Array.from(
       new Set(
@@ -112,7 +116,9 @@ function parseHydraToNeeds(payload: unknown): {
     );
 
     // desc 多行（NeedCard 用 whitespace-pre-line 顯示）
-    const descLines = [address, phone && `連絡電話：${phone}`, notes].filter(Boolean);
+    const descLines = [address, phone && `連絡電話：${phone}`, notes].filter(
+      Boolean
+    );
     const desc = descLines.join("\n");
 
     return { id, title: name, desc, items, tags };
@@ -186,27 +192,27 @@ async function handleSubmitStationOnly(
     // 因應 API 設計，每一筆物資需要各自打一次 API
     await Promise.all(
       payloadList.map(async (payload) => {
-    const res = await fetch(
+        const res = await fetch(
           `https://guangfu250923.pttapp.cc/supply_providers`,
-      {
+          {
             method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        // 若改為 Cookie 驗證，需加 credentials: "include" 並請後端正確設定 CORS
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            // 若改為 Cookie 驗證，需加 credentials: "include" 並請後端正確設定 CORS
             body: JSON.stringify({
               ...payload,
             }),
-      }
-    );
+          }
+        );
 
-    if (!res.ok) {
-      const text = await res.text();
+        if (!res.ok) {
+          const text = await res.text();
           throw new Error(
             `POST 失敗：${res.status} ${res.statusText}\n${text}`
           );
-    }
+        }
       })
     );
 
@@ -537,7 +543,9 @@ export default function ReliefFormPage() {
                       value={row.name}
                       onChange={(v) =>
                         setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, name: v } : x))
+                          s.map((x) =>
+                            x.id === row.id ? { ...x, name: v } : x
+                          )
                         )
                       }
                       className="sm:col-span-5"
@@ -563,7 +571,9 @@ export default function ReliefFormPage() {
                       value={row.unit}
                       onChange={(v) =>
                         setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, unit: v } : x))
+                          s.map((x) =>
+                            x.id === row.id ? { ...x, unit: v } : x
+                          )
                         )
                       }
                       className="sm:col-span-2"
@@ -590,7 +600,13 @@ export default function ReliefFormPage() {
                     onClick={() =>
                       setSupplies((s) => [
                         ...s,
-                        { id: cryptoRandomId(), name: "", qty: "", unit: "", tag: "" },
+                        {
+                          id: cryptoRandomId(),
+                          name: "",
+                          qty: "",
+                          unit: "",
+                          tag: "",
+                        },
                       ])
                     }
                     aria-label="新增一列物資"
@@ -620,10 +636,10 @@ export default function ReliefFormPage() {
                       selectedNeedId,
                       {
                         station: {
-                        name: stationName,
-                        phone: stationPhone,
-                        address: stationAddress,
-                        notes: stationNotes,
+                          name: stationName,
+                          phone: stationPhone,
+                          address: stationAddress,
+                          notes: stationNotes,
                         },
                         // TODO: 串接真實物資清單
                         // supplies: supplies,

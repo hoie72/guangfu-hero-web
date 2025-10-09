@@ -11,7 +11,7 @@ import { Shelter, MedicalStation, MentalHealthResource } from "@/lib/types";
 import Button from "@/components/Button";
 import InfoCard from "@/components/InfoCard";
 
-type Category = "庇護所" | "醫療站" | "心理援助";
+type Category = "庇護所" | "醫療站" | "心理資源";
 type ServiceFormat = "全部" | "實體" | "線上" | "電話" | "多種";
 
 interface VictimAssistanceProps {
@@ -34,7 +34,7 @@ export default function VictimAssistance({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const categories: Category[] = ["庇護所", "醫療站", "心理援助"];
+  const categories: Category[] = ["庇護所", "醫療站", "心理資源"];
   const serviceFormats: ServiceFormat[] = [
     "全部",
     "實體",
@@ -48,7 +48,7 @@ export default function VictimAssistance({
       router.push("/victim/shelter");
     } else if (category === "醫療站") {
       router.push("/victim/medical");
-    } else if (category === "心理援助") {
+    } else if (category === "心理資源") {
       router.push("/victim/mental-health");
     } else {
       setSelectedCategory(category);
@@ -60,7 +60,7 @@ export default function VictimAssistance({
       fetchShelters();
     } else if (selectedCategory === "醫療站") {
       fetchMedicalStations();
-    } else if (selectedCategory === "心理援助") {
+    } else if (selectedCategory === "心理資源") {
       fetchMentalHealthResources();
     } else {
       setLoading(false);
@@ -127,7 +127,7 @@ export default function VictimAssistance({
         ))}
       </div>
 
-      {selectedCategory === "心理援助" && (
+      {selectedCategory === "心理資源" && (
         <div className="flex gap-2 mb-3">
           {serviceFormats.map((format) => (
             <Button
@@ -193,7 +193,7 @@ export default function VictimAssistance({
           </>
         )}
 
-        {!loading && !error && selectedCategory === "心理援助" && (
+        {!loading && !error && selectedCategory === "心理資源" && (
           <>
             {filteredMentalHealthResources.length === 0 ? (
               <div className="text-center py-8 text-[var(--gray)]">

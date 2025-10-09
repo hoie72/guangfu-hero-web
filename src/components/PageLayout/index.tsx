@@ -14,7 +14,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
   const tabs = [
     { name: "現場地圖", path: "/map" },
     { name: "志工資訊", path: "/volunteer/preparation" },
-    { name: "災民協助", path: "/victim/shelter" },
+    { name: "居民協助", path: "/victim/shelter" },
   ];
 
   // 不顯示 tab 的頁面路徑

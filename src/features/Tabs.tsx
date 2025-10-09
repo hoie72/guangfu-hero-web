@@ -7,19 +7,19 @@ import VictimAssistance from "@/features/VictimAssistance";
 import VolunteerInfo from "@/features/VolunteerInfo";
 import SiteMap from "@/features/SiteMap";
 
-type Tab = "現場地圖" | "志工資訊" | "災民協助";
+type Tab = "現場地圖" | "志工資訊" | "居民協助";
 type TabKey = "map" | "volunteer" | "victim";
 
 const tabMapping: Record<TabKey, Tab> = {
   map: "現場地圖",
   volunteer: "志工資訊",
-  victim: "災民協助",
+  victim: "居民協助",
 };
 
 const reverseTabMapping: Record<Tab, TabKey> = {
   現場地圖: "map",
   志工資訊: "volunteer",
-  災民協助: "victim",
+  居民協助: "victim",
 };
 
 function TabsContent() {
@@ -31,7 +31,7 @@ function TabsContent() {
     tabParam && tabMapping[tabParam] ? tabMapping[tabParam] : "現場地圖"
   );
 
-  const tabs: Tab[] = ["現場地圖", "志工資訊", "災民協助"];
+  const tabs: Tab[] = ["現場地圖", "志工資訊", "居民協助"];
 
   useEffect(() => {
     if (tabParam && tabMapping[tabParam]) {
@@ -62,7 +62,7 @@ function TabsContent() {
       <div className="mt-3">
         {activeTab === "現場地圖" && <SiteMap />}
         {activeTab === "志工資訊" && <VolunteerInfo />}
-        {activeTab === "災民協助" && <VictimAssistance />}
+        {activeTab === "居民協助" && <VictimAssistance />}
       </div>
     </div>
   );

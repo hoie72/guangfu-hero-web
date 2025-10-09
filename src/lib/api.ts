@@ -11,6 +11,7 @@ import {
   MentalHealthResource,
   MedicalStation,
   Shelter,
+  SupplyResponse,
 } from "./types";
 
 const API_BASE_URL = "https://guangfu250923.pttapp.cc";
@@ -151,4 +152,16 @@ function filterValidLocations(locations: Location): Location {
       location.status !== "need_delete" &&
       location.name !== ""
   );
+}
+
+export async function getSupplies(
+  limit: number = 50,
+  offset: number = 0
+): Promise<SupplyResponse> {
+  const response = await fetchAPI<SupplyResponse>("/supplies", {
+    embed: "all",
+    limit,
+    offset,
+  });
+  return response;
 }

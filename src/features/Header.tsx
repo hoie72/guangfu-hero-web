@@ -24,7 +24,7 @@ export default function Header() {
     const getTitle = () => {
       if (pathname.startsWith("/map")) return "光復超人 - 現場地圖";
       if (pathname.startsWith("/volunteer")) return "光復超人 - 志工資訊";
-      if (pathname.startsWith("/victim")) return "光復超人 - 災民協助";
+      if (pathname.startsWith("/victim")) return "光復超人 - 居民協助";
       return "光復超人";
     };
 

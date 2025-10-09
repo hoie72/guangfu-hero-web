@@ -520,7 +520,7 @@ export default function VolunteerInfo({
                         </a>
                       </div>
                       <p className="text-[var(--gray-2)]">
-                        由當地災民自行組織，可依指示至記事本了解群內運作模式。
+                        由當地居民自行組織，可依指示至記事本了解群內運作模式。
                       </p>
                     </div>
                     <div className="flex gap-2">

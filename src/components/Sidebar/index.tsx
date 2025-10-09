@@ -21,11 +21,11 @@ const SIDEBAR_ITEM = [
     ],
   },
   {
-    name: "災民協助",
+    name: "居民協助",
     subItems: [
       { name: "庇護所", href: "/victim/shelter" },
       { name: "醫療站", href: "/victim/medical" },
-      { name: "心理援助", href: "/victim/mental-health" },
+      { name: "心理資源", href: "/victim/mental-health" },
     ],
   },
   { name: "物資媒合", href: "/resources" },

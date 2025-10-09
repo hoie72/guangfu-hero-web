@@ -476,7 +476,8 @@ export default function ReliefFormPage() {
                   onChange={setStationAddress}
                 />
                 {/* 備註 notes */}
-                <label className="block sm:col-span-2" htmlFor="stationNotes">
+                {/* TODO: 由於前台目前空間不夠顯示備註欄為，因此暫時隱藏，不提供此功能 */}
+                {/* <label className="block sm:col-span-2" htmlFor="stationNotes">
                   <span className="mb-1 block text-sm font-medium text-slate-700">
                     備註（可選）
                   </span>
@@ -488,7 +489,7 @@ export default function ReliefFormPage() {
                     onChange={(e) => setStationNotes(e.target.value)}
                     className="min-h-[80px] w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-0 placeholder:text-slate-400 focus:border-amber-500 focus:shadow-[0_0_0_3px_rgba(245,158,11,0.15)]"
                   />
-                </label>
+                </label> */}
               </div>
             </Card>
 

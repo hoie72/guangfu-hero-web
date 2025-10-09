@@ -3,21 +3,40 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import DropdownSelect from "@/components/DropdownSelect";
 
 /** ---------------- 基本設定 ---------------- */
 const PAGE_SIZE = 50;
 const API_BASE = "https://guangfu250923.pttapp.cc/supplies?embed=all";
 
-type NeedItem = { name: string; qty: number | string; unit: string };
+type NeedItem = {
+  // 對應 supply_item_id（要送給後端）
+  id: string;
+  name: string;
+  qty: number | string;
+  unit: string;
+};
 type Need = {
   id: string;
   title: string;
   desc: string; // 以換行分隔的地址/電話/備註
   items: NeedItem[];
   tags: string[];
+  organizationKey: string; // 識別單位的 id，由 name|address|phone 組成
+  createdAt: string;
 };
 
-type SupplyRow = { id: string; name: string; qty: string; unit: string; tag?: string }; // 僅前端紀錄
+/** 表單中每個可提供的物資 */
+type SupplyRow = {
+  /** random 字串，純前端表單識別用 */
+  id: string;
+  /** 對應要傳給後端的 supply_item_id */
+  supplyItemId: string;
+  name: string;
+  qty: string;
+  unit: string;
+  tag?: string;
+};
 
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   v !== null && typeof v === "object";
@@ -71,54 +90,116 @@ function parseHydraToNeeds(payload: unknown): {
   const next = typeof col.next === "string" ? col.next : null;
   const previous = typeof col.previous === "string" ? col.previous : null;
 
-  const needs: Need[] = rows.map((rowU, idx) => {
-    if (!isRecord(rowU)) {
-      return {
-        id: String(idx),
-        title: `需求 ${idx}`,
-        desc: "",
-        items: [],
-        tags: [],
-      };
-    }
-    const row = rowU as Record<string, unknown>;
+  const needs: Need[] = rows
+    .filter(
+      // 只保留尚缺物資的需求單
+      (rowU) =>
+        isRecord(rowU) &&
+        Array.isArray(rowU.supplies) &&
+        rowU.supplies.length > 0 &&
+        rowU.supplies[0].recieved_count < rowU.supplies[0].total_count
+    )
+    .map((rowU, idx) => {
+      if (!isRecord(rowU)) {
+        return {
+          id: String(idx),
+          title: `需求 ${idx}`,
+          desc: "",
+          items: [],
+          tags: [],
+          createdAt: "",
+          organizationKey: "",
+        };
+      }
+      const row = rowU as Record<string, unknown>;
 
-    const id = asString(row["id"]) ?? String(idx);
-    const name = asString(row["name"]) ?? `需求 ${id}`;
-    const address = asString(row["address"]) ?? "";
-    const phone = asString(row["phone"]) ?? "";
-    const notes = asString(row["notes"]) ?? "";
+      const id = asString(row["id"]) ?? String(idx);
+      const name = asString(row["name"]) ?? `需求 ${id}`;
+      const address = asString(row["address"]) ?? "";
+      const phone = asString(row["phone"]) ?? "";
+      const notes = asString(row["notes"]) ?? "";
+      const createdAt = asString(row["created_at"]) ?? "";
 
-    // supplies -> items + tags（僅顯示）
-    const suppliesArr = Array.isArray(row["supplies"])
-      ? (row["supplies"] as unknown[])
-      : [];
-    const items: NeedItem[] = suppliesArr
-      .filter(isRecord)
-      .map((it) => {
+      // supplies -> items + tags（僅顯示）
+      const suppliesArr = Array.isArray(row["supplies"])
+        ? (row["supplies"] as {
+            id: string;
+            name: string;
+            supply_id: string; // 物資單 ID
+            tag?: string;
+            total_count: number;
+            unit: string;
+          }[])
+        : [];
+
+      const items: NeedItem[] = suppliesArr.filter(isRecord).map((it) => {
         const itemName = asString(it["name"]) ?? "未命名";
         const total = (it["total_count"] as number) ?? 0;
         const unit = asString(it["unit"]) ?? "";
-        return { name: itemName, qty: total, unit };
+
+        return {
+          id: it.id,
+          name: itemName,
+          qty: total,
+          unit,
+        };
       });
 
-    const tags = Array.from(
-      new Set(
-        suppliesArr
-          .filter(isRecord)
-          .map((it) => asString(it["tag"]) || "")
-          .filter(Boolean) as string[]
-      )
-    );
+      const tags = Array.from(
+        new Set(
+          suppliesArr
+            .filter(isRecord)
+            .map((it) => asString(it["tag"]) || "")
+            .filter(Boolean) as string[]
+        )
+      );
 
-    // desc 多行（NeedCard 用 whitespace-pre-line 顯示）
-    const descLines = [address, phone && `連絡電話：${phone}`, notes].filter(Boolean);
-    const desc = descLines.join("\n");
+      // desc 多行（NeedCard 用 whitespace-pre-line 顯示）
+      const descLines = [address, phone && `連絡電話：${phone}`, notes].filter(
+        Boolean
+      );
+      const desc = descLines.join("\n");
 
-    return { id, title: name, desc, items, tags };
-  });
+      // 單位 key（用於合併需求單：將同個單位的多張單，合併成一張需求單）
+      const organizationKey = `${name}|${address}|${phone}`;
 
-  return { needs, page: { limit, offset, totalItems, next, previous } };
+      return { id, title: name, desc, items, tags, organizationKey, createdAt };
+    });
+
+  /**
+   * 合併同單位的需求單。
+   * 參考物資媒合的合併方法：https://github.com/Pinkowo/hualien-bees/blob/521eebb037880a8cc54b00a25f535a49b0bbb43d/src/App.vue#L1447-L1469
+   */
+  const mergeRequestsByOrganization = (list: Need[]) => {
+    const mergedMap = new Map();
+    list.forEach((req) => {
+      const key = req.organizationKey;
+      const itemsWithSupplyId = req.items.map((item) => ({
+        ...item,
+        supplyId: req.id,
+      }));
+      if (mergedMap.has(key)) {
+        const existing = mergedMap.get(key);
+        existing.items.push(...itemsWithSupplyId);
+        if (req.createdAt > existing.createdAt) {
+          existing.createdAt = req.createdAt;
+        }
+      } else {
+        mergedMap.set(key, {
+          ...req,
+          items: itemsWithSupplyId,
+        });
+      }
+    });
+    return Array.from(mergedMap.values());
+  };
+
+  const mergedNeeds = mergeRequestsByOrganization(needs);
+
+  return {
+    needs: mergedNeeds,
+    page: { limit, offset, totalItems, next, previous },
+  };
 }
 
 /** ---------------- Helpers ---------------- */
@@ -139,47 +220,85 @@ function cryptoRandomId() {
 /** 送出：PATCH /supplies/:id（只送 name/address/phone/notes/pii_date） */
 async function handleSubmitStationOnly(
   needId: string | null | undefined,
-  station: { name: string; phone: string; address: string; notes?: string },
+  data: {
+    station: { name: string; phone: string; address: string; notes?: string };
+    supplies: {
+      id: string;
+      unit: string;
+      count: number;
+    }[];
+  },
   onOk?: () => void
 ) {
   if (!needId) {
     alert("請先在左側選擇一筆需求");
     return;
   }
+
+  const { station, supplies } = data;
+
   if (!station.name?.trim() || !station.address?.trim()) {
-    alert("請填寫物資站「名稱」與「地址」");
+    alert("請填寫物資站「名稱」、「地址」");
+    return;
+  }
+  if (!station.phone?.trim()) {
+    alert("請填寫物資站「電話」");
     return;
   }
 
-  const payload = {
+  if (supplies.length === 0) {
+    alert("請至少新增一筆可提供的物資");
+    return;
+  }
+
+  if (supplies.some((s) => !s.id || s.count <= 0)) {
+    alert("請確認每筆物資的名稱、數量皆已填寫");
+    return;
+  }
+
+  const payloadList = supplies.map((supplyItem) => ({
     name: station.name.trim(),
     address: station.address.trim(),
     phone: (station.phone || "").trim(),
     notes: (station.notes || "").trim(),
+    supply_item_id: supplyItem.id,
+    provide_unit: supplyItem.unit,
+    provide_count: supplyItem.count,
     pii_date: 0, // 依後端需求固定送 0
-  };
+  }));
 
   try {
-    const res = await fetch(
-      `https://guangfu250923.pttapp.cc/supplies/${encodeURIComponent(needId)}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        // 若改為 Cookie 驗證，需加 credentials: "include" 並請後端正確設定 CORS
-        body: JSON.stringify(payload),
-      }
+    // 因應 API 設計，每一筆物資需要各自打一次 API
+    await Promise.all(
+      payloadList.map(async (payload) => {
+        const res = await fetch(
+          `https://guangfu250923.pttapp.cc/supply_providers`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            // 若改為 Cookie 驗證，需加 credentials: "include" 並請後端正確設定 CORS
+            body: JSON.stringify({
+              ...payload,
+            }),
+          }
+        );
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(
+            `POST 失敗：${res.status} ${res.statusText}\n${text}`
+          );
+        }
+      })
     );
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`PATCH 失敗：${res.status} ${res.statusText}\n${text}`);
-    }
+
     alert("已更新物資站資訊！");
     onOk?.();
-  } catch (e: any) {
-    alert(e?.message || "送出失敗");
+  } catch (e) {
+    alert((e instanceof Error && e?.message) || "送出失敗");
   }
 }
 
@@ -197,9 +316,16 @@ export default function ReliefFormPage() {
   const [stationAddress, setStationAddress] = useState("");
   const [stationNotes, setStationNotes] = useState("");
 
-  // 右側「可提供的物資」動態列（僅前端紀錄）
+  // 右側「可提供的物資」動態列表
   const [supplies, setSupplies] = useState<SupplyRow[]>([
-    { id: cryptoRandomId(), name: "", qty: "", unit: "", tag: "" },
+    {
+      id: cryptoRandomId(),
+      name: "",
+      qty: "",
+      unit: "",
+      tag: "",
+      supplyItemId: "",
+    },
   ]);
 
   // 左側「需求清單」
@@ -212,6 +338,10 @@ export default function ReliefFormPage() {
 
   // 選取中的需求 id（PATCH 用）
   const [selectedNeedId, setSelectedNeedId] = useState<string | null>(null);
+  // 選取中的需求單，底下所有需要的物資選項
+  const [selectedNeedSupplyOptions, setSelectedNeedSupplyOptions] = useState<
+    NeedItem[]
+  >([]);
 
   const pageIndex = useMemo(() => Math.floor(offset / PAGE_SIZE) + 1, [offset]);
 
@@ -345,7 +475,9 @@ export default function ReliefFormPage() {
               物資站志工填單頁面
             </h1>
             <p className="mt-1 text-sm text-slate-600">
-              請填寫物資站資訊（會更新名稱、地址、電話與備註）。
+              {/* TODO: 等備註可以顯示時恢復文案 */}
+              {/* 請填寫物資站資訊（會更新名稱、地址、電話與備註）。 */}
+              請填寫物資站資訊（會更新名稱、地址、電話）。
             </p>
           </div>
 
@@ -401,7 +533,8 @@ export default function ReliefFormPage() {
                   onChange={setStationAddress}
                 />
                 {/* 備註 notes */}
-                <label className="block sm:col-span-2" htmlFor="stationNotes">
+                {/* TODO: 由於前台目前空間不夠顯示備註欄為，因此暫時隱藏，不提供此功能 */}
+                {/* <label className="block sm:col-span-2" htmlFor="stationNotes">
                   <span className="mb-1 block text-sm font-medium text-slate-700">
                     備註（可選）
                   </span>
@@ -413,7 +546,7 @@ export default function ReliefFormPage() {
                     onChange={(e) => setStationNotes(e.target.value)}
                     className="min-h-[80px] w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-0 placeholder:text-slate-400 focus:border-amber-500 focus:shadow-[0_0_0_3px_rgba(245,158,11,0.15)]"
                   />
-                </label>
+                </label> */}
               </div>
             </Card>
 
@@ -467,11 +600,12 @@ export default function ReliefFormPage() {
                           <NeedCard
                             data={n}
                             selected={selectedNeedId === n.id}
-                            onSelect={() =>
+                            onSelect={() => {
                               setSelectedNeedId((prev) =>
                                 prev === n.id ? null : n.id
-                              )
-                            }
+                              );
+                              setSelectedNeedSupplyOptions(n.items);
+                            }}
                           />
                         </li>
                       ))}
@@ -494,20 +628,36 @@ export default function ReliefFormPage() {
                     layout
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="grid grid-cols-1 gap-3 sm:grid-cols-12"
+                    className="grid grid-cols-1 gap-3 sm:grid-cols-12 items-end border-b pb-3 border-gray-200"
                   >
-                    <Field
-                      label="物資名稱"
-                      id={`s-name-${row.id}`}
-                      placeholder="例：礦泉水"
-                      value={row.name}
-                      onChange={(v) =>
-                        setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, name: v } : x))
-                        )
-                      }
-                      className="sm:col-span-5"
-                    />
+                    <div className="sm:col-span-full">
+                      <DropdownSelect
+                        value={row.supplyItemId}
+                        onChange={(value) =>
+                          setSupplies((prevSupplies) =>
+                            prevSupplies.map((supply) =>
+                              supply.id === row.id
+                                ? {
+                                    ...supply,
+                                    supplyItemId: value,
+                                    unit:
+                                      selectedNeedSupplyOptions.find(
+                                        (o) => o.id === value
+                                      )?.unit || "",
+                                  }
+                                : supply
+                            )
+                          )
+                        }
+                        defaultLabel="選擇物資名稱"
+                        options={selectedNeedSupplyOptions.map((option) => {
+                          return {
+                            value: option.id,
+                            label: option.name,
+                          };
+                        })}
+                      />
+                    </div>
                     <Field
                       label="數量"
                       id={`s-qty-${row.id}`}
@@ -515,12 +665,13 @@ export default function ReliefFormPage() {
                       inputMode="numeric"
                       placeholder="例：10"
                       value={row.qty}
+                      min={0}
                       onChange={(v) =>
                         setSupplies((s) =>
                           s.map((x) => (x.id === row.id ? { ...x, qty: v } : x))
                         )
                       }
-                      className="sm:col-span-2"
+                      className="sm:col-span-3"
                     />
                     <Field
                       label="量詞"
@@ -529,23 +680,21 @@ export default function ReliefFormPage() {
                       value={row.unit}
                       onChange={(v) =>
                         setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, unit: v } : x))
-                        )
-                      }
-                      className="sm:col-span-2"
-                    />
-                    <Field
-                      label="分類（可選）"
-                      id={`s-tag-${row.id}`}
-                      placeholder="例：食物/水"
-                      value={row.tag || ""}
-                      onChange={(v) =>
-                        setSupplies((s) =>
-                          s.map((x) => (x.id === row.id ? { ...x, tag: v } : x))
+                          s.map((x) =>
+                            x.id === row.id ? { ...x, unit: v } : x
+                          )
                         )
                       }
                       className="sm:col-span-3"
                     />
+                    <button
+                      className="sm:col-span-2 text-red-600 hover:text-red-700 cursor-pointer"
+                      onClick={() =>
+                        setSupplies((s) => s.filter((x) => x.id !== row.id))
+                      }
+                    >
+                      刪除
+                    </button>
                   </motion.div>
                 ))}
 
@@ -556,7 +705,14 @@ export default function ReliefFormPage() {
                     onClick={() =>
                       setSupplies((s) => [
                         ...s,
-                        { id: cryptoRandomId(), name: "", qty: "", unit: "", tag: "" },
+                        {
+                          id: cryptoRandomId(),
+                          supplyItemId: "",
+                          name: "",
+                          qty: "",
+                          unit: "",
+                          tag: "",
+                        },
                       ])
                     }
                     aria-label="新增一列物資"
@@ -585,10 +741,17 @@ export default function ReliefFormPage() {
                     handleSubmitStationOnly(
                       selectedNeedId,
                       {
-                        name: stationName,
-                        phone: stationPhone,
-                        address: stationAddress,
-                        notes: stationNotes,
+                        station: {
+                          name: stationName,
+                          phone: stationPhone,
+                          address: stationAddress,
+                          notes: stationNotes,
+                        },
+                        supplies: supplies.map((supply) => ({
+                          id: supply.supplyItemId,
+                          count: Number(supply.qty),
+                          unit: supply.unit,
+                        })),
                       },
                       () => setOffset((o) => o) // 送出成功後重抓目前頁
                     )
@@ -596,6 +759,9 @@ export default function ReliefFormPage() {
                 >
                   送出
                 </button>
+              </div>
+              <div className="mt-4 text-sm text-slate-500 text-right font-semibold">
+                為保持每天都有最新的物資資訊，送出的物資記錄將於每日 22:00 清除
               </div>
             </Card>
           </section>
@@ -637,6 +803,7 @@ function Field({
   placeholder,
   value,
   onChange,
+  min,
 }: {
   label: string;
   id: string;
@@ -646,6 +813,7 @@ function Field({
   placeholder?: string;
   value?: string;
   onChange?: (v: string) => void;
+  min?: number;
 }) {
   return (
     <label className={`block ${className || ""}`} htmlFor={id}>
@@ -659,6 +827,7 @@ function Field({
         inputMode={inputMode}
         placeholder={placeholder}
         value={value}
+        min={min}
         onChange={(e) => onChange?.(e.target.value)}
         className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-0 placeholder:text-slate-400 focus:border-amber-500 focus:shadow-[0_0_0_3px_rgba(245,158,11,0.15)]"
       />

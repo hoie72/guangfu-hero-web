@@ -90,72 +90,81 @@ function parseHydraToNeeds(payload: unknown): {
   const next = typeof col.next === "string" ? col.next : null;
   const previous = typeof col.previous === "string" ? col.previous : null;
 
-  const needs: Need[] = rows.map((rowU, idx) => {
-    if (!isRecord(rowU)) {
-      return {
-        id: String(idx),
-        title: `需求 ${idx}`,
-        desc: "",
-        items: [],
-        tags: [],
-        createdAt: "",
-        organizationKey: "",
-      };
-    }
-    const row = rowU as Record<string, unknown>;
+  const needs: Need[] = rows
+    .filter(
+      // 只保留尚缺物資的需求單
+      (rowU) =>
+        isRecord(rowU) &&
+        Array.isArray(rowU.supplies) &&
+        rowU.supplies.length > 0 &&
+        rowU.supplies[0].recieved_count < rowU.supplies[0].total_count
+    )
+    .map((rowU, idx) => {
+      if (!isRecord(rowU)) {
+        return {
+          id: String(idx),
+          title: `需求 ${idx}`,
+          desc: "",
+          items: [],
+          tags: [],
+          createdAt: "",
+          organizationKey: "",
+        };
+      }
+      const row = rowU as Record<string, unknown>;
 
-    const id = asString(row["id"]) ?? String(idx);
-    const name = asString(row["name"]) ?? `需求 ${id}`;
-    const address = asString(row["address"]) ?? "";
-    const phone = asString(row["phone"]) ?? "";
-    const notes = asString(row["notes"]) ?? "";
-    const createdAt = asString(row["created_at"]) ?? "";
+      const id = asString(row["id"]) ?? String(idx);
+      const name = asString(row["name"]) ?? `需求 ${id}`;
+      const address = asString(row["address"]) ?? "";
+      const phone = asString(row["phone"]) ?? "";
+      const notes = asString(row["notes"]) ?? "";
+      const createdAt = asString(row["created_at"]) ?? "";
 
-    // supplies -> items + tags（僅顯示）
-    const suppliesArr = Array.isArray(row["supplies"])
-      ? (row["supplies"] as {
-          id: string;
-          name: string;
-          supply_id: string; // 物資單 ID
-          tag?: string;
-          total_count: number;
-          unit: string;
-        }[])
-      : [];
+      // supplies -> items + tags（僅顯示）
+      const suppliesArr = Array.isArray(row["supplies"])
+        ? (row["supplies"] as {
+            id: string;
+            name: string;
+            supply_id: string; // 物資單 ID
+            tag?: string;
+            total_count: number;
+            unit: string;
+          }[])
+        : [];
 
-    const items: NeedItem[] = suppliesArr.filter(isRecord).map((it) => {
-      const itemName = asString(it["name"]) ?? "未命名";
-      const total = (it["total_count"] as number) ?? 0;
-      const unit = asString(it["unit"]) ?? "";
+      const items: NeedItem[] = suppliesArr.filter(isRecord).map((it) => {
+        const itemName = asString(it["name"]) ?? "未命名";
+        const total = (it["total_count"] as number) ?? 0;
+        const unit = asString(it["unit"]) ?? "";
 
-      return {
-        id: it.id,
-        name: itemName,
-        qty: total,
-        unit,
-      };
+        return {
+          id: it.id,
+          name: itemName,
+          qty: total,
+          unit,
+        };
+      });
+
+      const tags = Array.from(
+        new Set(
+          suppliesArr
+            .filter(isRecord)
+            .map((it) => asString(it["tag"]) || "")
+            .filter(Boolean) as string[]
+        )
+      );
+
+      // desc 多行（NeedCard 用 whitespace-pre-line 顯示）
+      const descLines = [address, phone && `連絡電話：${phone}`, notes].filter(
+        Boolean
+      );
+      const desc = descLines.join("\n");
+
+      // 單位 key（用於合併需求單：將同個單位的多張單，合併成一張需求單）
+      const organizationKey = `${name}|${address}|${phone}`;
+
+      return { id, title: name, desc, items, tags, organizationKey, createdAt };
     });
-
-    const tags = Array.from(
-      new Set(
-        suppliesArr
-          .filter(isRecord)
-          .map((it) => asString(it["tag"]) || "")
-          .filter(Boolean) as string[]
-      )
-    );
-
-    // desc 多行（NeedCard 用 whitespace-pre-line 顯示）
-    const descLines = [address, phone && `連絡電話：${phone}`, notes].filter(
-      Boolean
-    );
-    const desc = descLines.join("\n");
-
-    // 單位 key（用於合併需求單：將同個單位的多張單，合併成一張需求單）
-    const organizationKey = `${name}|${address}|${phone}`;
-
-    return { id, title: name, desc, items, tags, organizationKey, createdAt };
-  });
 
   /**
    * 合併同單位的需求單。

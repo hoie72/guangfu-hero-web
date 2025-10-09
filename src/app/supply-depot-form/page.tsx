@@ -288,8 +288,8 @@ async function handleSubmitStationOnly(
 
     alert("已更新物資站資訊！");
     onOk?.();
-  } catch (e: any) {
-    alert(e?.message || "送出失敗");
+  } catch (e) {
+    alert((e instanceof Error && e?.message) || "送出失敗");
   }
 }
 

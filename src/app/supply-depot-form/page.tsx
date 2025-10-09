@@ -139,43 +139,77 @@ function cryptoRandomId() {
 /** 送出：PATCH /supplies/:id（只送 name/address/phone/notes/pii_date） */
 async function handleSubmitStationOnly(
   needId: string | null | undefined,
-  station: { name: string; phone: string; address: string; notes?: string },
+  data: {
+    station: { name: string; phone: string; address: string; notes?: string };
+    supplies: {
+      id: string;
+      unit: string;
+      count: number;
+    }[];
+  },
   onOk?: () => void
 ) {
   if (!needId) {
     alert("請先在左側選擇一筆需求");
     return;
   }
+
+  const { station, supplies } = data;
+
   if (!station.name?.trim() || !station.address?.trim()) {
-    alert("請填寫物資站「名稱」與「地址」");
+    alert("請填寫物資站「名稱」、「地址」");
+    return;
+  }
+  if (!station.phone?.trim()) {
+    alert("請填寫物資站「電話」");
     return;
   }
 
-  const payload = {
+  if (supplies.length === 0) {
+    alert("請至少新增一筆可提供的物資");
+    return;
+  }
+
+  const payloadList = supplies.map((supplyItem) => ({
     name: station.name.trim(),
     address: station.address.trim(),
     phone: (station.phone || "").trim(),
     notes: (station.notes || "").trim(),
+    supply_item_id: supplyItem.id,
+    // TODO: 待跟後端確認是否要送這個資料
+    // provide_unit: supplyItem.unit,
+    provide_count: supplyItem.count,
     pii_date: 0, // 依後端需求固定送 0
-  };
+  }));
 
   try {
+    // 因應 API 設計，每一筆物資需要各自打一次 API
+    await Promise.all(
+      payloadList.map(async (payload) => {
     const res = await fetch(
-      `https://guangfu250923.pttapp.cc/supplies/${encodeURIComponent(needId)}`,
+          `https://guangfu250923.pttapp.cc/supply_providers`,
       {
-        method: "PATCH",
+            method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         // 若改為 Cookie 驗證，需加 credentials: "include" 並請後端正確設定 CORS
-        body: JSON.stringify(payload),
+            body: JSON.stringify({
+              ...payload,
+            }),
       }
     );
+
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(`PATCH 失敗：${res.status} ${res.statusText}\n${text}`);
+          throw new Error(
+            `POST 失敗：${res.status} ${res.statusText}\n${text}`
+          );
     }
+      })
+    );
+
     alert("已更新物資站資訊！");
     onOk?.();
   } catch (e: any) {
@@ -585,10 +619,26 @@ export default function ReliefFormPage() {
                     handleSubmitStationOnly(
                       selectedNeedId,
                       {
+                        station: {
                         name: stationName,
                         phone: stationPhone,
                         address: stationAddress,
                         notes: stationNotes,
+                        },
+                        // TODO: 串接真實物資清單
+                        // supplies: supplies,
+                        supplies: [
+                          {
+                            id: "f75fc54d-92f3-4e82-a88a-ce1fb9ff11a0",
+                            count: 1,
+                            unit: "2",
+                          },
+                          {
+                            id: "8180c9cb-b119-41a3-bf38-42fb7120f463",
+                            count: 1,
+                            unit: "2",
+                          },
+                        ],
                       },
                       () => setOffset((o) => o) // 送出成功後重抓目前頁
                     )

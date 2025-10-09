@@ -39,7 +39,7 @@ export default function Header() {
         });
       } catch (error) {
         // 如果使用者取消分享或發生錯誤=複製功能
-        if (error instanceof Error && error.name !== "AbortError") {
+        if (!(error instanceof Error && error.name === "AbortError")) {
           await fallbackToCopy(shareUrl);
         }
       }
@@ -88,8 +88,8 @@ export default function Header() {
             </button>
 
             {/* Center: Logo */}
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-              <Link href="/map">
+            <div className="absolute left-1/2 -translate-x-1/2">
+              <Link href="/map" aria-label="前往地圖">
                 <Image
                   src={getAssetPath("/logo_new.svg")}
                   alt="Logo"
@@ -113,12 +113,13 @@ export default function Header() {
         </div>
       </header>
 
+      {/* 側邊欄 */}
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
+
       {/* Toast 提示 */}
-      <Toast2 
-        isVisible={showToast} 
-        onClose={() => setShowToast(false)} 
+      <Toast2
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
         duration={3000}
       />
     </>

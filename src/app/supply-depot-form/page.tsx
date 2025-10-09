@@ -420,7 +420,9 @@ export default function ReliefFormPage() {
               物資站志工填單頁面
             </h1>
             <p className="mt-1 text-sm text-slate-600">
-              請填寫物資站資訊（會更新名稱、地址、電話與備註）。
+              {/* TODO: 等備註可以顯示時恢復文案 */}
+              {/* 請填寫物資站資訊（會更新名稱、地址、電話與備註）。 */}
+              請填寫物資站資訊（會更新名稱、地址、電話）。
             </p>
           </div>
 
@@ -706,6 +708,9 @@ export default function ReliefFormPage() {
                 >
                   送出
                 </button>
+              </div>
+              <div className="mt-4 text-sm text-slate-500 text-right font-semibold">
+                為保持每天都有最新的物資資訊，送出的物資記錄將於每日 22:00 清除
               </div>
             </Card>
           </section>

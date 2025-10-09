@@ -185,7 +185,7 @@ export default function VolunteerInfo({
                 表明物資內容，讓災區交通更順暢！
               </div>
               <div className="text-[var(--secondary)] mb-1 text-lg font-bold">
-                使用原因
+                使用說明
               </div>
               <div className="mb-4">
                 1.點擊按鈕下載

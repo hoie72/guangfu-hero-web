@@ -11,12 +11,17 @@ import {
 } from "@mui/material";
 import { NormalizedSupplyItem } from "@/features/SupplyDepot/useFetchAllData";
 import { useFormContext } from "react-hook-form";
+import { ReportedSupplies } from "@/lib/supplyLocalStorage";
 
 interface SupplyRequirementListProps {
   supplies?: NormalizedSupplyItem[];
+  reportedSupplies?: ReportedSupplies;
 }
 
-const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
+const SupplyRequirementList = ({
+  supplies,
+  reportedSupplies = {},
+}: SupplyRequirementListProps) => {
   const { register } = useFormContext();
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
     {}
@@ -34,6 +39,20 @@ const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
       })
     );
   }, [selectedItems]);
+
+  // Listen for clear event from parent
+  useEffect(() => {
+    const handleClearSelectedItems = () => {
+      setSelectedItems({});
+    };
+    document.addEventListener("clearSelectedItems", handleClearSelectedItems);
+    return () => {
+      document.removeEventListener(
+        "clearSelectedItems",
+        handleClearSelectedItems
+      );
+    };
+  }, []);
   return (
     <section aria-labelledby="station-info" className="space-y-6">
       <Card variant="outlined" sx={{ p: 2 }}>
@@ -42,8 +61,8 @@ const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
         </Typography>
         <Stack spacing={0} sx={{ maxHeight: "80dvh", overflow: "auto" }}>
           <Grid container spacing={1}>
-            <Grid size={1}></Grid>
-            <Grid size={8}>
+            {/* <Grid size={1}></Grid> */}
+            <Grid size={9}>
               <Typography textAlign="center">需求 (已送/需求)</Typography>
             </Grid>
             <Grid size={3}>
@@ -52,49 +71,52 @@ const SupplyRequirementList = ({ supplies }: SupplyRequirementListProps) => {
           </Grid>
           <Stack spacing={1} sx={{ maxHeight: "70dvh", overflow: "auto" }}>
             {supplies?.map(
-              ({ id, name, total_count, recieved_count, unit }) => (
-                <Grid container spacing={1} key={id}>
-                  <Grid size={2} alignItems="center" display="flex">
-                    <Chip
-                      label="已回報"
-                      color="success"
-                      size="small"
-                      sx={{ fontSize: 10 }}
-                    />
+              ({ id, name, total_count, recieved_count, unit }) => {
+                const isReported = !!reportedSupplies[id];
+                return (
+                  <Grid container spacing={1} key={id}>
+                    <Grid size={9}>
+                      <ToggleButton
+                        value="check"
+                        selected={selectedItems?.[id] || false}
+                        color="success"
+                        fullWidth
+                        size="small"
+                        sx={{ fontSize: 14 }}
+                        onChange={() => handleChange(id)}
+                      >
+                        {isReported && (
+                          <Chip
+                            label="已回報"
+                            color="success"
+                            size="small"
+                            sx={{ fontSize: 10, mr: 2 }}
+                          />
+                        )}
+                        {name} {recieved_count}/{total_count} {unit}
+                      </ToggleButton>
+                    </Grid>
+                    <Grid size={3} alignItems="center" display="flex">
+                      <TextField
+                        placeholder="數量"
+                        variant="outlined"
+                        size="small"
+                        type="number"
+                        disabled={!selectedItems?.[id]}
+                        {...register(`quantity_${id}`, {
+                          valueAsNumber: true,
+                          validate: (value) => {
+                            if (selectedItems?.[id] && (!value || value <= 0)) {
+                              return "請輸入數量";
+                            }
+                            return true;
+                          },
+                        })}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid size={7}>
-                    <ToggleButton
-                      value="check"
-                      selected={selectedItems?.[id] || false}
-                      color="success"
-                      fullWidth
-                      size="small"
-                      sx={{ fontSize: 14 }}
-                      onChange={() => handleChange(id)}
-                    >
-                      {name} {recieved_count}/{total_count} {unit}
-                    </ToggleButton>
-                  </Grid>
-                  <Grid size={3} alignItems="center" display="flex">
-                    <TextField
-                      placeholder="數量"
-                      variant="outlined"
-                      size="small"
-                      type="number"
-                      disabled={!selectedItems?.[id]}
-                      {...register(`quantity_${id}`, {
-                        valueAsNumber: true,
-                        validate: (value) => {
-                          if (selectedItems?.[id] && (!value || value <= 0)) {
-                            return "請輸入數量";
-                          }
-                          return true;
-                        },
-                      })}
-                    />
-                  </Grid>
-                </Grid>
-              )
+                );
+              }
             )}
           </Stack>
         </Stack>

@@ -19,6 +19,11 @@ import Wrapper from "@/features/Wrapper";
 import { useForm, FormProvider } from "react-hook-form";
 import { submitSupplyProvider } from "@/lib/api";
 import { useState, useEffect } from "react";
+import {
+  getReportedSupplies,
+  addReportedSupply,
+  type ReportedSupplies,
+} from "@/lib/supplyLocalStorage";
 
 interface SupplyFormData {
   name: string;
@@ -47,6 +52,14 @@ const SupplyDepotFormPage = () => {
     message: string;
     severity: "success" | "error" | "info";
   }>({ open: false, message: "", severity: "info" });
+  const [reportedSupplies, setReportedSupplies] = useState<ReportedSupplies>(
+    {}
+  );
+
+  // Load reported supplies from local storage on mount
+  useEffect(() => {
+    setReportedSupplies(getReportedSupplies());
+  }, []);
 
   // Listen for selected items changes from SupplyRequirementList
   useEffect(() => {
@@ -112,7 +125,9 @@ const SupplyDepotFormPage = () => {
       };
       console.log({ submitData });
       try {
-        // await submitSupplyProvider(submitData);
+        await submitSupplyProvider(submitData);
+        // Store successful submission in local storage
+        addReportedSupply(item.id, quantity);
         successCount++;
       } catch (err) {
         errors.push(
@@ -130,8 +145,14 @@ const SupplyDepotFormPage = () => {
         message: `成功提交 ${successCount} 項物資!`,
         severity: "success",
       });
-      // Optional: Reset form or redirect
-      methods.reset();
+      // Update reported supplies state
+      setReportedSupplies(getReportedSupplies());
+      // Clear selected items in child component
+      document.dispatchEvent(new CustomEvent("clearSelectedItems"));
+      // Clear only quantity fields, keep station info
+      supplies?.forEach((item) => {
+        methods.setValue(`quantity_${item.id}`, 0);
+      });
       setSelectedItems({});
     } else if (successCount > 0) {
       setSnackbar({
@@ -139,6 +160,15 @@ const SupplyDepotFormPage = () => {
         message: `部分成功: ${successCount} 項成功, ${errors.length} 項失敗`,
         severity: "info",
       });
+      // Update reported supplies state even for partial success
+      setReportedSupplies(getReportedSupplies());
+      // Clear selected items in child component
+      document.dispatchEvent(new CustomEvent("clearSelectedItems"));
+      // Clear only quantity fields, keep station info
+      supplies?.forEach((item) => {
+        methods.setValue(`quantity_${item.id}`, 0);
+      });
+      setSelectedItems({});
     } else {
       setSnackbar({
         open: true,
@@ -169,7 +199,10 @@ const SupplyDepotFormPage = () => {
               />
               <Stack spacing={2} sx={{ mb: 2 }}>
                 <SupplyStation />
-                <SupplyRequirementList supplies={supplies} />
+                <SupplyRequirementList
+                  supplies={supplies}
+                  reportedSupplies={reportedSupplies}
+                />
               </Stack>
               <Button
                 variant="contained"

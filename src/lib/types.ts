@@ -274,14 +274,16 @@ export interface Supply {
   notes: string | null;
   phone: string;
   pii_date: number | null;
-  supplies: {
-    id: string;
-    supply_id: string;
-    tag: string;
-    name: string;
-    recieved_count: number;
-    total_count: number;
-    unit: string;
-  }[];
+  supplies: SupplyItem[];
   updated_at: number;
+}
+
+export interface SupplyItem {
+  id: string;
+  supply_id: string;
+  tag: string;
+  name: string;
+  recieved_count: number;
+  total_count: number;
+  unit: string;
 }

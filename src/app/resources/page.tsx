@@ -1,6 +1,12 @@
-"use client";
-
 import Wrapper from "@/features/Wrapper";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function ResourcesPage() {
   return (

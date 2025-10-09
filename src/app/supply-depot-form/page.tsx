@@ -22,6 +22,8 @@ type Need = {
   desc: string; // 以換行分隔的地址/電話/備註
   items: NeedItem[];
   tags: string[];
+  organizationKey: string; // 識別單位的 id，由 name|address|phone 組成
+  createdAt: string;
 };
 
 /** 表單中每個可提供的物資 */
@@ -96,6 +98,8 @@ function parseHydraToNeeds(payload: unknown): {
         desc: "",
         items: [],
         tags: [],
+        createdAt: "",
+        organizationKey: "",
       };
     }
     const row = rowU as Record<string, unknown>;
@@ -105,6 +109,7 @@ function parseHydraToNeeds(payload: unknown): {
     const address = asString(row["address"]) ?? "";
     const phone = asString(row["phone"]) ?? "";
     const notes = asString(row["notes"]) ?? "";
+    const createdAt = asString(row["created_at"]) ?? "";
 
     // supplies -> items + tags（僅顯示）
     const suppliesArr = Array.isArray(row["supplies"])
@@ -123,7 +128,12 @@ function parseHydraToNeeds(payload: unknown): {
       const total = (it["total_count"] as number) ?? 0;
       const unit = asString(it["unit"]) ?? "";
 
-      return { id: it.id, name: itemName, qty: total, unit };
+      return {
+        id: it.id,
+        name: itemName,
+        qty: total,
+        unit,
+      };
     });
 
     const tags = Array.from(
@@ -141,10 +151,46 @@ function parseHydraToNeeds(payload: unknown): {
     );
     const desc = descLines.join("\n");
 
-    return { id, title: name, desc, items, tags };
+    // 單位 key（用於合併需求單：將同個單位的多張單，合併成一張需求單）
+    const organizationKey = `${name}|${address}|${phone}`;
+
+    return { id, title: name, desc, items, tags, organizationKey, createdAt };
   });
 
-  return { needs, page: { limit, offset, totalItems, next, previous } };
+  /**
+   * 合併同單位的需求單。
+   * 參考物資媒合的合併方法：https://github.com/Pinkowo/hualien-bees/blob/521eebb037880a8cc54b00a25f535a49b0bbb43d/src/App.vue#L1447-L1469
+   */
+  const mergeRequestsByOrganization = (list: Need[]) => {
+    const mergedMap = new Map();
+    list.forEach((req) => {
+      const key = req.organizationKey;
+      const itemsWithSupplyId = req.items.map((item) => ({
+        ...item,
+        supplyId: req.id,
+      }));
+      if (mergedMap.has(key)) {
+        const existing = mergedMap.get(key);
+        existing.items.push(...itemsWithSupplyId);
+        if (req.createdAt > existing.createdAt) {
+          existing.createdAt = req.createdAt;
+        }
+      } else {
+        mergedMap.set(key, {
+          ...req,
+          items: itemsWithSupplyId,
+        });
+      }
+    });
+    return Array.from(mergedMap.values());
+  };
+
+  const mergedNeeds = mergeRequestsByOrganization(needs);
+
+  return {
+    needs: mergedNeeds,
+    page: { limit, offset, totalItems, next, previous },
+  };
 }
 
 /** ---------------- Helpers ---------------- */

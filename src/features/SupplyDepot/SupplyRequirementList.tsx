@@ -88,7 +88,7 @@ const SupplyRequirementList = ({
     <section aria-labelledby="station-info" className="space-y-6">
       <Card variant="outlined" sx={{ p: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          目前需求列表，可提供請點選並填寫數量
+          目前需求列表，可提供請先點選再填寫數量
         </Typography>
         <Stack spacing={0} sx={{ maxHeight: "80dvh", overflow: "auto" }}>
           <Grid container spacing={1}>
@@ -106,10 +106,13 @@ const SupplyRequirementList = ({
             ref={scrollContainerRef}
           >
             {supplies?.map(
-              ({ id, name, total_count, recieved_count, unit }) => {
+              (
+                { id, name, total_count, recieved_count, unit, requestor },
+                idx
+              ) => {
                 const isReported = !!reportedSupplies[id];
                 return (
-                  <Grid container spacing={1} key={id}>
+                  <Grid container spacing={1} key={idx}>
                     <Grid size={9}>
                       <ToggleButton
                         value="check"
@@ -128,7 +131,7 @@ const SupplyRequirementList = ({
                             sx={{ fontSize: 10, mr: 2 }}
                           />
                         )}
-                        {name} {recieved_count}/{total_count} {unit}
+                        {requestor} | {name} {recieved_count}/{total_count} {unit}
                       </ToggleButton>
                     </Grid>
                     <Grid size={3} alignItems="center" display="flex">

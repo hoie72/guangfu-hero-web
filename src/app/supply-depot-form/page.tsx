@@ -124,7 +124,6 @@ const SupplyDepotFormPage = () => {
         provide_count: quantity,
         pii_date: 0, // 依後端需求固定送 0
       };
-      console.log({ submitData });
       try {
         await submitSupplyProvider(submitData);
         // Store successful submission in local storage

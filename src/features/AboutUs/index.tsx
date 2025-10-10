@@ -135,6 +135,9 @@ export default function AboutUs() {
             我們的團隊來自各地，日夜接力開發，只為讓資訊更即時、協作更順暢。
             救災不只是短暫的行動，而是一場持續的接力。
           </p>
+          <p className="mb-4">
+            本平台不隸屬於任何政府、民間團體，由熱心民眾齊心成立、普及災區資訊。
+          </p>
           <p className="mb-4 text-[28px] leading-[40px] text-center text-[var(--primary)] font-bold">
             無論在哪裡，
             <br className="sm:hidden" />

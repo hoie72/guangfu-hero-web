@@ -5,10 +5,10 @@ const STORAGE_KEY_REPORTS = "supply_provider_reports";
 
 
 export interface ProviderInfo {
-  name: String;
-  phone: String;
-  address: String;
-  notes: String;
+  name: string;
+  phone: string;
+  address: string;
+  notes: string;
 }
 
 export interface ReportedSupplyItem {
@@ -38,10 +38,10 @@ export function getStoredProviderInfo(): ProviderInfo {
  * Save the provider info to local storage
  */
 export function updateStoredProvderInfo(
-  name: String,
-  phone: String,
-  address: String,
-  notes?: String
+  name: string,
+  phone: string,
+  address: string,
+  notes?: string
 ): void {
   if (typeof window === "undefined") return;
 

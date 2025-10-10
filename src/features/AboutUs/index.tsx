@@ -45,7 +45,7 @@ export default function AboutUs() {
     {
       id: 2,
       groupName: "宣傳組",
-      personNames: ["于涵", "魏綺萱", "ヨウヨウ", "FANG JOU", "Sunny Yang"],
+      personNames: ["于涵", "ヨウヨウ", "FANG JOU", "Sunny Yang"],
     },
     {
       id: 3,

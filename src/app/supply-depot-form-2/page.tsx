@@ -24,6 +24,10 @@ import {
   addReportedSupply,
   type ReportedSupplies,
 } from "@/lib/supplyLocalStorage";
+import ConfirmModal, {
+  type ConfirmModalItem,
+  type ConfirmModalStationInfo,
+} from "@/components/ConfirmModal";
 
 interface SupplyFormData {
   name: string;
@@ -56,6 +60,13 @@ const SupplyDepotFormPage = () => {
   const [reportedSupplies, setReportedSupplies] = useState<ReportedSupplies>(
     {}
   );
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingFormData, setPendingFormData] = useState<SupplyFormData | null>(
+    null
+  );
+  const [confirmItems, setConfirmItems] = useState<ConfirmModalItem[]>([]);
+  const [confirmStationInfo, setConfirmStationInfo] =
+    useState<ConfirmModalStationInfo | null>(null);
 
   // Load reported supplies from local storage on mount
   useEffect(() => {
@@ -78,6 +89,53 @@ const SupplyDepotFormPage = () => {
       );
     };
   }, []);
+
+  const handleConfirmSubmit = () => {
+    setShowConfirmModal(false);
+    if (pendingFormData) {
+      onSubmit(pendingFormData);
+    }
+  };
+
+  const handleCancelSubmit = () => {
+    setShowConfirmModal(false);
+    setPendingFormData(null);
+  };
+
+  const handleFormSubmit = (data: SupplyFormData) => {
+    // Prepare items list for confirmation modal
+    if (!supplies) return;
+
+    const selectedSupplyItems = supplies.filter(
+      (item) => selectedItems[item.id]
+    );
+
+    const itemsForModal: ConfirmModalItem[] = selectedSupplyItems
+      .map((item) => {
+        const quantity = data[`quantity_${item.id}`];
+        if (!quantity || quantity <= 0) return null;
+        return {
+          name: item.name,
+          count: quantity,
+          unit: item.unit,
+        };
+      })
+      .filter((item): item is ConfirmModalItem => item !== null);
+
+    // Prepare station info for confirmation modal
+    const stationInfoForModal: ConfirmModalStationInfo = {
+      name: data.name,
+      phone: data.phone,
+      address: data.address,
+      notes: data.notes,
+    };
+
+    // Show confirmation modal before actual submission
+    setPendingFormData(data);
+    setConfirmItems(itemsForModal);
+    setConfirmStationInfo(stationInfoForModal);
+    setShowConfirmModal(true);
+  };
 
   const onSubmit = async (data: SupplyFormData) => {
     if (!supplies) return;
@@ -191,14 +249,14 @@ const SupplyDepotFormPage = () => {
         <div className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
           <Header />
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FetchSupplyStatus
-                loading={loading}
-                error={error}
-                count={supplies?.length || 0}
-              />
-              <Stack spacing={2} sx={{ mb: 2 }}>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <Stack spacing={1} sx={{ mb: 2 }}>
                 <SupplyStation />
+                <FetchSupplyStatus
+                  loading={loading}
+                  error={error}
+                  count={supplies?.length || 0}
+                />
                 <SupplyRequirementList
                   supplies={supplies}
                   reportedSupplies={reportedSupplies}
@@ -210,7 +268,7 @@ const SupplyDepotFormPage = () => {
               <Button
                 variant="contained"
                 sx={{ width: "100%" }}
-                onClick={handleSubmit(onSubmit)}
+                onClick={handleSubmit(handleFormSubmit)}
                 disabled={submitting}
                 startIcon={
                   submitting ? (
@@ -224,6 +282,16 @@ const SupplyDepotFormPage = () => {
               </Button>
             </form>
           </FormProvider>
+          <ConfirmModal
+            open={showConfirmModal}
+            title="請確認以下物資資訊"
+            stationInfo={confirmStationInfo || undefined}
+            items={confirmItems}
+            onConfirm={handleConfirmSubmit}
+            onCancel={handleCancelSubmit}
+            confirmText="確認送出"
+            cancelText="取消"
+          />
         </div>
       </main>
       <Snackbar

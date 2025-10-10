@@ -30,14 +30,23 @@ const SupplyRequirementList = ({
   hasMore = false,
   fetchNextBatch,
 }: SupplyRequirementListProps) => {
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
     {}
   );
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const handleChange = (id: string) => {
-    setSelectedItems((prev) => ({ ...prev, [id]: !prev[id] }));
+  // Auto-select when quantity is entered
+  const handleQuantityChange = (id: string, value: number | string) => {
+    const numValue = typeof value === "string" ? parseFloat(value) : value;
+    if (!isNaN(numValue) && numValue > 0) {
+      setSelectedItems((prev) => ({ ...prev, [id]: true }));
+    } else if (!numValue || numValue <= 0) {
+      setSelectedItems((prev) => ({ ...prev, [id]: false }));
+    }
   };
 
   // Expose selectedItems to parent via form context
@@ -88,7 +97,7 @@ const SupplyRequirementList = ({
     <section aria-labelledby="station-info" className="space-y-6">
       <Card variant="outlined" sx={{ p: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          目前需求列表，可提供請先點選再填寫數量
+          目前需求列表，請填寫物資站可提供數量
         </Typography>
         <Stack spacing={0} sx={{ maxHeight: "80dvh", overflow: "auto" }}>
           <Grid container spacing={1}>
@@ -111,6 +120,7 @@ const SupplyRequirementList = ({
                 idx
               ) => {
                 const isReported = !!reportedSupplies[id];
+                const fieldError = errors[`quantity_${id}`];
                 return (
                   <Grid container spacing={1} key={idx}>
                     <Grid size={9}>
@@ -121,37 +131,66 @@ const SupplyRequirementList = ({
                         fullWidth
                         size="small"
                         sx={{ fontSize: 14 }}
-                        onChange={() => handleChange(id)}
                       >
-                        {isReported && (
-                          <Chip
-                            label="已回報"
-                            color="success"
-                            size="small"
-                            sx={{ fontSize: 10, mr: 2 }}
-                          />
-                        )}
-                        {requestor} | {name} {recieved_count}/{total_count} {unit}
+                        <Stack>
+                          <Typography fontSize={12} textAlign="center">
+                            {requestor}
+                          </Typography>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            {isReported && (
+                              <Chip
+                                label="已回報"
+                                color="success"
+                                size="small"
+                                sx={{ fontSize: 10, mr: 2 }}
+                              />
+                            )}
+                            <Typography
+                              textAlign="center"
+                              color="black"
+                              fontWeight={600}
+                            >
+                              {name} {recieved_count}/{total_count} {unit}
+                            </Typography>
+                          </Stack>
+                        </Stack>
                       </ToggleButton>
                     </Grid>
                     <Grid size={3} alignItems="center" display="flex">
                       <TextField
                         placeholder="數量"
                         variant="outlined"
-                        size="small"
                         type="number"
-                        disabled={!selectedItems?.[id]}
                         {...register(`quantity_${id}`, {
                           valueAsNumber: true,
                           validate: (value) => {
-                            if (selectedItems?.[id] && (!value || value <= 0)) {
-                              return "請輸入數量";
+                            // Validate that quantity must be greater than 0
+                            if (value && value <= 0) {
+                              return "數量必須大於 0";
                             }
                             return true;
                           },
+                          onChange: (e) => {
+                            handleQuantityChange(id, e.target.value);
+                          },
                         })}
+                        error={!!fieldError}
+                        slotProps={{
+                          htmlInput: { min: 0, step: 1 },
+                        }}
                       />
                     </Grid>
+                    {fieldError && (
+                      <Grid size={12}>
+                        <Typography fontSize={12} color="error" textAlign="end">
+                          {fieldError?.message as string}
+                        </Typography>
+                      </Grid>
+                    )}
                   </Grid>
                 );
               }

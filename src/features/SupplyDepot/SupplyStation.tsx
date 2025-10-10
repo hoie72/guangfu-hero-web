@@ -4,7 +4,11 @@ import { Card, TextField, Typography, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 
 const SupplyStation = () => {
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <section aria-labelledby="station-info" className="space-y-6">
       <Card variant="outlined" sx={{ p: 2 }}>
@@ -19,7 +23,11 @@ const SupplyStation = () => {
             size="small"
             margin="dense"
             required
-            {...register("name", { required: true })}
+            {...register("name", {
+              required: "請輸入物資站名稱",
+            })}
+            error={!!errors.name}
+            helperText={errors.name?.message as string}
           />
           <TextField
             label="電話"
@@ -28,7 +36,11 @@ const SupplyStation = () => {
             size="small"
             margin="dense"
             required
-            {...register("phone", { required: true })}
+            {...register("phone", {
+              required: "請輸入電話號碼",
+            })}
+            error={!!errors.phone}
+            helperText={errors.phone?.message as string}
           />
           <TextField
             label="地址"
@@ -37,7 +49,11 @@ const SupplyStation = () => {
             size="small"
             margin="dense"
             required
-            {...register("address", { required: true })}
+            {...register("address", {
+              required: "請輸入地址",
+            })}
+            error={!!errors.address}
+            helperText={errors.address?.message as string}
           />
           <TextField
             label="備註"

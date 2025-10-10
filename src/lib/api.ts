@@ -171,7 +171,7 @@ export async function getSupplies(
 
 export async function submitSupplyProvider(
   data: ReportSupplyProvider,
-  lineIdToken: String
+  lineIdToken: string
 ): Promise<ReportSupplyProviderResponse> {
   data.notes = "test";
   if (!lineIdToken) { throw new Error("登入資訊有問題，請重新登入"); }

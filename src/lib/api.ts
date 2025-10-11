@@ -173,7 +173,6 @@ export async function submitSupplyProvider(
   data: ReportSupplyProvider,
   lineIdToken: string
 ): Promise<ReportSupplyProviderResponse> {
-  data.notes = "test";
   if (!lineIdToken) { throw new Error("登入資訊有問題，請重新登入"); }
 
   const response = await fetch(`${API_BASE_URL}/supply_providers`, {
